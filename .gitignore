@@ -1,0 +1,9 @@
+# Cada pasta (frontend e backend) tem o próprio .gitignore com o que é específico dela.
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+.tools/
+.validation/
+*.log
+/ABRIR-DEMO-LOCAL.cmd

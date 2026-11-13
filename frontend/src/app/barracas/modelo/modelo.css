@@ -1,0 +1,72 @@
+/* O visual da barraca. Este CSS vale só para ela: não muda nada nas outras.
+   A cor escolhida no barraca.config.ts fica disponível como var(--cor-da-barraca). */
+
+section {
+  margin-bottom: 28px;
+}
+
+h3 {
+  margin: 0 0 10px;
+}
+
+.vitrine {
+  text-align: center;
+  padding: 20px;
+  border-radius: 16px;
+  border: 3px dashed var(--cor-da-barraca);
+  background: #fff;
+}
+
+.vitrine h2 {
+  margin-bottom: 6px;
+}
+
+.sabores {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.sabores li {
+  display: grid;
+  gap: 2px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 2px solid #ead9bd;
+}
+
+.sabores .emoji {
+  font-size: 2rem;
+}
+
+.pedido {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.pedido input {
+  /* Ocupa o espaço que sobrar; se sobrar menos de 180px, desce para a linha de baixo. */
+  flex: 1 1 180px;
+}
+
+.fila {
+  margin: 0;
+  padding-left: 1.4em;
+  display: grid;
+  gap: 4px;
+}
+
+.surpresa {
+  text-align: center;
+}
+
+.sorteado {
+  margin-top: 12px;
+  font-size: 1.3rem;
+}

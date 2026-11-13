@@ -1,0 +1,83 @@
+<div class="bandeirinhas" aria-hidden="true"></div>
+
+<main class="pagina">
+  <header class="topo">
+    <h1>🎪 Feira Dev</h1>
+    @if (feira.estado(); as estado) {
+      <p class="etapa">
+        <strong>{{ estado.etapa.titulo }}</strong>
+        <span class="relogio">{{ relogio() }}</span>
+      </p>
+    }
+  </header>
+
+  @if (feira.semConexao()) {
+    <p class="aviso erro">
+      Sem resposta do back-end. Ele está rodando? Na pasta <code>backend</code>: <code>./mvnw spring-boot:run</code>
+    </p>
+  }
+
+  <section class="quem-sou">
+    <label for="quem-sou">Quem é você?</label>
+    <select
+      id="quem-sou"
+      class="campo"
+      [ngModel]="feira.euSlug() ?? ''"
+      (ngModelChange)="feira.escolherQuemSou($event)"
+    >
+      <option value="">Só estou visitando</option>
+      @for (pessoa of feira.participantes(); track pessoa.slug) {
+        <option [value]="pessoa.slug">{{ pessoa.emoji }} {{ pessoa.nome }}</option>
+      }
+    </select>
+    @if (feira.estado()?.feiraAberta && feira.fichas(); as fichas) {
+      <p class="minhas-fichas">🎟️ {{ fichas.restantes }} de {{ fichas.total }} fichas para gastar</p>
+    }
+  </section>
+
+  @if (feira.estado()?.feiraAberta) {
+    <p class="aviso">
+      <strong>A feira está aberta!</strong> Entre nas barracas das outras equipes, use o que elas fizeram e dê suas
+      fichas para as que você mais gostar.
+    </p>
+  }
+
+  @if (resultado().length) {
+    <section class="resultado">
+      <h2>🏆 Resultado</h2>
+      <ol>
+        @for (linha of resultado(); track linha.barraca?.id) {
+          <li [value]="linha.posicao">
+            <span>{{ linha.barraca?.emoji }} {{ linha.barraca?.nome }}</span>
+            <strong>🎟️ {{ linha.fichas }}{{ linha.empate ? ' · empate' : '' }}</strong>
+          </li>
+        }
+      </ol>
+    </section>
+  }
+
+  <section class="barracas" aria-label="Barracas">
+    @for (barraca of barracas; track barraca.id) {
+      <a
+        class="barraca"
+        [routerLink]="['/barraca', barraca.id]"
+        [style.--cor]="barraca.cor"
+        [style.--texto]="corDoTexto(barraca.cor)"
+      >
+        <span class="emoji" aria-hidden="true">{{ barraca.emoji }}</span>
+        <h2>{{ barraca.nome }}</h2>
+        <p class="slogan">{{ barraca.slogan }}</p>
+        <p class="equipe">{{ equipeDe(barraca.id) || 'Equipe ainda não definida' }}</p>
+        @if (fichasQueDei(barraca.id); as dadas) {
+          <span class="fichas-dadas">Você deu 🎟️ × {{ dadas }}</span>
+        }
+      </a>
+    }
+  </section>
+
+  <nav class="atalhos" aria-label="Outras páginas">
+    <a [routerLink]="['/barraca', modelo.id]">{{ modelo.emoji }} Barraca modelo (para consultar)</a>
+    <a routerLink="/crachas">🪪 Crachás</a>
+    <a routerLink="/telao">📺 Telão</a>
+  </nav>
+</main>

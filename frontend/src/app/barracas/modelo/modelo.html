@@ -1,0 +1,64 @@
+<!-- RODADA 1 — a vitrine: os textos de boas-vindas da barraca. -->
+<section class="vitrine">
+  <h2>Pastel de feira de verdade</h2>
+  <p>Escolha o sabor, faça o pedido e veja seu nome entrar na fila.</p>
+</section>
+
+<!-- RODADA 2 — a lista que vem do back-end. O @for repete o bloco uma vez para cada sabor. -->
+<section>
+  <h3>Sabores de hoje</h3>
+  <ul class="sabores">
+    @for (sabor of sabores(); track sabor.nome) {
+      <li>
+        <span class="emoji">{{ sabor.emoji }}</span>
+        <strong>{{ sabor.nome }}</strong>
+        <span>{{ sabor.descricao }}</span>
+      </li>
+    }
+  </ul>
+</section>
+
+<!-- RODADA 3 — o formulário grava um pedido no banco, e a fila mostra o que já foi gravado. -->
+<section>
+  <h3>Faça seu pedido</h3>
+  <div class="pedido">
+    <!-- [(ngModel)] liga o campo à caixinha: o que a pessoa escolhe vai para saborEscolhido. -->
+    <select class="campo" [(ngModel)]="saborEscolhido" aria-label="Sabor">
+      <option value="">Escolha um sabor</option>
+      @for (sabor of sabores(); track sabor.nome) {
+        <option [value]="sabor.nome">{{ sabor.emoji }} {{ sabor.nome }}</option>
+      }
+    </select>
+    <input class="campo" [(ngModel)]="observacao" placeholder="Alguma observação?" aria-label="Observação" />
+    <!-- (click) diz qual função roda no clique. [disabled] desliga o botão enquanto não há sabor. -->
+    <button class="botao" (click)="pedir()" [disabled]="!saborEscolhido()">Pedir</button>
+  </div>
+
+  <!-- @if só mostra o bloco quando a condição é verdadeira. -->
+  @if (aviso()) {
+    <p class="aviso erro">{{ aviso() }}</p>
+  }
+
+  <h3>Fila de pedidos</h3>
+  <ol class="fila">
+    @for (pedido of pedidos(); track pedido.id) {
+      <li>
+        <strong>{{ pedido.autor ?? 'Visitante' }}</strong> pediu {{ pedido.texto }}
+        @if (pedido.detalhe) {
+          <em>({{ pedido.detalhe }})</em>
+        }
+      </li>
+    } @empty {
+      <li>Ninguém pediu ainda. Seja a primeira pessoa!</li>
+    }
+  </ol>
+</section>
+
+<!-- RODADA 4 — a atração: um botão que chama o endpoint inventado pela barraca. -->
+<section class="surpresa">
+  <h3>Não sabe o que pedir?</h3>
+  <button class="botao" (click)="sortear()">🎲 Sabor surpresa</button>
+  @if (surpresa(); as sabor) {
+    <p class="sorteado">{{ sabor.emoji }} Hoje você vai de <strong>{{ sabor.nome }}</strong>!</p>
+  }
+</section>

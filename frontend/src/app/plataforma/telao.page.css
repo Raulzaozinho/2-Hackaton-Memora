@@ -1,0 +1,274 @@
+/* O telão é desenhado para 16:9. Tudo usa "em" a partir de um tamanho ligado à largura da tela,
+   então a mesma tela cabe numa TV grande ou num projetor pequeno. */
+.telao {
+  font-size: clamp(11px, 1.25vw, 30px);
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  gap: 1.2em;
+  padding-bottom: 1em;
+}
+
+.telao > :not(.bandeirinhas) {
+  padding: 0 2em;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2em;
+}
+
+.marca {
+  font-weight: 700;
+  color: var(--tinta-suave);
+}
+
+.cabecalho h1 {
+  font-size: 3.2em;
+}
+
+.entrega {
+  font-size: 1.5em;
+  margin-top: 0.2em;
+}
+
+.quadro {
+  display: inline-block;
+  margin-top: 0.6em;
+  padding: 0.3em 0.9em;
+  border-radius: 999px;
+  background: var(--tinta);
+  color: #fff;
+  font-size: 1.2em;
+}
+
+.relogio {
+  display: grid;
+  justify-items: center;
+  font-size: 7.5em;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  padding: 0.15em 0.3em;
+  border-radius: 0.2em;
+  background: var(--cartao);
+  border: 0.05em solid var(--linha);
+}
+
+.relogio small {
+  font-size: 0.16em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.relogio.acabando {
+  color: var(--erro);
+  border-color: var(--erro);
+}
+
+.relogio.esgotado {
+  background: var(--erro);
+  color: #fff;
+  animation: piscar 1s steps(2, jump-none) infinite;
+}
+
+@keyframes piscar {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.equipes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4em;
+  align-items: stretch;
+}
+
+.equipes article {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  border-radius: 1em;
+  overflow: hidden;
+  background: var(--cartao);
+  border: 0.15em solid var(--cor);
+}
+
+.equipes article > header {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.8em 1em;
+  background: var(--cor);
+  color: var(--texto);
+}
+
+.equipes .emoji {
+  font-size: 3em;
+  line-height: 1;
+}
+
+.equipes h2 {
+  font-size: 1.7em;
+  overflow-wrap: anywhere;
+}
+
+.membros {
+  list-style: none;
+  margin: 0;
+  padding: 0.9em 1em;
+  display: grid;
+  gap: 0.6em;
+  align-content: start;
+}
+
+.membros li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2em 0.6em;
+}
+
+.pessoa {
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+.papel {
+  padding: 0.15em 0.7em;
+  border-radius: 999px;
+  background: #f3e8d5;
+}
+
+.papel.piloto {
+  background: var(--tinta);
+  color: #fff;
+  font-weight: 700;
+}
+
+.vazio {
+  color: var(--tinta-suave);
+}
+
+.ultima-entrega {
+  display: grid;
+  gap: 0.15em;
+  padding: 0.8em 1em;
+  background: #f1f8f3;
+  border-top: 0.1em solid var(--linha);
+}
+
+.ultima-entrega strong {
+  font-size: 1.15em;
+  overflow-wrap: anywhere;
+}
+
+.ultima-entrega.recusada {
+  background: #fde7e4;
+  color: var(--erro);
+}
+
+.feira-aberta {
+  display: grid;
+  justify-items: center;
+  gap: 0.5em;
+  font-size: 1.5em;
+}
+
+.feira-aberta strong {
+  font-size: 1.4em;
+}
+
+.barra {
+  width: 60%;
+  height: 0.8em;
+  border-radius: 999px;
+  background: var(--linha);
+  overflow: hidden;
+}
+
+.barra div {
+  height: 100%;
+  background: var(--ok);
+  transition: width 0.6s ease;
+}
+
+.premiacao {
+  display: grid;
+  place-items: center;
+}
+
+.premiacao ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: min(100%, 46em);
+  display: grid;
+  gap: 0.8em;
+}
+
+.premiacao li {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.7em 1.2em;
+  border-radius: 0.8em;
+  background: var(--cor);
+  color: var(--texto);
+  font-size: 1.8em;
+}
+
+.premiacao li.campea {
+  font-size: 2.6em;
+}
+
+.premiacao li.campea.empate {
+  font-size: 2em;
+}
+
+.premiacao .nome {
+  flex: 1;
+  font-weight: 700;
+}
+
+.trancado {
+  font-size: 4em;
+  font-weight: 800;
+  color: var(--tinta-suave);
+}
+
+.trilha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  font-size: 0.85em;
+  color: var(--tinta-suave);
+}
+
+.trilha span {
+  padding: 0.2em 0.8em;
+  border-radius: 999px;
+  border: 0.1em solid var(--linha);
+}
+
+.trilha .atual {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: #fff;
+  font-weight: 700;
+}
+
+.carregando {
+  padding: 2em;
+  font-size: 1.4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .relogio.esgotado {
+    animation: none;
+  }
+}

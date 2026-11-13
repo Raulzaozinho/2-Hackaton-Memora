@@ -1,0 +1,14 @@
+/* O visual da barraca de vocês. Este CSS vale só para ela: não muda nada nas outras.
+   A cor escolhida no barraca.config.ts fica disponível como var(--cor-da-barraca). */
+
+section {
+  margin-bottom: 28px;
+}
+
+.vitrine {
+  text-align: center;
+  padding: 20px;
+  border-radius: 16px;
+  border: 3px dashed var(--cor-da-barraca);
+  background: #fff;
+}

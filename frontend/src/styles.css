@@ -1,0 +1,116 @@
+/* O visual que vale para o aplicativo inteiro. As barracas têm o próprio CSS, na pasta de cada equipe. */
+:root {
+  --papel: #fff8ec;
+  --cartao: #ffffff;
+  --tinta: #2b2118;
+  --tinta-suave: #6b5b4d;
+  --linha: #ead9bd;
+  --destaque: #c8421c;
+  --ok: #1f7a45;
+  --erro: #b3261e;
+  --raio: 16px;
+  font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  color: var(--tinta);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Um botão padrão que qualquer barraca pode usar: <button class="botao">Texto</button> */
+.botao {
+  border: 2px solid var(--tinta);
+  border-radius: 999px;
+  background: var(--tinta);
+  color: #fff;
+  padding: 0.55em 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.botao:hover:not(:disabled) {
+  background: #45362a;
+}
+
+.botao:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.botao.claro {
+  background: transparent;
+  color: var(--tinta);
+}
+
+.botao.claro:hover:not(:disabled) {
+  background: rgba(43, 33, 24, 0.08);
+}
+
+:focus-visible {
+  outline: 3px solid #1b6fd1;
+  outline-offset: 2px;
+}
+
+/* Um campo de texto padrão: <input class="campo"> */
+.campo {
+  border: 2px solid var(--linha);
+  border-radius: 12px;
+  padding: 0.55em 0.8em;
+  background: #fff;
+  color: var(--tinta);
+  min-width: 0;
+}
+
+.aviso {
+  border-radius: 12px;
+  padding: 0.7em 1em;
+  background: #fdeedd;
+  border: 1px solid var(--linha);
+}
+
+.aviso.erro {
+  background: #fde7e4;
+  border-color: #f1b5ae;
+  color: var(--erro);
+}
+
+/* A fileira de bandeirinhas no topo das páginas. */
+.bandeirinhas {
+  height: 26px;
+  background:
+    conic-gradient(from -30deg at 50% 100%, #e4572e 0 60deg, transparent 60deg) 0 0 / 160px 100%,
+    conic-gradient(from -30deg at 50% 100%, #f2a541 0 60deg, transparent 60deg) 40px 0 / 160px 100%,
+    conic-gradient(from -30deg at 50% 100%, #2e86ab 0 60deg, transparent 60deg) 80px 0 / 160px 100%,
+    conic-gradient(from -30deg at 50% 100%, #3a9d5d 0 60deg, transparent 60deg) 120px 0 / 160px 100%;
+}
+
+.pagina {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px 16px 48px;
+  display: grid;
+  gap: 20px;
+}

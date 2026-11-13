@@ -1,0 +1,63 @@
+.moldura {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.fachada {
+  background: var(--cor-da-barraca);
+  color: var(--texto-da-barraca);
+  padding: 16px 16px 28px;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+  /* A borda de baixo em zigue-zague, como um toldo de barraca. */
+  --dente: 14px;
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--dente)) 100%;
+}
+
+.voltar {
+  justify-self: start;
+  font-size: 0.95rem;
+}
+
+.fachada .emoji {
+  font-size: 3.4rem;
+  line-height: 1;
+}
+
+.fachada h1 {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  overflow-wrap: anywhere;
+}
+
+.balcao {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+}
+
+.fichas {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  padding: 12px 16px;
+  background: var(--cartao);
+  border-top: 2px solid var(--linha);
+}
+
+.fichas .aviso {
+  flex-basis: 100%;
+  text-align: center;
+}
+
+.restantes {
+  color: var(--tinta-suave);
+}

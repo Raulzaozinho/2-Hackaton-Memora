@@ -1,0 +1,65 @@
+header {
+  display: grid;
+  gap: 6px;
+}
+
+.entrada {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.bloco {
+  display: grid;
+  gap: 10px;
+  padding: 18px 20px;
+  border-radius: var(--raio);
+  background: var(--cartao);
+  border: 2px solid var(--linha);
+}
+
+.agora {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 1.3rem;
+}
+
+.relogio {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: var(--destaque);
+}
+
+.dica {
+  color: var(--tinta-suave);
+  font-size: 0.95rem;
+}
+
+.botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pessoas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px 20px;
+}
+
+.pessoas li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.placar {
+  margin: 0;
+  padding-left: 1.4em;
+}

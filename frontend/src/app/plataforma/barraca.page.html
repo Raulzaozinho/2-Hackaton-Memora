@@ -1,0 +1,48 @@
+@if (barraca(); as barraca) {
+  <div
+    class="moldura"
+    [style.--cor-da-barraca]="barraca.cor"
+    [style.--texto-da-barraca]="corDoTexto(barraca.cor)"
+  >
+    <header class="fachada">
+      <a routerLink="/" class="voltar">← Voltar para a feira</a>
+      <span class="emoji" aria-hidden="true">{{ barraca.emoji }}</span>
+      <h1>{{ barraca.nome }}</h1>
+      <p>{{ barraca.slogan }}</p>
+    </header>
+
+    <!-- Aqui dentro entra a página feita pela equipe (a pasta dela em src/app/barracas). -->
+    <main class="balcao">
+      <ng-container *ngComponentOutlet="barraca.componente" />
+    </main>
+
+    @if (recebeFichas()) {
+      <footer class="fichas">
+        @if (!feira.estado()?.feiraAberta) {
+          <p>🎟️ As fichas valem quando a feira abrir.</p>
+        } @else if (!feira.eu()) {
+          <p>🎟️ Para dar fichas, escolha quem você é na <a routerLink="/">página da feira</a>.</p>
+        } @else if (ehDaMinhaEquipe()) {
+          <p>🎟️ Esta é a barraca da sua equipe. Suas fichas vão para as outras barracas.</p>
+        } @else {
+          <button class="botao" (click)="dar()" [disabled]="(feira.fichas()?.restantes ?? 0) <= 0">
+            Dar uma ficha 🎟️
+          </button>
+          @if (fichasQueDei(); as dadas) {
+            <span>Você deu {{ dadas }} aqui.</span>
+            <button class="botao claro" (click)="devolver()">Devolver uma</button>
+          }
+          <span class="restantes">Restam {{ feira.fichas()?.restantes ?? 0 }} fichas.</span>
+        }
+        @if (aviso()) {
+          <p class="aviso erro" role="alert">{{ aviso() }}</p>
+        }
+      </footer>
+    }
+  </div>
+} @else {
+  <main class="pagina">
+    <p class="aviso erro">Essa barraca não existe.</p>
+    <a routerLink="/">← Voltar para a feira</a>
+  </main>
+}

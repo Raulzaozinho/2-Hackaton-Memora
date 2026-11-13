@@ -1,0 +1,7 @@
+# Todo mundo recebe os arquivos com o mesmo fim de linha, em qualquer sistema e com qualquer
+# configuração do Git. Sem isto, máquinas diferentes podem marcar o arquivo inteiro como alterado.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.ico binary
+*.png binary
+*.jar binary

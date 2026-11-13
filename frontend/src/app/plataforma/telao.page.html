@@ -1,0 +1,109 @@
+@if (feira.estado(); as estado) {
+  <div class="telao">
+    <div class="bandeirinhas" aria-hidden="true"></div>
+
+    <header class="cabecalho">
+      <div>
+        <p class="marca">🎪 Feira Dev</p>
+        <h1>{{ estado.etapa.titulo }}</h1>
+        <p class="entrega">{{ estado.etapa.entrega }}</p>
+        @if (estado.etapa.quadro) {
+          <p class="quadro">📝 No quadro: {{ estado.etapa.quadro }}</p>
+        }
+      </div>
+      <div class="relogio" [class.acabando]="acabando()" [class.esgotado]="esgotado()">
+        {{ relogio() }}
+        @if (esgotado()) {
+          <small>Tempo esgotado</small>
+        }
+      </div>
+    </header>
+
+    @if (estado.etapa.codigo === 'PREMIACAO') {
+      <section class="premiacao">
+        @if (resultado().length) {
+          <ol>
+            @for (linha of resultado(); track linha.barraca?.id) {
+              <li
+                [class.campea]="linha.posicao === 1 && linha.fichas > 0"
+                [class.empate]="linha.empate"
+                [style.--cor]="linha.barraca?.cor"
+                [style.--texto]="corDoTexto(linha.barraca?.cor ?? '')"
+              >
+                <span class="posicao">{{ linha.posicao === 1 && linha.fichas > 0 ? '🏆' : linha.posicao + 'º' }}</span>
+                <span class="nome">{{ linha.barraca?.emoji }} {{ linha.barraca?.nome }}{{ linha.empate ? ' · empate' : '' }}</span>
+                <strong>🎟️ {{ linha.fichas }}</strong>
+              </li>
+            }
+          </ol>
+        } @else {
+          <p class="trancado">🔒 Resultado trancado</p>
+        }
+      </section>
+    } @else {
+      <section class="equipes">
+        @for (equipe of equipes(); track equipe.barraca.id) {
+          <article [style.--cor]="equipe.barraca.cor" [style.--texto]="corDoTexto(equipe.barraca.cor)">
+            <header>
+              <span class="emoji" aria-hidden="true">{{ equipe.barraca.emoji }}</span>
+              <div>
+                <h2>{{ equipe.barraca.nome }}</h2>
+                <p>{{ equipe.barraca.slogan }}</p>
+              </div>
+            </header>
+
+            <ul class="membros">
+              @for (membro of equipe.membros; track membro.slug) {
+                <li>
+                  <span class="pessoa">{{ membro.emoji }} {{ membro.nome }}</span>
+                  @if (membro.papel) {
+                    <span class="papel" [class.piloto]="membro.papel === 'piloto'">{{ papel(membro) }}</span>
+                  }
+                </li>
+              } @empty {
+                <li class="vazio">Equipe ainda não definida</li>
+              }
+            </ul>
+
+            <!-- A última entrega só interessa durante as rodadas; na feira aberta o espaço fica para as fichas. -->
+            @if (estado.etapa.rodada > 0) {
+              <p class="ultima-entrega" [class.recusada]="equipe.entrega && !equipe.entrega.ok">
+                @if (equipe.entrega; as entrega) {
+                  <span>{{ entrega.ok ? '✅ Entrou na feira' : '⛔ Não entrou' }} · {{ haQuanto(entrega.quando) }}</span>
+                  <strong>“{{ entrega.mensagem }}”</strong>
+                  @if (entrega.autor) {
+                    <span>por {{ entrega.autor }}</span>
+                  }
+                } @else {
+                  <span>Ainda sem entregas</span>
+                }
+              </p>
+            }
+          </article>
+        }
+      </section>
+    }
+
+    @if (estado.feiraAberta) {
+      <section class="feira-aberta">
+        @if (estado.endereco) {
+          <p>
+            Abra no celular: <strong>{{ estado.endereco }}</strong>
+          </p>
+        }
+        <div class="barra" role="img" [attr.aria-label]="estado.fichasGastas + ' de ' + estado.fichasTotal + ' fichas gastas'">
+          <div [style.width.%]="porcentagemDeFichas()"></div>
+        </div>
+        <p>🎟️ {{ estado.fichasGastas }} de {{ estado.fichasTotal }} fichas gastas</p>
+      </section>
+    }
+
+    <footer class="trilha" aria-label="Etapas do dia">
+      @for (etapa of estado.etapas; track etapa.codigo) {
+        <span [class.atual]="etapa.codigo === estado.etapa.codigo">{{ etapa.titulo }}</span>
+      }
+    </footer>
+  </div>
+} @else {
+  <p class="carregando">Abrindo a feira… O back-end está rodando?</p>
+}
