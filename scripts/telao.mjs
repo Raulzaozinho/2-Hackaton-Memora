@@ -124,7 +124,8 @@ export function publicarFront(origem = FRONT_COMPILADO, destino = FRONT_NO_AR) {
 
 function compilarBack() {
   avisar('Compilando o back-end…');
-  return rodar(WINDOWS ? '.\\mvnw.cmd' : './mvnw', ['-q', '-B', '-DskipTests', 'package'], BACK);
+  // "clean": sem ele, um crachá apagado ou renomeado continuaria dentro do jar.
+  return rodar(WINDOWS ? '.\\mvnw.cmd' : './mvnw', ['-q', '-B', '-DskipTests', 'clean', 'package'], BACK);
 }
 
 async function subirServidor(jar = JAR_COMPILADO) {
