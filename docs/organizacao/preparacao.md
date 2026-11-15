@@ -6,7 +6,9 @@ O que fazer antes do dia, na ordem. O dia em si está no [roteiro](roteiro-do-di
 
 **1. Repositório.** O projeto está em <https://github.com/Raulzaozinho/2-Hackaton-Memora>, com o `main` e os ramos `equipe-1`, `equipe-2` e `equipe-3` já criados. Peça o usuário do GitHub de cada participante e adicione os nove como colaboradores em **Settings → Collaborators → Add people**. Sem o convite aceito, ninguém consegue enviar o crachá nem as entregas do dia.
 
-**2. Missão Zero.** Envie aos participantes o endereço do repositório e o link de [docs/missao-zero.md](../missao-zero.md). Cada um abre um PR com o próprio crachá. Aprove e junte os nove PRs ao `main`.
+**2. Missão Zero.** Envie aos participantes o endereço do repositório e o link de [docs/missao-zero.md](../missao-zero.md). Os crachás já estão no projeto, um arquivo por pessoa, com emoji e frase provisórios; cada participante personaliza o seu e abre um PR. Aprove e junte os PRs ao `main`. Quem não abrir o PR continua na feira, só que com o crachá provisório.
+
+Para incluir alguém novo, copie `backend/src/main/resources/crachas/_exemplo.json` para um arquivo com o primeiro nome da pessoa, em minúsculas e sem acentos. O repositório é público: use só o primeiro nome.
 
 Quem não conseguir abrir o PR sozinho é exatamente quem precisa de ajuda **antes** do dia: sente junto por 15 minutos.
 
@@ -48,7 +50,7 @@ Passe por todas as etapas com **Próxima etapa**, dê algumas fichas pelo celula
 
 ## Na véspera
 
-**1. Ramos das equipes.** Os três ramos já existem, mas foram criados antes dos crachás. Com todos os crachás no `main`, atualize-os:
+**1. Ramos das equipes.** Os três ramos já existem, mas ficam para trás a cada crachá personalizado. Com todos os PRs de crachá no `main`, atualize-os:
 
 ```bash
 git switch main

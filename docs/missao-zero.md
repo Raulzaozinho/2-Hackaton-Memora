@@ -1,6 +1,6 @@
 # Missão Zero — antes do dia
 
-**Objetivo:** chegar no dia com o projeto rodando na sua máquina e com o seu crachá na feira.
+**Objetivo:** chegar no dia com o projeto rodando na sua máquina e com o seu crachá personalizado na feira.
 Leva uns 20 minutos. Se travar em qualquer passo, chame alguém da organização: é para isso que a Missão Zero existe.
 
 ## 1. Instale
@@ -50,32 +50,38 @@ npm start
 
 Abra <http://localhost:4200>. Você deve ver a feira com três barracas.
 
-## 5. Crie o seu crachá
+## 5. Personalize o seu crachá
 
-1. Vá até a pasta `backend/src/main/resources/crachas`.
-2. Copie o arquivo `_exemplo.json` e dê à cópia o seu nome, em minúsculas, sem espaços e sem acentos. Exemplo: `maria-silva.json`.
-3. Preencha os três campos:
+O seu crachá já existe, com um emoji e uma frase provisórios. Agora você deixa ele com a sua cara.
+
+1. Vá até a pasta `backend/src/main/resources/crachas` e abra o arquivo com o seu nome. Exemplo: `bruno.json`.
+2. Troque o emoji e a frase. Se quiser ser chamado de outro jeito, troque o nome também:
 
 ```json
 {
-  "nome": "Maria",
+  "nome": "Bruno",
   "emoji": "🚀",
   "frase": "Quero aprender a fazer uma API do zero"
 }
 ```
 
+3. **Não mude o nome do arquivo.** É por ele que a feira sabe quem é você.
 4. Pare o back-end (Ctrl+C no terminal dele) e rode de novo.
-5. Abra <http://localhost:4200/#/crachas>. O seu crachá deve estar lá.
+5. Abra <http://localhost:4200/#/crachas>. O seu crachá deve aparecer com o emoji e a frase novos.
 
-Se não apareceu, olhe o terminal do back-end: ele avisa quando um crachá tem erro. O mais comum é faltar uma vírgula ou uma aspa.
+Se não mudou, olhe o terminal do back-end: ele avisa quando um crachá tem erro. O mais comum é faltar uma vírgula ou uma aspa.
+
+Não achou um arquivo com o seu nome? Avise a organização.
 
 ## 6. Envie o seu crachá
 
+Troque `bruno` pelo nome do seu arquivo:
+
 ```bash
-git switch -c cracha/maria-silva
-git add backend/src/main/resources/crachas/maria-silva.json
-git commit -m "adiciona o crachá da Maria"
-git push -u origin cracha/maria-silva
+git switch -c cracha/bruno
+git add backend/src/main/resources/crachas/bruno.json
+git commit -m "personaliza o crachá do Bruno"
+git push -u origin cracha/bruno
 ```
 
 Depois abra o repositório no GitHub e clique em **Compare & pull request**. Esse é o seu primeiro PR (pedido para juntar o seu código ao principal). A organização aprova.
