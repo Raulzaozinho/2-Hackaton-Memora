@@ -68,7 +68,7 @@ npm install
 
 Copie o `backend/.env` para dentro desse clone.
 
-**3. Imprima** os quatro cartões de rodada (um jogo por equipe) e a cola de Git. Separe três copos vermelhos.
+**3. Imprima** os quatro cartões de rodada, a folha dos papéis ([papeis.md](../papeis.md)) e a cola de Git, um jogo por equipe. Separe três copos vermelhos. No modo cego o repórter precisa de um aparelho próprio (notebook ou celular) na mesma rede do piloto: confira no ensaio se um aparelho consegue abrir o endereço `Network` do outro.
 
 ## No dia, 20 minutos antes
 

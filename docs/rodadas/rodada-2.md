@@ -8,7 +8,7 @@ Troque o `N` pelo número da sua equipe. Nesta rodada vocês mexem em dois lugar
 - **Back-end:** `backend/src/main/java/br/com/memora/feira/barracas/equipeN/EquipeNController.java`
 - **Front-end:** `frontend/src/app/barracas/equipe-N/`
 
-Quem pilota começa com `git pull`.
+**Modo cego:** este cartão é só do copiloto. O piloto começa com `git pull` e liga o projeto (front-end com `npm run start:rede`); o repórter abre no próprio aparelho o endereço `Network` que o piloto ler em voz alta. Regras em [papeis.md](../papeis.md).
 
 ## Mínimo — todo mundo chega aqui
 
@@ -28,8 +28,8 @@ Cada `Item` tem três textos: emoji, nome e descrição. Os itens são separados
 
 **2. Reiniciem o back-end:** Ctrl+C no terminal dele e rodem de novo.
 
-**3. Confiram a resposta pura,** abrindo no navegador:
-<http://localhost:8080/api/barracas/equipe-N/itens>
+**3. Repórter, confira a resposta pura** no seu aparelho: no endereço do piloto, troque o final por `/api/barracas/equipe-N/itens`. Exemplo:
+`http://192.168.0.25:4200/api/barracas/equipe-N/itens`
 
 Esse texto entre colchetes é o que o back-end responde. O nome disso é JSON.
 
@@ -61,7 +61,7 @@ Lendo em português: "peça os itens da equipe-N e, quando a resposta chegar, gu
 
 O `@for` repete o `<li>` uma vez para cada item. As chaves duplas `{{ }}` mostram um valor na tela.
 
-**6. Confiram** em <http://localhost:4200> e **entreguem:**
+**6. Repórter, confira** a lista na barraca e, se estiver certa, **entreguem:**
 
 ```bash
 git add .

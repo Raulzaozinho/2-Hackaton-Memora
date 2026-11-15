@@ -9,7 +9,7 @@ São 3 horas, 3 equipes de 3 pessoas e 4 rodadas curtas.
 | Você é… | Leia |
 |---|---|
 | Participante, antes do dia | [Missão Zero](docs/missao-zero.md) |
-| Participante, no dia | [Rodada 1](docs/rodadas/rodada-1.md) · [Rodada 2](docs/rodadas/rodada-2.md) · [Rodada 3](docs/rodadas/rodada-3.md) · [Rodada 4](docs/rodadas/rodada-4.md) · [Cola de Git](docs/cola-git.md) |
+| Participante, no dia | [Os papéis](docs/papeis.md) · [Rodada 1](docs/rodadas/rodada-1.md) · [Rodada 2](docs/rodadas/rodada-2.md) · [Rodada 3](docs/rodadas/rodada-3.md) · [Rodada 4](docs/rodadas/rodada-4.md) · [Cola de Git](docs/cola-git.md) |
 | Organização | [Preparação](docs/organizacao/preparacao.md) · [Roteiro do dia](docs/organizacao/roteiro-do-dia.md) |
 
 ## O que você precisa instalar

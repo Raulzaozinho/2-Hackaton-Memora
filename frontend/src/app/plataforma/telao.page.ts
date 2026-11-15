@@ -4,12 +4,23 @@ import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
 import { Membro } from './tipos';
 import { classificarResultado } from './resultado';
 
-const PAPEIS: Record<string, string> = {
+/** Rodadas 1 a 3: modo cego, cada papel enxerga só uma parte (docs/papeis.md). */
+const PAPEIS_NO_MODO_CEGO: Record<string, string> = {
+  piloto: '⌨️ Piloto · só o código',
+  copiloto: '🧭 Copiloto · só o cartão',
+  reporter: '📣 Repórter · só o resultado',
+  apoio: '🤝 Apoio',
+};
+
+/** Rodada 4: os três veem tudo. */
+const PAPEIS_LIVRES: Record<string, string> = {
   piloto: '⌨️ Piloto · digita',
   copiloto: '🧭 Copiloto · orienta',
   reporter: '📣 Repórter · apresenta',
   apoio: '🤝 Apoio',
 };
+
+const ULTIMA_RODADA_DO_MODO_CEGO = 3;
 
 /** A tela grande da sala: etapa, relógio, quem faz o quê em cada equipe e a última entrega de cada uma. */
 @Component({
@@ -51,7 +62,12 @@ export class TelaoPage {
   });
 
   protected papel(membro: Membro): string {
-    return membro.papel ? PAPEIS[membro.papel] : '';
+    if (!membro.papel) {
+      return '';
+    }
+    const rodada = this.feira.estado()?.etapa.rodada ?? 0;
+    const papeis = rodada <= ULTIMA_RODADA_DO_MODO_CEGO ? PAPEIS_NO_MODO_CEGO : PAPEIS_LIVRES;
+    return papeis[membro.papel];
   }
 
   protected haQuanto(quando: string): string {

@@ -8,12 +8,17 @@ Troque o `N` pelo número da sua equipe. Todos os arquivos desta rodada estão e
 
 ## Antes de começar
 
-Quem pilota deixa o projeto rodando (back-end e front-end, como na Missão Zero) e entra no ramo da equipe:
+**Modo cego:** este cartão é só do copiloto. O piloto só vê o código e o repórter só vê o resultado. As regras estão em [papeis.md](../papeis.md).
+
+Na primeira rodada, o piloto entra no ramo da equipe e liga o projeto com o front-end aberto para a rede:
 
 ```bash
 git fetch
 git switch equipe-N
 ```
+
+Terminal 1: `cd backend` e `.\mvnw.cmd spring-boot:run`. Terminal 2: `cd frontend` e `npm run start:rede`.
+O piloto lê em voz alta o endereço da linha `Network`, e o repórter abre esse endereço no próprio aparelho.
 
 ## Mínimo — todo mundo chega aqui
 
@@ -41,7 +46,7 @@ A cor é um código hexadecimal. Procurem "seletor de cores" no navegador para e
 </section>
 ```
 
-**4. Confiram** em <http://localhost:4200>: o cartão da barraca no mapa e a página dela.
+**4. Repórter, confira** no seu aparelho: o cartão da barraca no mapa e a página dela. Conte para a equipe o que apareceu.
 
 **5. Entreguem:**
 

@@ -5,7 +5,7 @@
 
 Vocês já têm as três peças: uma **lista** que vem do back-end, um **formulário** que grava e, se quiserem, um **endpoint novo** no controller da equipe. A atração é uma combinação delas.
 
-Quem pilota começa com `git pull`.
+**Sem modo cego nesta rodada:** os três veem o código, o resultado e este cartão, e criam a atração juntos. Quem pilota começa com `git pull`.
 
 ## Como usar os 30 minutos
 

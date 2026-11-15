@@ -18,7 +18,7 @@ Sobram 5 minutos de folga. Se uma etapa apertar, use **+1 minuto**; evite passar
 ## As regras, para dizer na abertura
 
 1. **Cada equipe monta uma barraca** dentro da mesma feira. A cada rodada ela ganha uma coisa nova.
-2. **Rodízio:** a cada rodada o telão mostra quem é **piloto** (digita), **copiloto** (orienta, lê o cartão em voz alta) e **repórter** (confere a entrega e fala na vitrine). Em quatro rodadas, todo mundo pilota.
+2. **Modo cego e rodízio:** nas rodadas 1 a 3, o **piloto** só vê o código, o **copiloto** só vê o cartão e o **repórter** só vê o resultado (a barraca rodando, os erros e o telão). Só dá certo se os três conversarem. Cada equipe tem 2 espiadas de 30 segundos por rodada. A cada rodada os papéis giram, e o telão mostra quem é quem. Na rodada 4 os três veem tudo. As regras completas estão em [papeis.md](../papeis.md).
 3. **Três níveis** em cada cartão: o mínimo todo mundo alcança; o bom e o extra são para quem tiver tempo.
 4. **Copo vermelho** na mesa quer dizer "travamos". Ninguém fica parado em silêncio.
 5. **Entregar é dar push.** A mensagem do commit aparece no telão, com o nome de quem enviou.
@@ -34,6 +34,10 @@ Sobram 5 minutos de folga. Se uma etapa apertar, use **+1 minuto**; evite passar
 | 25 a 30 | Vitrine: todos olham o telão; o repórter de cada equipe fala 30 segundos |
 
 Aos 20 minutos, avise: "faltam 5 para entregar". O que vale é o que entrou no telão.
+
+A aula de 5 minutos é o que dá à equipe um vocabulário em comum. No modo cego o piloto não lê o cartão: ele só entende "abre o .ts e cria um signal" se ouviu na aula o que é um `.ts` e o que é um signal. Por isso cada aula termina com as palavras que eles vão usar na rodada.
+
+Na rodada 1, antes da aula, gaste 2 minutos mostrando a arrumação: o piloto de frente para o notebook, o copiloto de costas com o cartão, o repórter com o próprio aparelho. Mostre também como o repórter abre o endereço `Network` do piloto.
 
 Durante a mão na massa, circule. Olhe primeiro para as mesas sem copo vermelho que estão quietas demais.
 

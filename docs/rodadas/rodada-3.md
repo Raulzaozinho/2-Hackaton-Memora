@@ -6,7 +6,7 @@
 Troque o `N` pelo número da sua equipe. Tudo acontece em `frontend/src/app/barracas/equipe-N/`.
 O back-end desta rodada já está pronto: a plataforma sabe guardar e listar **registros** de qualquer barraca.
 
-Quem pilota começa com `git pull`.
+**Modo cego:** este cartão é só do copiloto. O piloto começa com `git pull` e liga o projeto (front-end com `npm run start:rede`); o repórter abre no próprio aparelho o endereço `Network` que o piloto ler em voz alta. Regras em [papeis.md](../papeis.md).
 
 ## Antes: o que o visitante vai deixar na barraca?
 
@@ -65,7 +65,7 @@ Três peças novas:
 - `(click)="enviar()"` diz qual ação roda no clique.
 - `[disabled]="!recado()"` desliga o botão enquanto o campo está vazio.
 
-**4. Testem** em <http://localhost:4200>: escrevam, enviem, e o recado aparece na lista. Recarreguem a página: ele continua lá, porque está no banco.
+**4. Repórter, teste** no seu aparelho: escreva, envie, e o recado aparece na lista. Recarregue a página: ele continua lá, porque está no banco.
 
 **5. Entreguem:**
 
