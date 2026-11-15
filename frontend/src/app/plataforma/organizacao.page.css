@@ -63,3 +63,9 @@ header {
   margin: 0;
   padding-left: 1.4em;
 }
+
+.confirmacao {
+  align-self: center;
+  color: var(--erro);
+  font-weight: 600;
+}

@@ -62,10 +62,23 @@ export class OrganizacaoPage {
     this.chamar('POST', `etapa/${acao}`);
   }
 
+  /**
+   * Ações que apagam ou trocam algo pedem um segundo clique na própria página.
+   * Não usamos confirm(): alguns navegadores bloqueiam a janela e respondem "não" sozinhos.
+   */
+  protected confirmando = signal<'sortear' | 'recomecar' | null>(null);
+
+  protected pedirConfirmacao(acao: 'sortear' | 'recomecar') {
+    this.confirmando.set(acao);
+  }
+
+  protected cancelarConfirmacao() {
+    this.confirmando.set(null);
+  }
+
   protected sortear() {
-    if (confirm('Sortear as equipes de novo? A divisão atual será trocada.')) {
-      this.chamar('POST', 'equipes/sortear');
-    }
+    this.confirmando.set(null);
+    this.chamar('POST', 'equipes/sortear');
   }
 
   protected definirEquipe(slug: string, equipe: string) {
@@ -77,9 +90,8 @@ export class OrganizacaoPage {
   }
 
   protected recomecar() {
-    if (confirm('Recomeçar o dia? Volta para a abertura e apaga todas as fichas já dadas.')) {
-      this.chamar('POST', 'recomecar');
-    }
+    this.confirmando.set(null);
+    this.chamar('POST', 'recomecar');
   }
 
   protected nomeDaBarraca(id: string): string {

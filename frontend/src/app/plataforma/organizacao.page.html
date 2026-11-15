@@ -61,7 +61,13 @@
         }
       </ul>
       <div class="botoes">
-        <button class="botao claro" (click)="sortear()">🎲 Sortear equipes</button>
+        @if (confirmando() === 'sortear') {
+          <span class="confirmacao">A divisão atual será trocada.</span>
+          <button class="botao" (click)="sortear()">Sim, sortear</button>
+          <button class="botao claro" (click)="cancelarConfirmacao()">Cancelar</button>
+        } @else {
+          <button class="botao claro" (click)="pedirConfirmacao('sortear')">🎲 Sortear equipes</button>
+        }
       </div>
     </section>
 
@@ -86,7 +92,13 @@
       <h2>Recomeçar</h2>
       <p class="dica">Para ensaios: volta para a abertura e apaga as fichas. Não mexe nas equipes nem nas barracas.</p>
       <div class="botoes">
-        <button class="botao claro" (click)="recomecar()">Recomeçar o dia</button>
+        @if (confirmando() === 'recomecar') {
+          <span class="confirmacao">Volta para a abertura e apaga todas as fichas.</span>
+          <button class="botao" (click)="recomecar()">Sim, recomeçar</button>
+          <button class="botao claro" (click)="cancelarConfirmacao()">Cancelar</button>
+        } @else {
+          <button class="botao claro" (click)="pedirConfirmacao('recomecar')">Recomeçar o dia</button>
+        }
       </div>
     </section>
   }
