@@ -176,7 +176,7 @@ async function subirServidor(jar = JAR_COMPILADO) {
         avisar(`Feira no ar. Telão: ${URL_LOCAL}/#/telao`);
         avisar(`Organização: ${URL_LOCAL}/#/organizacao`);
         if (estado.endereco) {
-          avisar(`Celulares (mesma rede): ${estado.endereco}`);
+          avisar(`Outros computadores (mesma rede): ${estado.endereco}`);
         }
         return true;
       }

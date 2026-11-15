@@ -3,7 +3,7 @@ package br.com.memora.feira.plataforma;
 import java.time.Instant;
 import java.util.List;
 
-/** Tudo o que o telão e os celulares precisam saber, numa resposta só. */
+/** Tudo o que o telão e os computadores da sala precisam saber, numa resposta só. */
 public record EstadoDaFeira(
         EtapaInfo etapa,
         List<EtapaInfo> etapas,

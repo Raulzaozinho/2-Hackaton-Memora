@@ -235,11 +235,11 @@ public class FeiraService {
         return index.exists() ? index.lastModified() : null;
     }
 
-    // ---------------------------------------------------------------- endereço para os celulares
+    // ---------------------------------------------------------------- endereço para os outros computadores
 
     private String enderecoDescoberto;
 
-    /** O endereço desta máquina na rede local, para os celulares abrirem a feira. */
+    /** O endereço desta máquina na rede local, para os outros computadores abrirem a feira. */
     private String endereco() {
         if (!enderecoConfigurado.isBlank()) {
             return enderecoConfigurado;
