@@ -89,7 +89,8 @@ public class FeiraService {
                 comEquipe * fichasPorPessoa,
                 evento.isResultadoRevelado() ? placar() : null,
                 endereco(),
-                versaoDoFront());
+                versaoDoFront(),
+                participantes.existsByEmailIsNotNull());
     }
 
     /** As barracas ordenadas da que recebeu mais fichas para a que recebeu menos. */

@@ -84,6 +84,8 @@ export interface EstadoDaFeira {
   endereco: string | null;
   /** Muda quando o telão recebe um front novo. Nulo quando se roda com "npm start". */
   versaoDoFront: number | null;
+  /** Verdadeiro quando há e-mails cadastrados: cada pessoa entra com o próprio e-mail. */
+  entrarComEmail?: boolean;
 }
 
 export interface MinhasFichas {

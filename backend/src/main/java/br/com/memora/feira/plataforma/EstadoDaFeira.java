@@ -17,7 +17,9 @@ public record EstadoDaFeira(
         List<Placar> resultado,
         String endereco,
         /** Muda a cada compilação nova do front no telão; as telas abertas usam isso para se recarregar. */
-        Long versaoDoFront) {
+        Long versaoDoFront,
+        /** Verdadeiro quando há e-mails cadastrados: cada pessoa entra com o próprio e-mail em vez de escolher numa lista. */
+        boolean entrarComEmail) {
 
     public record EtapaInfo(String codigo, String titulo, int minutos, int rodada, String quadro, String entrega) {
         static EtapaInfo de(Etapa etapa) {

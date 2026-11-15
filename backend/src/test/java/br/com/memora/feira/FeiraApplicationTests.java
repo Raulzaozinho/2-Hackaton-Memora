@@ -52,6 +52,14 @@ class FeiraApplicationTests {
     }
 
     @Test
+    void cadaPessoaEntraComOProprioEmailSemDiferencaDeMaiusculas() {
+        assertThat(feira.estado().entrarComEmail()).isTrue();
+        assertThat(participantes.findByEmailIgnoreCase("  Iris@Feira.Demo ".trim()))
+                .get().extracting(p -> p.getNome()).isEqualTo("Íris");
+        assertThat(participantes.findByEmailIgnoreCase("ninguem@feira.demo")).isEmpty();
+    }
+
+    @Test
     void consultaNaoCriaEventoEnquantoAInicializacaoNaoTerminou() {
         eventos.deleteAll();
         try {

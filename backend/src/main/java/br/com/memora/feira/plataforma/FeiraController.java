@@ -1,5 +1,6 @@
 package br.com.memora.feira.plataforma;
 
+import br.com.memora.feira.plataforma.Erros.RegraException;
 import br.com.memora.feira.plataforma.FichaService.MinhasFichas;
 import java.util.Comparator;
 import java.util.List;
@@ -47,6 +48,20 @@ public class FeiraController {
                 .sorted(Comparator.comparing(Participante::getNome, String.CASE_INSENSITIVE_ORDER))
                 .map(p -> new Cracha(p.getSlug(), p.getNome(), p.getEmoji(), p.getFrase(), p.getEquipe()))
                 .toList();
+    }
+
+    public record PedidoDeEntrada(String email) { }
+
+    /** Encontra o crachá de quem digitou o e-mail. Sem senha: serve para a feira saber quem é quem. */
+    @PostMapping("/entrar")
+    public Cracha entrar(@RequestBody PedidoDeEntrada pedido) {
+        String email = pedido.email() == null ? "" : pedido.email().trim();
+        if (email.isEmpty()) {
+            throw new RegraException("Digite o seu e-mail.");
+        }
+        Participante p = participantes.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RegraException("Esse e-mail não está na lista da feira. Confira se digitou certo."));
+        return new Cracha(p.getSlug(), p.getNome(), p.getEmoji(), p.getFrase(), p.getEquipe());
     }
 
     // Registros: valem para qualquer barraca, então nenhuma equipe precisa escrever estes dois endpoints.

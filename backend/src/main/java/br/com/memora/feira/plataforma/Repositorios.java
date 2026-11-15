@@ -17,6 +17,10 @@ public final class Repositorios {
         // Serializa os cliques da mesma pessoa até a transação terminar.
         @Lock(LockModeType.PESSIMISTIC_WRITE)
         Optional<Participante> findBySlug(String slug);
+
+        Optional<Participante> findByEmailIgnoreCase(String email);
+
+        boolean existsByEmailIsNotNull();
     }
 
     public interface Fichas extends JpaRepository<Ficha, Long> {

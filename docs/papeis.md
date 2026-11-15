@@ -53,7 +53,7 @@ Para os símbolos: **aspas simples** `'`, **chaves** `{ }`, **colchetes** `[ ]`,
 
 ## Espiadas
 
-Cada equipe tem **2 espiadas por rodada**. Numa espiada, uma pessoa olha por 30 segundos o que normalmente não vê (o copiloto olha a tela do piloto, por exemplo). Usem quando a conversa empacar.
+Cada equipe tem **2 espiadas por rodada**. Numa espiada, o copiloto ou o repórter olha a tela do notebook do piloto por 30 segundos: o código e a barraca rodando. Usem quando a conversa empacar.
 
 ## Entregar
 

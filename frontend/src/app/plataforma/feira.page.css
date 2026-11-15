@@ -34,6 +34,21 @@
   font-weight: 600;
 }
 
+.entrar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.entrar .campo {
+  min-width: min(320px, 100%);
+}
+
+.entrou {
+  margin: 0;
+}
+
 .minhas-fichas {
   font-weight: 700;
 }

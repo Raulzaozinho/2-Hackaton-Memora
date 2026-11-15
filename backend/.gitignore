@@ -35,3 +35,6 @@ build/
 ### Feira Dev ###
 dados/
 .env
+
+# Os e-mails dos participantes ficam só na máquina do telão (o repositório é público).
+emails.local.properties

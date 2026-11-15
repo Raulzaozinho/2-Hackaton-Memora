@@ -76,6 +76,17 @@ export class FeiraService {
     this.atualizarFichas();
   }
 
+  /** Entra na feira com o e-mail. Sem senha: serve para a feira saber quem está usando esta tela. */
+  entrar(email: string) {
+    return this.http
+      .post<Cracha>('/api/entrar', { email })
+      .pipe(tap((cracha) => this.escolherQuemSou(cracha.slug)));
+  }
+
+  sair() {
+    this.escolherQuemSou(null);
+  }
+
   darFicha(barraca: string) {
     const participante = this.euSlug();
     return this.http

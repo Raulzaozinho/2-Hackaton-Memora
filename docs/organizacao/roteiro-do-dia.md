@@ -126,7 +126,7 @@ Embaixo, desenhe a tabela `registro` com três linhas de exemplo e as colunas `i
 
 1. Clique em **Próxima etapa** para abrir a feira. O telão mostra o endereço para o celular.
 2. **Pregão (5 min):** em cada equipe, quem falou menos nas vitrines tem 1 minuto para convencer a turma a visitar a barraca.
-3. Cada pessoa abre a feira, escolhe **quem é** e visita as barracas das outras equipes. São 5 fichas por pessoa, e não dá para dar ficha à própria equipe.
+3. Cada pessoa abre a feira, **entra com o próprio e-mail** e visita as barracas das outras equipes. São 5 fichas por pessoa, e não dá para dar ficha à própria equipe.
 4. O telão mostra quantas fichas já foram gastas, sem dizer para quem.
 5. Faltando 3 minutos: "quem ainda tem ficha, gaste".
 

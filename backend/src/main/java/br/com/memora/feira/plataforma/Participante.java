@@ -15,6 +15,8 @@ public class Participante {
     private String frase;
     /** "equipe-1", "equipe-2", "equipe-3" ou vazio enquanto as equipes não foram definidas. */
     private String equipe;
+    /** O e-mail usado para entrar na feira. Vem de backend/emails.local.properties, que não vai para o Git. */
+    private String email;
     /** Posição dentro da equipe; define o rodízio de papéis. */
     private Integer ordem;
 
@@ -31,6 +33,8 @@ public class Participante {
     public void setFrase(String frase) { this.frase = frase; }
     public String getEquipe() { return equipe; }
     public void setEquipe(String equipe) { this.equipe = equipe; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
     public Integer getOrdem() { return ordem; }
     public void setOrdem(Integer ordem) { this.ordem = ordem; }
 }

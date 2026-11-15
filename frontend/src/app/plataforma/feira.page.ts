@@ -1,7 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { BARRACAS, BARRACA_MODELO } from '../barracas/registro';
+import { mensagemDeErro } from './barraca-api';
 import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
 import { classificarResultado } from './resultado';
 
@@ -19,6 +20,26 @@ export class FeiraPage {
   protected corDoTexto = corDoTexto;
 
   protected relogio = computed(() => formatarRelogio(this.feira.segundosRestantes()));
+
+  protected email = signal('');
+  protected entrando = signal(false);
+  protected erroAoEntrar = signal('');
+
+  protected entrar(evento: Event) {
+    evento.preventDefault();
+    this.entrando.set(true);
+    this.erroAoEntrar.set('');
+    this.feira.entrar(this.email()).subscribe({
+      next: () => {
+        this.entrando.set(false);
+        this.email.set('');
+      },
+      error: (erro) => {
+        this.entrando.set(false);
+        this.erroAoEntrar.set(mensagemDeErro(erro));
+      },
+    });
+  }
 
   /** O resultado com o nome e o emoji de cada barraca, depois que a organização revela. */
   protected resultado = computed(() =>

@@ -18,18 +18,41 @@
   }
 
   <section class="quem-sou">
-    <label for="quem-sou">Quem é você?</label>
-    <select
-      id="quem-sou"
-      class="campo"
-      [ngModel]="feira.euSlug() ?? ''"
-      (ngModelChange)="feira.escolherQuemSou($event)"
-    >
-      <option value="">Só estou visitando</option>
-      @for (pessoa of feira.participantes(); track pessoa.slug) {
-        <option [value]="pessoa.slug">{{ pessoa.nome }}</option>
+    @if (feira.eu(); as eu) {
+      <p class="entrou">Você entrou como <strong>{{ eu.nome }}</strong></p>
+      <button type="button" class="botao claro" (click)="feira.sair()">Sair</button>
+    } @else if (feira.estado()?.entrarComEmail) {
+      <form class="entrar" (submit)="entrar($event)">
+        <label for="email">Entre com o seu e-mail</label>
+        <input
+          id="email"
+          class="campo"
+          type="email"
+          autocomplete="email"
+          placeholder="nome.sobrenome@memora.com.br"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+          name="email"
+        />
+        <button type="submit" class="botao" [disabled]="entrando()">Entrar</button>
+      </form>
+      @if (erroAoEntrar()) {
+        <p class="aviso erro">{{ erroAoEntrar() }}</p>
       }
-    </select>
+    } @else {
+      <label for="quem-sou">Quem é você?</label>
+      <select
+        id="quem-sou"
+        class="campo"
+        [ngModel]="feira.euSlug() ?? ''"
+        (ngModelChange)="feira.escolherQuemSou($event)"
+      >
+        <option value="">Só estou visitando</option>
+        @for (pessoa of feira.participantes(); track pessoa.slug) {
+          <option [value]="pessoa.slug">{{ pessoa.nome }}</option>
+        }
+      </select>
+    }
     @if (feira.estado()?.feiraAberta && feira.fichas(); as fichas) {
       <p class="minhas-fichas">🎟️ {{ fichas.restantes }} de {{ fichas.total }} fichas para gastar</p>
     }

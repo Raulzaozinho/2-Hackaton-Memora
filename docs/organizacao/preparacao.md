@@ -66,7 +66,7 @@ cd feira-telao/frontend
 npm install
 ```
 
-Copie o `backend/.env` para dentro desse clone.
+Copie para a pasta `backend` desse clone os dois arquivos que não vão para o Git: o `.env` (conexão com o Supabase) e o `emails.local.properties` (o e-mail de cada participante, para entrar na feira). O modelo do segundo está em `backend/emails.local.example.properties`: uma linha por pessoa, no formato `nome-do-arquivo-do-crachá=email`.
 
 **3. Imprima** os quatro cartões de rodada, a folha dos papéis ([papeis.md](../papeis.md)) e a cola de Git, um jogo por equipe. Separe três copos vermelhos. No modo cego o repórter precisa de um aparelho próprio (notebook ou celular) na mesma rede do piloto: confira no ensaio se um aparelho consegue abrir o endereço `Network` do outro.
 
