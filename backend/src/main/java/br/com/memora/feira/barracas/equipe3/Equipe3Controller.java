@@ -26,6 +26,9 @@ public class Equipe3Controller {
                 new Item("❓", "Item de exemplo", "Troque por algo que a barraca de vocês oferece"));
     }
 
-    // CICLO 3 · DESAFIO — se a atração de vocês precisar de um endpoint novo, ele entra aqui.
-    // O ModeloController tem um exemplo pronto: o método surpresa().
+    // CICLO 1 — o destaque do dia entra aqui.
+
+    // CICLO 2 — o endpoint de um item só entra aqui.
+
+    // CICLO 3 — a pescaria entra aqui.
 }

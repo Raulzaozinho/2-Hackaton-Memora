@@ -120,8 +120,17 @@
   </section>
 
   <nav class="atalhos" aria-label="Outras páginas">
-    <a [routerLink]="['/barraca', modelo.id]">{{ modelo.emoji }} Barraca modelo (para consultar)</a>
-    <a routerLink="/crachas">🪪 Crachás</a>
-    <a routerLink="/telao">📺 Telão</a>
+    <a class="atalho" [routerLink]="['/barraca', modelo.id]">
+      <span class="icone" aria-hidden="true">{{ modelo.emoji }}</span>
+      <span class="texto"><strong>Barraca modelo</strong><small>Tudo pronto, para consultar</small></span>
+    </a>
+    <a class="atalho" routerLink="/crachas">
+      <span class="icone" aria-hidden="true">🪪</span>
+      <span class="texto"><strong>Crachás</strong><small>Quem está na feira</small></span>
+    </a>
+    <a class="atalho" routerLink="/telao">
+      <span class="icone" aria-hidden="true">📺</span>
+      <span class="texto"><strong>Telão</strong><small>A tela grande da sala</small></span>
+    </a>
   </nav>
 </main>

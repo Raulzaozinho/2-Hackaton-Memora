@@ -124,8 +124,7 @@
 .atalhos {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
-  color: var(--tinta-suave);
+  gap: 12px;
 }
 
 @media (prefers-reduced-motion: reduce) {

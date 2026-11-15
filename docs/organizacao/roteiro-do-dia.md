@@ -32,14 +32,14 @@ Sobram 15 minutos de folga para as avaliações que demorarem ou para **+1 minut
 4. **A cada ciclo os papéis giram** (o telão mostra quem é quem) e a equipe continua o código de onde parou.
 5. **Só pontua o que entrar no telão.** Entreguem cedo e de novo a cada item feito.
 6. **Copo vermelho** na mesa quer dizer "travamos".
-7. **IA:** não nos ciclos 1 e 2; liberada no ciclo 3, e uma pessoa sorteada da equipe explica o código na votação.
+7. **O piloto nunca usa IA nem pesquisa.** O copiloto e o repórter podem pesquisar à vontade (Google, documentação, IA) e explicar ao piloto o que fazer. O manual traz, em cada item difícil, o que pesquisar.
 
 ## O que cada um faz em cada fase
 
 | Fase | Você | Piloto | Copiloto | Repórter |
 |---|---|---|---|---|
 | **Aula** (5 min) | Ensina no quadro o assunto do ciclo e as palavras do manual | Assiste | Assiste | Assiste |
-| **Missão** (30 min) | Circula, atende copos vermelhos, fiscaliza as espiadas, avisa aos 20 e aos 25 minutos | `git pull`, `node scripts/piloto.mjs`, executa o que o copiloto pede, entrega com `git push` | Abre o manual, explica item por item, dita a entrega | Abre o painel do piloto, conta o que apareceu, lê os erros, confere no telão se a entrega entrou |
+| **Missão** (30 min) | Circula, atende copos vermelhos, fiscaliza as espiadas, avisa aos 20 e aos 25 minutos | `git pull`, `node scripts/piloto.mjs`, executa o que o copiloto pede, entrega com `git push` | Abre o manual, explica item por item, pesquisa quando travar, dita a entrega | Abre o painel do piloto, conta o que apareceu, lê e pesquisa os erros, confere no telão se a entrega entrou |
 | **Avaliação** (5 min) | Abre cada barraca e marca no painel os itens cumpridos | Descansa | Confere no manual o que deveria ter saído | Acompanha no telão os pontos da equipe |
 | **Votação** (5 min) | Chama todos para visitar as barracas | Visita e dá 2 fichas | Visita e dá 2 fichas | Visita e dá 2 fichas |
 
@@ -53,37 +53,55 @@ Sobram 15 minutos de folga para as avaliações que demorarem ou para **+1 minut
 - Diga as regras e mostre a arrumação: o piloto de frente para o notebook, o copiloto de costas com o manual, o repórter com o painel. Mostre o piloto rodando `node scripts/piloto.mjs` e o repórter abrindo o endereço que termina em `/painel`.
 - Abra a **barraca modelo** e faça um pedido nela: "no fim do dia a barraca de vocês faz coisas assim".
 
+## Como dar a aula de 5 minutos
+
+Toda aula tem o mesmo formato, para caber em 5 minutos e ser divertida:
+
+1. **Uma comparação com a feira** (1 min): uma imagem que todo mundo entende.
+2. **Um desenho no quadro** (2 min): no máximo três caixas e duas setas.
+3. **Uma mágica ao vivo** (1 min): você muda uma linha e a tela muda na hora.
+4. **Uma pergunta valendo aplauso** (1 min): quem acertar ganha palmas da turma.
+
+Cada missão tem tarefas fáceis, médias e um desafio, sempre misturando Angular e Spring Boot. A aula explica só o que aparece nos itens médios: os fáceis eles resolvem lendo o manual, e o desafio é para quem quiser ir além.
+
 ## Ciclo 1 — Levantar a barraca
 
-**Aula: como uma página é montada.** Uma página é feita de caixas dentro de caixas, e cada caixa é um componente.
+**A comparação:** "a barraca tem uma vitrine, que é o Angular, e uma cozinha, que é o Spring Boot. O cliente só vê a vitrine; quem prepara é a cozinha."
 
-Desenhe um retângulo grande, "a feira"; dentro, a moldura da barraca; dentro dela, destacada, "a página da equipe": "esta caixa é de vocês". Ao lado, quatro fichas:
+**O desenho:**
 
 ```
-barraca.config.ts → nome, slogan, emoji, cor
-equipe-N.html     → o que aparece
-equipe-N.css      → como aparece
-equipe-N.ts       → os dados e as ações
+ VITRINE (Angular)                         COZINHA (Spring Boot)
+ equipe-N.html   o que aparece             @GetMapping("/destaque")
+ equipe-N.ts     as caixinhas (signals)    devolve um Item, que vira JSON
+ {{ curtidas() }}  mostra o valor
+ (click)="..."     faz algo no clique
 ```
 
-**Palavras do manual:** aspas simples, `<h2>`, `<p>`, `<section>`, `<ul>` e `<li>`. Mostre ao vivo: troque o emoji da barraca modelo e a página atualiza sozinha.
+**A mágica:** na barraca modelo, troque o emoji no `barraca.config.ts` e a página muda sozinha. Depois abra `/api/barracas/modelo/itens` no navegador: "isto é o que a cozinha manda".
 
-**Missão:** nome, slogan, emoji, cor, título e texto da vitrine (essenciais); visual no CSS e "Quem atende aqui" (bônus); três motivos em lista (desafio).
+**A pergunta:** "se eu quero que o número de curtidas apareça na tela, uso chaves duplas ou parênteses?" (chaves duplas).
+
+**Missão:** nome, slogan, emoji, cor, vitrine e "Quem atende aqui" (fáceis); botão de curtir, visual da vitrine e o endpoint do destaque (médios); o destaque do Java aparecendo na tela (desafio).
 
 ## Ciclo 2 — Abastecer a barraca
 
-**Aula: pedido e resposta.** O navegador não sabe nada sozinho; ele pede e o back-end responde.
+**A comparação:** "a cozinha manda uma bandeja com vários pratos; o garçom (o `@for`) leva cada prato até a mesa, um por vez."
+
+**O desenho:**
 
 ```
-[ Navegador ]  ──── pedido ───▶  [ Back-end ]  ────▶  [ Banco ]
-   Angular     ◀─── resposta ──   Spring Boot          Supabase
+Java: List.of(item1, item2, item3)  ──▶  JSON: [ {...}, {...}, {...} ]  ──▶  @for desenha um <li> por item
+/itens/{posicao}  →  /itens/0 é o primeiro prato da bandeja
 ```
 
-Em cima da seta de ida: `GET /api/barracas/modelo/itens`. Na de volta: `[ {nome: "Queijo"}, {nome: "Carne"} ]`. Abra esse endereço no navegador: "isto é a resposta pura, em JSON". Depois mostre o `@GetMapping("/itens")` no `ModeloController.java`.
+**A mágica:** chame três voluntários para serem os itens da lista. Diga "@for, cumprimente cada um" e aperte a mão de um por um. Depois aponte o primeiro: "esse é o `$first`".
 
-**Palavras do manual:** `List.of`, `new Item`, signal ("uma caixinha com um valor"), subscribe ("quando a resposta chegar, faça isto"), `@for`. Lembre que o novo piloto começa com `git pull`.
+**A pergunta:** "na lista do Java, qual é a posição do primeiro item: 0 ou 1?" (0).
 
-**Missão:** três itens no Java, a resposta pura, a caixinha da lista e a lista na tela (essenciais); contador e `@empty` (bônus); itens com cara de cartão (desafio).
+Lembre que o novo piloto começa com `git pull`.
+
+**Missão:** os três itens no Java, a resposta pura e o contador (fáceis); a caixinha da lista, a lista na tela, um item só pelo endereço (`@PathVariable`) e os cartões no CSS (médios); o selo de "mais pedido" com `$first` (desafio).
 
 ## Intervalo (10 min)
 
@@ -91,20 +109,22 @@ Bom momento para destravar no particular quem ficou para trás.
 
 ## Ciclo 3 — Atender o visitante
 
-**Aula: clique, estado e salvar.** Um formulário é um círculo:
+**A comparação:** "o formulário é o correio da barraca: o visitante escreve a carta, o botão leva até a cozinha, a cozinha guarda no arquivo (o banco), e o mural mostra todas as cartas."
+
+**O desenho:**
 
 ```
-1. a pessoa digita        →  o texto vai para a caixinha  (ngModel)
-2. a pessoa clica         →  roda a função enviar()        (click)
-3. o front manda um POST  →  o back-end grava no banco
-4. o front pede a lista   →  a tela mostra o registro novo
+1. a pessoa digita        →  o texto vai para a caixinha  [(ngModel)]
+2. a pessoa clica         →  roda enviar()                 (click)
+3. o front manda um POST  →  o Spring Boot grava no banco
+4. o front busca de novo  →  o mural mostra a carta nova
 ```
 
-Desenhe a tabela `registro` com as colunas `id`, `barraca`, `autor`, `texto`. Mostre ao vivo: faça um pedido na barraca modelo, recarregue e ele continua lá.
+**A mágica:** faça um pedido na barraca modelo, recarregue a página e mostre que ele continua lá: "está no banco, não na tela". Depois abra `/api/barracas/modelo/surpresa` duas vezes: "o Java sorteou de novo".
 
-**Palavras do manual:** `[(ngModel)]`, `(click)`, `[disabled]`, `this.carregarRecados()`. IA liberada.
+**A pergunta:** "por que a gente busca a lista de novo depois de enviar?" (para a carta nova aparecer no mural).
 
-**Missão:** caixinhas, enviar, lista carregada no começo, formulário e lista de recados (essenciais); total de recados (bônus); pescaria com endpoint novo no Java (desafio).
+**Missão:** o convite, a lista de recados e o total (fáceis); as caixinhas, o enviar, o formulário e a pescaria no Java (médios); o botão de pescar na tela (desafio).
 
 ## Avaliação (5 min, em cada ciclo)
 
@@ -119,7 +139,7 @@ Vale o que está na feira, isto é, o que entrou no telão. Se uma equipe fez ma
 1. **Próxima etapa.** A feira libera 2 fichas por pessoa.
 2. Todos visitam as barracas das outras equipes e dão as fichas. Não dá para votar na própria.
 3. O telão mostra quantas fichas já foram gastas, sem dizer para quem.
-4. Na votação do ciclo 3, uma pessoa sorteada de cada equipe explica em 1 minuto um trecho do código (a condição da IA).
+4. Na votação, uma pessoa sorteada de cada equipe pode explicar em 1 minuto o item de que mais gostou.
 
 ## Premiação (10 min)
 

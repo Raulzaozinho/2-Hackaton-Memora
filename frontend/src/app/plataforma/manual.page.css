@@ -1,7 +1,7 @@
 :host {
   display: block;
-  --essencial: #1f7a45;
-  --bonus: #1b6fd1;
+  --facil: #1f7a45;
+  --medio: #1b6fd1;
   --desafio: #8e44ad;
   --papel-do-manual: #fffdf6;
   --codigo: #1f1a16;
@@ -186,7 +186,7 @@
 .barra span {
   display: block;
   height: 100%;
-  background: var(--essencial);
+  background: var(--facil);
   transition: width 0.3s;
 }
 
@@ -203,7 +203,7 @@
 }
 
 .item {
-  --nivel: var(--essencial);
+  --nivel: var(--facil);
   position: relative;
   background: var(--papel-do-manual);
   border: 2px solid var(--linha);
@@ -215,8 +215,8 @@
   box-shadow: 0 3px 0 rgba(43, 33, 24, 0.08);
 }
 
-.item[data-nivel='bonus'] {
-  --nivel: var(--bonus);
+.item[data-nivel='medio'] {
+  --nivel: var(--medio);
 }
 
 .item[data-nivel='desafio'] {
@@ -233,8 +233,8 @@
   top: 16px;
   right: 90px;
   transform: rotate(-8deg);
-  border: 3px solid var(--essencial);
-  color: var(--essencial);
+  border: 3px solid var(--facil);
+  color: var(--facil);
   font-weight: 900;
   letter-spacing: 0.1em;
   padding: 2px 10px;
@@ -342,4 +342,45 @@
   .lateral {
     position: static;
   }
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.tecnologia {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--linha);
+  background: var(--cartao);
+  color: var(--tinta-suave);
+}
+
+.pesquisa {
+  background: #fff7e0;
+  border: 1px dashed #e0c070;
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: baseline;
+}
+
+.pesquisa code {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  background: #fff;
+  border: 1px solid #e0c070;
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+
+.pesquisa span {
+  color: var(--tinta-suave);
+  font-size: 0.85rem;
 }

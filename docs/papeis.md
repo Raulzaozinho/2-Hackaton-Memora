@@ -6,9 +6,9 @@ O telão e a página da feira mostram o papel de cada pessoa. A cada ciclo os pa
 
 | Papel | No computador dele | Faz |
 |---|---|---|
-| ⌨️ **Piloto** | Só o editor de código. Nada de navegador. | Executa o que o copiloto pede e conta o que está vendo no código |
-| 🧭 **Copiloto** | Só o **manual**, que abre na página da feira | Lê cada item do manual e explica ao piloto o que fazer |
-| 📣 **Repórter** | Só o **painel do repórter**: a barraca rodando e as mensagens de erro | Conta o que apareceu ou lê o erro e confere no telão se a entrega entrou |
+| ⌨️ **Piloto** | Só o editor de código. Nada de navegador, pesquisa ou IA. | Executa o que o copiloto pede e conta o que está vendo no código |
+| 🧭 **Copiloto** | O **manual**, que abre na página da feira, e pesquisa à vontade | Lê cada item do manual e explica ao piloto o que fazer |
+| 📣 **Repórter** | O **painel do repórter** (a barraca rodando e os erros) e pesquisa à vontade | Conta o que apareceu ou lê o erro e confere no telão se a entrega entrou |
 
 ## Como cada ciclo funciona
 
@@ -47,6 +47,12 @@ O manual tem um dicionário com o nome de cada símbolo.
 **Piloto, contando o que vê.** Diga em que arquivo e em que linha está, e leia em voz alta o que acabou de digitar. Se o editor sublinhar alguma coisa em vermelho, avise.
 
 **Repórter, contando o resultado.** Descreva o que mudou ("o título agora está roxo") ou leia o erro do painel inteiro: o arquivo, a linha e a mensagem.
+
+## Pesquisa e IA
+
+**O piloto nunca usa IA nem pesquisa**: nada de ChatGPT, Copilot, Google ou documentação no computador dele. O copiloto e o repórter podem pesquisar à vontade, inclusive com IA, e explicar ao piloto com as próprias palavras. Os itens difíceis do manual trazem o que pesquisar.
+
+Se o editor do piloto tiver um assistente de IA (como o Copilot do VS Code), ele fica desligado durante o dia.
 
 ## Espiadas
 

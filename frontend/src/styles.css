@@ -114,3 +114,80 @@ textarea {
   display: grid;
   gap: 20px;
 }
+
+/* Atalho em forma de cartão: ícone, título e uma linha de explicação. */
+.atalho {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 10px 10px;
+  border-radius: 16px;
+  border: 2px solid var(--linha);
+  background: var(--cartao);
+  color: var(--tinta);
+  text-decoration: none;
+  box-shadow: 0 3px 0 var(--linha);
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.atalho:hover {
+  transform: translateY(-2px);
+  border-color: var(--tinta-suave);
+  box-shadow: 0 5px 0 var(--linha);
+}
+
+.atalho:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 var(--linha);
+}
+
+.atalho .icone {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--papel);
+  font-size: 1.5rem;
+}
+
+.atalho .texto {
+  display: grid;
+  line-height: 1.2;
+}
+
+.atalho strong {
+  font-size: 1rem;
+}
+
+.atalho small {
+  color: var(--tinta-suave);
+}
+
+/* "← Voltar para a feira", no topo das páginas. */
+.voltar-feira {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 2px solid var(--linha);
+  background: var(--cartao);
+  color: var(--tinta);
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.voltar-feira:hover {
+  border-color: var(--tinta-suave);
+  transform: translateX(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atalho,
+  .voltar-feira {
+    transition: none;
+  }
+}

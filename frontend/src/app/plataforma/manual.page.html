@@ -50,6 +50,8 @@
             <li>Pergunte ao repórter o que apareceu. Se der erro, ele lê o arquivo e a linha.</li>
             <li>Só pontua o que <strong>entrar no telão</strong> até o relógio zerar.</li>
             <li>A equipe tem 2 espiadas de 30 segundos no computador do piloto.</li>
+            <li>Você e o repórter podem pesquisar (Google, documentação, IA). <strong>O piloto nunca usa IA nem pesquisa</strong>: vocês explicam a ele.</li>
+            <li>Comece pelos itens fáceis e entregue cedo. Os médios e o desafio valem mais.</li>
           </ol>
         </section>
 
@@ -93,7 +95,10 @@ git push</code></pre>
             <header class="item-topo">
               <span class="numero">{{ numero(i) }}</span>
               <div class="item-titulo">
-                <span class="nivel">{{ niveis[item.nivel] }}</span>
+                <span class="etiquetas">
+                  <span class="nivel">{{ niveis[item.nivel] }}</span>
+                  <span class="tecnologia">{{ item.tecnologia }}</span>
+                </span>
                 <h3>{{ item.titulo }}</h3>
               </div>
               <span class="valor">+{{ item.pontos }}</span>
@@ -112,6 +117,13 @@ git push</code></pre>
             }
 
             <p class="confere"><strong>O repórter deve ver:</strong> {{ texto(item.confere) }}</p>
+
+            @if (item.pesquisa) {
+              <p class="pesquisa">
+                <strong>🔎 Travou? Pesquise:</strong> <code>{{ item.pesquisa }}</code>
+                <span>(o copiloto ou o repórter pesquisa e explica; o piloto nunca)</span>
+              </p>
+            }
 
             <label class="marcar">
               <input type="checkbox" [checked]="marcado(item)" (change)="alternar(item)" />

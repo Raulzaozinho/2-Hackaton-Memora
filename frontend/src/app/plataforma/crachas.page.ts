@@ -10,7 +10,7 @@ import { FeiraService } from './feira.service';
     <div class="bandeirinhas" aria-hidden="true"></div>
     <main class="pagina">
       <header>
-        <a routerLink="/">← Voltar para a feira</a>
+        <a class="voltar-feira" routerLink="/">← Voltar para a feira</a>
         <h1>🪪 Crachás</h1>
         <p>Quem já está na feira: {{ feira.participantes().length }} pessoas.</p>
       </header>

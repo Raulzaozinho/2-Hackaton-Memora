@@ -21,9 +21,13 @@ export class Equipe3 {
   private api = inject(BarracaApi); // conversa com o back-end
   private feira = inject(FeiraService); // sabe quem está usando a tela: this.feira.meuNome()
 
+  // CICLO 1 — as caixinhas do primeiro ciclo (curtidas e destaque) entram aqui.
+
   // CICLO 2 — a lista de itens que vem do back-end entra aqui.
 
-  // CICLO 3 — o que o visitante digita e a lista do que já foi gravado entram aqui.
+  // CICLO 3 — o recado do visitante e a pescaria entram aqui.
 
-  // CICLO 3 · DESAFIO — a atração de vocês!
+  constructor() {
+    // O que precisa ser buscado assim que a barraca abre entra aqui dentro.
+  }
 }

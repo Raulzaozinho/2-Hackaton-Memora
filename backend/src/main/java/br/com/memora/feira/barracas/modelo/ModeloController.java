@@ -31,7 +31,7 @@ public class ModeloController {
         return SABORES;
     }
 
-    /** CICLO 3 · DESAFIO — um endpoint inventado pela barraca: sorteia um sabor surpresa a cada pedido. */
+    /** CICLO 3 — um endpoint inventado pela barraca: sorteia um sabor surpresa a cada pedido. */
     @GetMapping("/surpresa")
     public Item surpresa() {
         return SABORES.get(sorte.nextInt(SABORES.size()));

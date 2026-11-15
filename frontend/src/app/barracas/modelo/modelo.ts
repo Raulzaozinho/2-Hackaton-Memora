@@ -31,7 +31,7 @@ export class Modelo {
   pedidos = signal<Registro[]>([]);
   aviso = signal('');
 
-  // CICLO 3 · DESAFIO — o sabor sorteado pela atração da barraca.
+  // CICLO 3 — o sabor sorteado pela atração da barraca.
   surpresa = signal<Item | null>(null);
 
   // O constructor roda uma vez, quando a barraca aparece na tela.
@@ -66,7 +66,7 @@ export class Modelo {
     });
   }
 
-  // CICLO 3 · DESAFIO — chama o endpoint que a barraca inventou: GET /api/barracas/modelo/surpresa
+  // CICLO 3 — chama o endpoint que a barraca inventou: GET /api/barracas/modelo/surpresa
   sortear() {
     this.api.buscar<Item>('modelo', 'surpresa').subscribe((sabor) => this.surpresa.set(sabor));
   }

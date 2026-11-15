@@ -29,12 +29,12 @@ export class BarracaApi {
     return this.http.post<Registro>(`/api/barracas/${barraca}/registros`, registro);
   }
 
-  /** CICLO 3 · DESAFIO — chama um endpoint que a própria equipe criou. Ex.: buscar<Item>('modelo', 'surpresa') */
+  /** CICLO 1 e 3 — chama um endpoint que a própria equipe criou. Ex.: buscar<Item>('modelo', 'surpresa') */
   buscar<T>(barraca: string, caminho: string) {
     return this.http.get<T>(`/api/barracas/${barraca}/${caminho}`);
   }
 
-  /** CICLO 3 · DESAFIO — manda dados para um endpoint que a própria equipe criou. */
+  /** Extra — manda dados para um endpoint que a própria equipe criou. */
   enviar<T>(barraca: string, caminho: string, dados: unknown) {
     return this.http.post<T>(`/api/barracas/${barraca}/${caminho}`, dados);
   }
