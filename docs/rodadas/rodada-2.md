@@ -98,4 +98,4 @@ Quem está de repórter mostra a lista na tela e conta de onde ela vem.
 | O back-end não sobe depois da mudança | Faltou vírgula entre os itens, ou sobrou vírgula depois do último |
 | Erro vermelho no terminal do front | Leiam a primeira linha: ela diz o arquivo e a linha do erro |
 
-Copo vermelho na mesa e um mentor vem até vocês.
+Copo vermelho na mesa e o organizador vem até vocês. Enquanto ele não chega, comparem com a barraca modelo, que faz a mesma coisa, ou perguntem a outra equipe: ajudar não tira ponto de ninguém.

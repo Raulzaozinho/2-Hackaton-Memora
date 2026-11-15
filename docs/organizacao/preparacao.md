@@ -104,7 +104,7 @@ No painel da organização:
 |---|---|
 | O telão mostra "⛔ Não entrou" para uma equipe | É o funcionamento normal: a equipe corrige e dá push de novo. A feira não quebrou. |
 | O script do telão parou | Rode o mesmo comando de novo. Os dados estão no Supabase; nada se perde. |
-| Uma equipe travou no Git | Um mentor senta com ela. Em último caso, o mentor copia os arquivos da pasta da equipe e faz o push. |
+| Uma equipe travou no Git | Sente com ela. Em último caso, copie os arquivos da pasta da equipe para o seu clone e faça o push por ela. |
 | A rede caiu | As equipes continuam programando: cada máquina roda sozinha. As entregas entram quando a rede voltar. |
 | Os celulares não abrem a feira | Plano B do ensaio: notebook ou roteador de celular. |
 

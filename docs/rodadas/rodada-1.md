@@ -76,4 +76,4 @@ Quem está de repórter conta em 30 segundos: que barraca é, e uma coisa que a 
 
 ## Travou?
 
-Copo vermelho na mesa. Um mentor vem até vocês.
+Copo vermelho na mesa e o organizador vem até vocês. Enquanto ele não chega, comparem com a barraca modelo, que faz a mesma coisa, ou perguntem a outra equipe: ajudar não tira ponto de ninguém.

@@ -97,4 +97,4 @@ Uma pessoa sorteada da equipe grava um registro ao vivo e explica o caminho dele
 | Erro "Can't bind to 'ngModel'" | Apagaram sem querer o `imports: [FormsModule]` do `.ts` |
 | Grava, mas a lista não atualiza | Faltou chamar `this.carregarRecados()` depois de salvar |
 
-Copo vermelho na mesa e um mentor vem até vocês.
+Copo vermelho na mesa e o organizador vem até vocês. Enquanto ele não chega, comparem com a barraca modelo, que faz a mesma coisa, ou perguntem a outra equipe: ajudar não tira ponto de ninguém.
