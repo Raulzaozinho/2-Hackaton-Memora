@@ -41,4 +41,4 @@ jobs:
         working-directory: frontend
         run: npx ng build
       - name: Testar as entregas do telão
-        run: node --test scripts/telao.test.mjs
+        run: node --test scripts/telao.test.mjs scripts/piloto.test.mjs

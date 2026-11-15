@@ -44,9 +44,9 @@ O `--demo` cria nove participantes inventados, já em equipes. Abra:
 O modo demo ignora os crachás reais do projeto. Não combine `--demo` e `--supabase`:
 o ensaio deve ficar separado do banco oficial.
 
-Passe por todas as etapas com **Próxima etapa**, dê algumas fichas pelo celular e revele o resultado. No fim, clique em **Recomeçar o dia**.
+Passe por todas as etapas com **Próxima etapa**, dê algumas fichas por outro computador e revele o resultado. No fim, clique em **Recomeçar o dia**.
 
-**Teste o celular.** O telão mostra um endereço como `http://192.168.0.10:8080`. Abra-o num celular conectado ao mesmo Wi-Fi. Algumas redes de empresa bloqueiam um aparelho de falar com outro; se não abrir, o plano B é os participantes visitarem a feira pelo navegador do notebook, ou todos entrarem no roteador de um celular.
+**Teste a rede com dois computadores.** O telão mostra um endereço como `http://192.168.0.10:8080`: abra-o em outro computador no mesmo Wi-Fi. Depois, nesse outro computador, rode `node scripts/piloto.mjs` e abra o painel do repórter (porta 4201) a partir de um terceiro computador. Algumas redes de empresa bloqueiam um computador de falar com outro; se não abrir, o plano B é todos entrarem no roteador de um celular.
 
 ## Na véspera
 
@@ -68,7 +68,7 @@ npm install
 
 Copie para a pasta `backend` desse clone os dois arquivos que não vão para o Git: o `.env` (conexão com o Supabase) e o `emails.local.properties` (o e-mail de cada participante, para entrar na feira). O modelo do segundo está em `backend/emails.local.example.properties`: uma linha por pessoa, no formato `nome-do-arquivo-do-crachá=email`.
 
-**3. Imprima** os quatro cartões de rodada, a folha dos papéis ([papeis.md](../papeis.md)) e a cola de Git, um jogo por equipe. Separe três copos vermelhos. No modo cego o repórter precisa de um aparelho próprio (notebook ou celular) na mesma rede do piloto: confira no ensaio se um aparelho consegue abrir o endereço `Network` do outro.
+**3. Imprima** a folha dos papéis ([papeis.md](../papeis.md)) e a cola de Git, um jogo por equipe; os cartões das rodadas o copiloto lê no computador, pelo GitHub. Separe três copos vermelhos.
 
 ## No dia, 20 minutos antes
 
@@ -96,7 +96,7 @@ No painel da organização:
 |---|---|
 | Telão | Etapa, relógio, quem pilota em cada equipe e a última entrega de cada uma |
 | Organização | Avançar etapas, +1 minuto, equipes, ver as fichas antes de todos, revelar o resultado |
-| Feira (celular) | Cada pessoa escolhe quem é, visita as barracas e dá fichas |
+| Feira (computador de cada um) | Cada pessoa entra com o e-mail, visita as barracas e dá fichas |
 
 ## Se algo der errado no dia
 
@@ -106,7 +106,7 @@ No painel da organização:
 | O script do telão parou | Rode o mesmo comando de novo. Os dados estão no Supabase; nada se perde. |
 | Uma equipe travou no Git | Sente com ela. Em último caso, copie os arquivos da pasta da equipe para o seu clone e faça o push por ela. |
 | A rede caiu | As equipes continuam programando: cada máquina roda sozinha. As entregas entram quando a rede voltar. |
-| Os celulares não abrem a feira | Plano B do ensaio: notebook ou roteador de celular. |
+| Um computador não abre a feira ou o painel de outro | Plano B do ensaio: todos no roteador de um celular. No modo cego, o repórter senta ao lado do piloto (veja papeis.md). |
 
 ## Depois do dia
 

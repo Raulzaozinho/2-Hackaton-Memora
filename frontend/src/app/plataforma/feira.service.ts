@@ -4,6 +4,8 @@ import { tap } from 'rxjs';
 import { Cracha, EstadoDaFeira, MinhasFichas } from './tipos';
 
 const CHAVE_QUEM_SOU = 'feira.quem-sou';
+const CHAVE_ORGANIZADOR = 'feira.organizador';
+const SLUG_DA_ORGANIZACAO = 'organizacao';
 
 /** O estado do dia (etapa, relógio, equipes), quem está usando esta tela e as fichas dessa pessoa. */
 @Injectable({ providedIn: 'root' })
@@ -18,8 +20,10 @@ export class FeiraService {
   /** O crachá de quem está usando esta tela, escolhido na página da feira. */
   readonly euSlug = signal<string | null>(lerGuardado());
   readonly eu = computed(() => this.participantes().find((p) => p.slug === this.euSlug()) ?? null);
-  /** O nome de quem está usando a tela, ou "Visitante" se a pessoa ainda não escolheu o crachá. */
-  readonly meuNome = computed(() => this.eu()?.nome ?? 'Visitante');
+  /** Quem é da organização entra com o e-mail, mas não está em equipe nem dá fichas. */
+  readonly organizador = signal<Cracha | null>(lerOrganizador());
+  /** O nome de quem está usando a tela, ou "Visitante" se a pessoa ainda não entrou. */
+  readonly meuNome = computed(() => this.eu()?.nome ?? this.organizador()?.nome ?? 'Visitante');
 
   /** A hora atual, acertada pela hora do servidor para todos os relógios baterem. */
   readonly agora = signal(Date.now());
@@ -78,13 +82,35 @@ export class FeiraService {
 
   /** Entra na feira com o e-mail. Sem senha: serve para a feira saber quem está usando esta tela. */
   entrar(email: string) {
-    return this.http
-      .post<Cracha>('/api/entrar', { email })
-      .pipe(tap((cracha) => this.escolherQuemSou(cracha.slug)));
+    return this.http.post<Cracha>('/api/entrar', { email }).pipe(
+      tap((cracha) => {
+        if (cracha.slug === SLUG_DA_ORGANIZACAO) {
+          this.escolherQuemSou(null);
+          this.guardarOrganizador(cracha);
+        } else {
+          this.guardarOrganizador(null);
+          this.escolherQuemSou(cracha.slug);
+        }
+      }),
+    );
   }
 
   sair() {
+    this.guardarOrganizador(null);
     this.escolherQuemSou(null);
+  }
+
+  private guardarOrganizador(cracha: Cracha | null) {
+    this.organizador.set(cracha);
+    try {
+      if (cracha) {
+        localStorage.setItem(CHAVE_ORGANIZADOR, JSON.stringify(cracha));
+      } else {
+        localStorage.removeItem(CHAVE_ORGANIZADOR);
+      }
+    } catch {
+      // Sem armazenamento local, vale só até recarregar a página.
+    }
   }
 
   darFicha(barraca: string) {
@@ -127,6 +153,15 @@ export class FeiraService {
       },
       error: () => undefined,
     });
+  }
+}
+
+function lerOrganizador(): Cracha | null {
+  try {
+    const guardado = localStorage.getItem(CHAVE_ORGANIZADOR);
+    return guardado ? (JSON.parse(guardado) as Cracha) : null;
+  } catch {
+    return null;
   }
 }
 

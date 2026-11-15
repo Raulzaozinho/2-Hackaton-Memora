@@ -21,6 +21,10 @@
     @if (feira.eu(); as eu) {
       <p class="entrou">Você entrou como <strong>{{ eu.nome }}</strong></p>
       <button type="button" class="botao claro" (click)="feira.sair()">Sair</button>
+    } @else if (feira.organizador(); as organizador) {
+      <p class="entrou">Você entrou como <strong>{{ organizador.nome }}</strong></p>
+      <a class="botao" routerLink="/organizacao">Painel da organização</a>
+      <button type="button" class="botao claro" (click)="feira.sair()">Sair</button>
     } @else if (feira.estado()?.entrarComEmail) {
       <form class="entrar" (submit)="entrar($event)">
         <label for="email">Entre com o seu e-mail</label>

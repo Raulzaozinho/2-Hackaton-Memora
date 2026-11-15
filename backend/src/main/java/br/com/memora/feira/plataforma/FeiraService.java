@@ -32,6 +32,7 @@ public class FeiraService {
 
     private final Repositorios.Eventos eventos;
     private final Repositorios.Participantes participantes;
+    private final Organizadores organizadores;
     private final Repositorios.Fichas fichas;
     private final Repositorios.Entregas entregas;
     private final int fichasPorPessoa;
@@ -44,7 +45,8 @@ public class FeiraService {
             @Value("${feira.fichas-por-pessoa:5}") int fichasPorPessoa,
             @Value("${feira.endereco:}") String enderecoConfigurado,
             @Value("${server.port:8080}") String porta,
-            @Value("${spring.web.resources.static-locations:}") String pastaDoFront) {
+            @Value("${spring.web.resources.static-locations:}") String pastaDoFront,
+            Organizadores organizadores) {
         this.eventos = eventos;
         this.participantes = participantes;
         this.fichas = fichas;
@@ -53,6 +55,7 @@ public class FeiraService {
         this.enderecoConfigurado = enderecoConfigurado;
         this.porta = porta;
         this.pastaDoFront = pastaDoFront;
+        this.organizadores = organizadores;
     }
 
     public int fichasPorPessoa() {
@@ -90,7 +93,7 @@ public class FeiraService {
                 evento.isResultadoRevelado() ? placar() : null,
                 endereco(),
                 versaoDoFront(),
-                participantes.existsByEmailIsNotNull());
+                participantes.existsByEmailIsNotNull() || organizadores.existe());
     }
 
     /** As barracas ordenadas da que recebeu mais fichas para a que recebeu menos. */

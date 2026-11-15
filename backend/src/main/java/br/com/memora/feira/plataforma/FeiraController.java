@@ -28,9 +28,11 @@ public class FeiraController {
     private final FichaService fichas;
     private final Registros registros;
     private final Repositorios.Participantes participantes;
+    private final Organizadores organizadores;
 
     public FeiraController(FeiraService feira, FichaService fichas, Registros registros,
-            Repositorios.Participantes participantes) {
+            Repositorios.Participantes participantes, Organizadores organizadores) {
+        this.organizadores = organizadores;
         this.feira = feira;
         this.fichas = fichas;
         this.registros = registros;
@@ -58,6 +60,9 @@ public class FeiraController {
         String email = pedido.email() == null ? "" : pedido.email().trim();
         if (email.isEmpty()) {
             throw new RegraException("Digite o seu e-mail.");
+        }
+        if (organizadores.ehOrganizador(email)) {
+            return new Cracha(Organizadores.SLUG, Organizadores.nomeDoEmail(email) + " (organização)", null, null, null);
         }
         Participante p = participantes.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new RegraException("Esse e-mail não está na lista da feira. Confira se digitou certo."));

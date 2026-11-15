@@ -46,7 +46,7 @@ public Item pescar() {
 }
 ```
 
-No topo do arquivo, junto dos outros `import`, acrescente `import java.util.Random;`. Reiniciem o back-end.
+No topo do arquivo, junto dos outros `import`, acrescente `import java.util.Random;`. Ao salvar, o back-end reinicia sozinho.
 
 No front, guardem o resultado numa caixinha e chamem o endpoint no clique:
 

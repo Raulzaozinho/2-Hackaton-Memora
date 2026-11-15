@@ -8,11 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,15 +46,18 @@ public class Crachas {
     private final FeiraService feira;
     private final boolean demo;
     private final String arquivoDeEmails;
+    private final Organizadores organizadores;
     private final JsonMapper json = JsonMapper.builder().build();
 
     public Crachas(Repositorios.Participantes participantes, FeiraService feira,
             @Value("${feira.demo:false}") boolean demo,
-            @Value("${feira.arquivo-de-emails:emails.local.properties}") String arquivoDeEmails) {
+            @Value("${feira.arquivo-de-emails:emails.local.properties}") String arquivoDeEmails,
+            Organizadores organizadores) {
         this.participantes = participantes;
         this.feira = feira;
         this.demo = demo;
         this.arquivoDeEmails = arquivoDeEmails;
+        this.organizadores = organizadores;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -126,8 +131,11 @@ public class Crachas {
             }
         }
         participantes.saveAll(todos);
+        String daOrganizacao = emails.getProperty(Organizadores.SLUG, "");
+        organizadores.definir(Arrays.stream(daOrganizacao.split(",")).map(String::trim)
+                .filter(email -> !email.isEmpty()).collect(Collectors.toSet()));
         for (String slug : emails.stringPropertyNames()) {
-            if (!slugs.contains(slug)) {
+            if (!slug.equals(Organizadores.SLUG) && !slugs.contains(slug)) {
                 log.warn("{}: não existe crachá chamado {}.json", arquivo, slug);
             }
         }
@@ -148,6 +156,7 @@ public class Crachas {
             participante.setEmail(semAcento.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]", "") + "@feira.demo");
         }
         participantes.saveAll(todos);
+        organizadores.definir(Set.of("organizacao@feira.demo"));
     }
 
     private void salvar(String slug, String nome, String emoji, String frase) {

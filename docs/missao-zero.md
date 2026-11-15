@@ -84,6 +84,18 @@ git push -u origin cracha/bruno
 
 Depois abra o repositório no GitHub e clique em **Compare & pull request**. Esse é o seu primeiro PR (pedido para juntar o seu código ao principal). A organização aprova.
 
+## 7. Teste o jeito do dia
+
+No dia, quem pilota liga tudo com um comando só. Pare o back-end e o front-end (Ctrl+C nos dois terminais) e, na pasta do projeto, rode:
+
+```bash
+node scripts/piloto.mjs
+```
+
+Espere uns 30 segundos e abra <http://localhost:4201/painel>. É o **painel do repórter**: a barraca à esquerda e os erros à direita. Se o Windows perguntar se o Node pode usar a rede, clique em **Permitir**: é isso que deixa o computador de um colega abrir o seu painel no dia.
+
+Para encerrar, Ctrl+C.
+
 ## Pronto
 
 Missão cumprida quando o seu PR estiver aberto. No dia você só precisa chegar com o notebook.

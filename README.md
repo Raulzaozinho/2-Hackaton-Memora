@@ -1,6 +1,6 @@
 # 🎪 Feira Dev
 
-O hackathon dos estagiários da Memora. Todas as equipes trabalham no mesmo aplicativo: uma feira que aparece ao vivo no telão. Cada equipe monta a sua **barraca**, uma página pequena dentro da feira, que ganha uma capacidade nova a cada rodada. No fim, a feira abre e todo mundo visita as barracas pelo celular.
+O hackathon dos estagiários da Memora. Todas as equipes trabalham no mesmo aplicativo: uma feira que aparece ao vivo no telão. Cada equipe monta a sua **barraca**, uma página pequena dentro da feira, que ganha uma capacidade nova a cada rodada. No fim, a feira abre e todo mundo visita as barracas pelo computador.
 
 São 3 horas, 3 equipes de 3 pessoas e 4 rodadas curtas.
 
@@ -114,7 +114,7 @@ cd backend && ./mvnw test        # as regras da feira
 cd frontend && npx ng test --watch=false   # a configuração das barracas
 ```
 
-Na raiz, `node --test scripts/telao.test.mjs` confere a aceitação e a recusa de entregas.
+Na raiz, `node --test scripts/telao.test.mjs scripts/piloto.test.mjs` confere as entregas e o painel do repórter.
 Para gerar os artefatos, use `npm run build` no front-end e `./mvnw verify` no back-end
 (`.\mvnw.cmd verify` no Windows).
 

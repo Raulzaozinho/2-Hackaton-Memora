@@ -8,7 +8,7 @@ Troque o `N` pelo número da sua equipe. Nesta rodada vocês mexem em dois lugar
 - **Back-end:** `backend/src/main/java/br/com/memora/feira/barracas/equipeN/EquipeNController.java`
 - **Front-end:** `frontend/src/app/barracas/equipe-N/`
 
-**Modo cego:** este cartão é só do copiloto. O piloto começa com `git pull` e liga o projeto (front-end com `npm run start:rede`); o repórter abre no próprio aparelho o endereço `Network` que o piloto ler em voz alta. Regras em [papeis.md](../papeis.md).
+**Modo cego:** este cartão é só do copiloto, no computador dele. O piloto começa com `git pull` e `node scripts/piloto.mjs`, e lê em voz alta o endereço do painel; o repórter abre esse endereço no computador dela. Regras em [papeis.md](../papeis.md).
 
 ## Mínimo — todo mundo chega aqui
 
@@ -26,10 +26,10 @@ public List<Item> itens() {
 
 Cada `Item` tem três textos: emoji, nome e descrição. Os itens são separados por vírgula, e depois do último vem `);`.
 
-**2. Reiniciem o back-end:** Ctrl+C no terminal dele e rodem de novo.
+**2. Esperem o back-end reiniciar:** ao salvar o arquivo Java, ele reinicia sozinho. O painel do repórter mostra "compilando…" e depois "rodando" (uns 20 segundos).
 
-**3. Repórter, confira a resposta pura** no seu aparelho: no endereço do piloto, troque o final por `/api/barracas/equipe-N/itens`. Exemplo:
-`http://192.168.0.25:4200/api/barracas/equipe-N/itens`
+**3. Repórter, confira a resposta pura:** numa aba nova, abra o endereço do painel trocando `/painel` por `/api/barracas/equipe-N/itens`. Exemplo:
+`http://192.168.0.25:4201/api/barracas/equipe-N/itens`
 
 Esse texto entre colchetes é o que o back-end responde. O nome disso é JSON.
 

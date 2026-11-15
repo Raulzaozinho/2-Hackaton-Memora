@@ -59,6 +59,16 @@ class FeiraApplicationTests {
         assertThat(participantes.findByEmailIgnoreCase("ninguem@feira.demo")).isEmpty();
     }
 
+    @Autowired br.com.memora.feira.plataforma.Organizadores organizadores;
+
+    @Test
+    void aOrganizacaoEntraComEmailMasNaoViraParticipante() {
+        assertThat(organizadores.ehOrganizador("Organizacao@feira.demo")).isTrue();
+        assertThat(organizadores.ehOrganizador("ana@feira.demo")).isFalse();
+        assertThat(participantes.count()).isEqualTo(9);
+        assertThat(br.com.memora.feira.plataforma.Organizadores.nomeDoEmail("maria.silva@exemplo.com")).isEqualTo("Maria");
+    }
+
     @Test
     void consultaNaoCriaEventoEnquantoAInicializacaoNaoTerminou() {
         eventos.deleteAll();

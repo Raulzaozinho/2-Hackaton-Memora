@@ -1,43 +1,38 @@
 # Os papéis — o modo cego
 
-Nas rodadas 1, 2 e 3, cada pessoa da equipe enxerga só **uma parte** do trabalho. Ninguém consegue fazer a barraca sozinho: a equipe só entrega se conversar.
+Nas rodadas 1, 2 e 3, cada pessoa da equipe enxerga só **uma parte** do trabalho, cada uma no **próprio computador**. Ninguém consegue fazer a barraca sozinho: a equipe só entrega se conversar.
 
 O telão mostra o papel de cada pessoa. A cada rodada os papéis giram, então todo mundo passa pelos três.
 
-| Papel | Enxerga | Não enxerga | Faz |
-|---|---|---|---|
-| ⌨️ **Piloto** | O editor de código | O cartão e o navegador | Digita o que o copiloto pede e conta o que está vendo no código |
-| 🧭 **Copiloto** | O cartão da rodada | A tela do piloto e o navegador | Lê o cartão e explica ao piloto o que fazer, passo a passo |
-| 📣 **Repórter** | O resultado: a barraca rodando, os erros e o telão | O cartão e o código | Conta o que apareceu (ou o erro), confere a entrega e apresenta na vitrine |
+| Papel | No computador dele | Faz |
+|---|---|---|
+| ⌨️ **Piloto** | Só o editor de código. Nada de navegador. | Digita o que o copiloto pede e conta o que está vendo no código |
+| 🧭 **Copiloto** | Só o cartão da rodada, aberto no GitHub | Lê o cartão e explica ao piloto o que fazer, passo a passo |
+| 📣 **Repórter** | Só o **painel do repórter**: a barraca rodando e as mensagens de erro | Conta o que apareceu ou lê o erro, confere a entrega no telão e apresenta na vitrine |
 
 Na **rodada 4** não tem modo cego: os três veem tudo e criam a atração juntos.
 
-## Como sentar
-
-```
-          [ notebook do piloto ]
-                 piloto
-   copiloto  ←  de costas para a tela, com o cartão na mão
-   repórter  ←  com o próprio notebook ou celular, sem ver a tela do piloto
-```
-
 ## No começo de cada rodada (2 minutos)
 
-1. **Piloto:** no próprio notebook, pega o que a equipe já fez e liga o projeto:
+**Piloto**, no computador dele:
 
-   ```bash
-   git pull
-   ```
+```bash
+git pull
+node scripts/piloto.mjs
+```
 
-   Terminal 1: `cd backend` e `.\mvnw.cmd spring-boot:run` (Mac e Linux: `./mvnw spring-boot:run`).
+O comando liga o back-end e o front-end e escreve um endereço como `http://192.168.0.25:4201/painel`. Leia esse endereço em voz alta e minimize a janela: dali em diante você só usa o editor. Quando você salva um arquivo Java, o back-end reinicia sozinho.
 
-   Terminal 2: `cd frontend` e `npm run start:rede`.
+Na primeira vez, o Windows pode perguntar se o Node pode usar a rede: clique em **Permitir**.
 
-2. **Piloto:** lê em voz alta o endereço que aparece na linha `Network`, por exemplo `http://192.168.0.25:4200`.
-3. **Repórter:** abre esse endereço no próprio notebook ou celular. É por ali que ele vê a barraca.
-4. **Copiloto:** pega o cartão da rodada.
+**Repórter**, no computador dela: abra no navegador o endereço que o piloto leu. O painel mostra a barraca à esquerda e, à direita, os erros do front-end e do back-end, com o arquivo e a linha. A barraca se atualiza sozinha a cada vez que o piloto salva.
 
-Se o endereço não abrir no aparelho do repórter (algumas redes bloqueiam), use o plano B: o repórter senta ao lado do piloto e, quando pedir "deixa eu ver", o piloto vira o notebook para ele e olha para o outro lado.
+**Copiloto**, no computador dele: abra o cartão da rodada no GitHub.
+
+- [Rodada 1](https://github.com/Raulzaozinho/2-Hackaton-Memora/blob/main/docs/rodadas/rodada-1.md)
+- [Rodada 2](https://github.com/Raulzaozinho/2-Hackaton-Memora/blob/main/docs/rodadas/rodada-2.md)
+- [Rodada 3](https://github.com/Raulzaozinho/2-Hackaton-Memora/blob/main/docs/rodadas/rodada-3.md)
+- [Rodada 4](https://github.com/Raulzaozinho/2-Hackaton-Memora/blob/main/docs/rodadas/rodada-4.md)
 
 ## Como cada um fala
 
@@ -49,15 +44,15 @@ Para os símbolos: **aspas simples** `'`, **chaves** `{ }`, **colchetes** `[ ]`,
 
 **Piloto, contando o que vê.** Diga em que arquivo e em que linha está, e leia em voz alta o que acabou de digitar. Se o editor sublinhar alguma coisa em vermelho, avise.
 
-**Repórter, contando o resultado.** Descreva o que mudou ("o título agora está roxo") ou leia o erro inteiro, com o arquivo e a linha. Uma caixa preta com texto vermelho no navegador é um erro de compilação: leia o que está escrito nela.
+**Repórter, contando o resultado.** Descreva o que mudou ("o título agora está roxo") ou leia o erro do painel inteiro: o arquivo, a linha e a mensagem.
 
 ## Espiadas
 
-Cada equipe tem **2 espiadas por rodada**. Numa espiada, o copiloto ou o repórter olha a tela do notebook do piloto por 30 segundos: o código e a barraca rodando. Usem quando a conversa empacar.
+Cada equipe tem **2 espiadas por rodada**. Numa espiada, o copiloto ou o repórter olha a tela do computador do piloto por 30 segundos. Usem quando a conversa empacar.
 
 ## Entregar
 
-Quando o repórter disser que está funcionando, o copiloto dita e o piloto digita:
+Quando o repórter disser que está funcionando, o copiloto dita e o piloto digita, num terminal novo:
 
 ```bash
 git add .
@@ -66,6 +61,10 @@ git push
 ```
 
 O repórter olha o telão e avisa se entrou ou qual foi o motivo da recusa.
+
+## Se o painel não abrir no computador do repórter
+
+Algumas redes bloqueiam um computador de abrir o outro. Plano B: o repórter senta ao lado do piloto e, quando pede "deixa eu ver", o piloto abre `http://localhost:4201/painel`, vira o notebook para ele e olha para o outro lado.
 
 ## Travou?
 

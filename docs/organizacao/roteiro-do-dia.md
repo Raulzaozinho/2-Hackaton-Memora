@@ -37,7 +37,7 @@ Aos 20 minutos, avise: "faltam 5 para entregar". O que vale é o que entrou no t
 
 A aula de 5 minutos é o que dá à equipe um vocabulário em comum. No modo cego o piloto não lê o cartão: ele só entende "abre o .ts e cria um signal" se ouviu na aula o que é um `.ts` e o que é um signal. Por isso cada aula termina com as palavras que eles vão usar na rodada.
 
-Na rodada 1, antes da aula, gaste 2 minutos mostrando a arrumação: o piloto de frente para o notebook, o copiloto de costas com o cartão, o repórter com o próprio aparelho. Mostre também como o repórter abre o endereço `Network` do piloto.
+Na rodada 1, antes da aula, gaste 2 minutos mostrando a arrumação, cada um no próprio computador: o piloto só com o editor, o copiloto com o cartão aberto no GitHub, o repórter com o painel do repórter. Mostre o piloto rodando `node scripts/piloto.mjs` e o repórter abrindo o endereço que termina em `/painel`.
 
 Durante a mão na massa, circule. Olhe primeiro para as mesas sem copo vermelho que estão quietas demais.
 
@@ -124,7 +124,7 @@ Embaixo, desenhe a tabela `registro` com três linhas de exemplo e as colunas `i
 
 ## Feira aberta (25 min)
 
-1. Clique em **Próxima etapa** para abrir a feira. O telão mostra o endereço para o celular.
+1. Clique em **Próxima etapa** para abrir a feira. O telão mostra o endereço que cada um abre no próprio computador.
 2. **Pregão (5 min):** em cada equipe, quem falou menos nas vitrines tem 1 minuto para convencer a turma a visitar a barraca.
 3. Cada pessoa abre a feira, **entra com o próprio e-mail** e visita as barracas das outras equipes. São 5 fichas por pessoa, e não dá para dar ficha à própria equipe.
 4. O telão mostra quantas fichas já foram gastas, sem dizer para quem.
