@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Equipe2Controller {
 
     /**
-     * RODADA 2 — a lista do que a barraca de vocês oferece.
+     * CICLO 2 — a lista do que a barraca de vocês oferece.
      * Troquem o item de exemplo e acrescentem os de vocês, separados por vírgula.
      */
     @GetMapping("/itens")
@@ -26,6 +26,6 @@ public class Equipe2Controller {
                 new Item("❓", "Item de exemplo", "Troque por algo que a barraca de vocês oferece"));
     }
 
-    // RODADA 4 — se a atração de vocês precisar de um endpoint novo, ele entra aqui.
+    // CICLO 3 · DESAFIO — se a atração de vocês precisar de um endpoint novo, ele entra aqui.
     // O ModeloController tem um exemplo pronto: o método surpresa().
 }

@@ -1,0 +1,345 @@
+:host {
+  display: block;
+  --essencial: #1f7a45;
+  --bonus: #1b6fd1;
+  --desafio: #8e44ad;
+  --papel-do-manual: #fffdf6;
+  --codigo: #1f1a16;
+}
+
+.mesa {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.6), transparent 40%),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(43, 33, 24, 0.035) 31px 32px),
+    var(--papel);
+  padding-bottom: 48px;
+}
+
+/* ------------------------------------------------------------ trancado */
+
+.trancado {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 96px 16px;
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  text-align: center;
+}
+
+.cadeado {
+  font-size: 4rem;
+}
+
+/* ------------------------------------------------------------ capa */
+
+.capa {
+  padding: 20px clamp(16px, 4vw, 48px) 28px;
+  background: var(--tinta);
+  color: #fff;
+  box-shadow: inset 0 -10px 0 rgba(0, 0, 0, 0.12);
+  display: grid;
+  gap: 8px;
+}
+
+.capa-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.voltar {
+  color: inherit;
+  opacity: 0.85;
+}
+
+.relogio {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: 1.6rem;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 4px 14px;
+  border-radius: 12px;
+}
+
+.selo {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.capa h1 {
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  line-height: 1.05;
+}
+
+.missao {
+  font-size: 1.1rem;
+  max-width: 60ch;
+}
+
+.capa-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 8px;
+}
+
+.equipe,
+.pontos {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.organizacao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px clamp(16px, 4vw, 48px);
+  border-bottom: 2px solid var(--linha);
+  background: var(--cartao);
+}
+
+/* ------------------------------------------------------------ páginas */
+
+.paginas {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px clamp(16px, 4vw, 48px);
+  align-items: start;
+}
+
+.lateral {
+  position: sticky;
+  top: 16px;
+  display: grid;
+  gap: 16px;
+}
+
+.bloco {
+  background: var(--papel-do-manual);
+  border: 2px solid var(--linha);
+  border-radius: var(--raio);
+  padding: 14px 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.bloco h2 {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.bloco ol {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 6px;
+}
+
+.simbolos {
+  display: grid;
+  grid-template-columns: 3.2em 1fr;
+  gap: 4px 8px;
+  margin: 0;
+}
+
+.simbolos dt {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-weight: 800;
+  text-align: center;
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+}
+
+.simbolos dd {
+  margin: 0;
+}
+
+.entrega pre {
+  margin: 0;
+  background: var(--codigo);
+  color: #f4ecdf;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+}
+
+.barra {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--linha);
+  overflow: hidden;
+}
+
+.barra span {
+  display: block;
+  height: 100%;
+  background: var(--essencial);
+  transition: width 0.3s;
+}
+
+.nota {
+  color: var(--tinta-suave);
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------ itens */
+
+.itens {
+  display: grid;
+  gap: 20px;
+}
+
+.item {
+  --nivel: var(--essencial);
+  position: relative;
+  background: var(--papel-do-manual);
+  border: 2px solid var(--linha);
+  border-left: 10px solid var(--nivel);
+  border-radius: var(--raio);
+  padding: 18px 20px 16px;
+  display: grid;
+  gap: 12px;
+  box-shadow: 0 3px 0 rgba(43, 33, 24, 0.08);
+}
+
+.item[data-nivel='bonus'] {
+  --nivel: var(--bonus);
+}
+
+.item[data-nivel='desafio'] {
+  --nivel: var(--desafio);
+}
+
+.item.feito {
+  opacity: 0.6;
+}
+
+.item.feito::after {
+  content: 'FEITO';
+  position: absolute;
+  top: 16px;
+  right: 90px;
+  transform: rotate(-8deg);
+  border: 3px solid var(--essencial);
+  color: var(--essencial);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding: 2px 10px;
+  border-radius: 8px;
+}
+
+.item-topo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.numero {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--nivel);
+  font-variant-numeric: tabular-nums;
+  min-width: 2ch;
+}
+
+.item-titulo {
+  flex: 1;
+  display: grid;
+  gap: 2px;
+}
+
+.nivel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  color: var(--nivel);
+}
+
+.item h3 {
+  font-size: 1.3rem;
+}
+
+.valor {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fff;
+  background: var(--nivel);
+  border-radius: 12px;
+  padding: 4px 12px;
+}
+
+.arquivo {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.9rem;
+  background: var(--cartao);
+  border: 1px dashed var(--linha);
+  border-radius: 8px;
+  padding: 6px 10px;
+  overflow-wrap: anywhere;
+}
+
+.passos {
+  margin: 0;
+  padding-left: 1.4em;
+  display: grid;
+  gap: 6px;
+  font-size: 1.05rem;
+}
+
+.codigo {
+  margin: 0;
+  background: var(--codigo);
+  color: #f4ecdf;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.confere {
+  background: #eef8f1;
+  border: 1px solid #b9dfc6;
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.marcar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  justify-self: start;
+}
+
+.marcar input {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 860px) {
+  .paginas {
+    grid-template-columns: 1fr;
+  }
+
+  .lateral {
+    position: static;
+  }
+}

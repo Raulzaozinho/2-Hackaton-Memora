@@ -14,27 +14,27 @@ import { Item, NovoRegistro, Registro } from './tipos';
 export class BarracaApi {
   private http = inject(HttpClient);
 
-  /** RODADA 2 — pede a lista de itens da barraca. GET /api/barracas/{barraca}/itens */
+  /** CICLO 2 — pede a lista de itens da barraca. GET /api/barracas/{barraca}/itens */
   itens(barraca: string) {
     return this.http.get<Item[]>(`/api/barracas/${barraca}/itens`);
   }
 
-  /** RODADA 3 — pede o que a barraca já guardou, do mais novo para o mais antigo. */
+  /** CICLO 3 — pede o que a barraca já guardou, do mais novo para o mais antigo. */
   registros(barraca: string) {
     return this.http.get<Registro[]>(`/api/barracas/${barraca}/registros`);
   }
 
-  /** RODADA 3 — guarda um registro novo no banco. POST /api/barracas/{barraca}/registros */
+  /** CICLO 3 — guarda um registro novo no banco. POST /api/barracas/{barraca}/registros */
   salvar(barraca: string, registro: NovoRegistro) {
     return this.http.post<Registro>(`/api/barracas/${barraca}/registros`, registro);
   }
 
-  /** RODADA 4 — chama um endpoint que a própria equipe criou. Ex.: buscar<Item>('modelo', 'surpresa') */
+  /** CICLO 3 · DESAFIO — chama um endpoint que a própria equipe criou. Ex.: buscar<Item>('modelo', 'surpresa') */
   buscar<T>(barraca: string, caminho: string) {
     return this.http.get<T>(`/api/barracas/${barraca}/${caminho}`);
   }
 
-  /** RODADA 4 — manda dados para um endpoint que a própria equipe criou. */
+  /** CICLO 3 · DESAFIO — manda dados para um endpoint que a própria equipe criou. */
   enviar<T>(barraca: string, caminho: string, dados: unknown) {
     return this.http.post<T>(`/api/barracas/${barraca}/${caminho}`, dados);
   }

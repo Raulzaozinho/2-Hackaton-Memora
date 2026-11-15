@@ -21,6 +21,13 @@ export class FeiraPage {
 
   protected relogio = computed(() => formatarRelogio(this.feira.segundosRestantes()));
 
+  /** O papel de quem está na tela no ciclo atual (piloto, copiloto ou repórter). */
+  protected meuPapel = computed(() => {
+    const eu = this.feira.eu();
+    const equipe = this.feira.estado()?.equipes.find((e) => e.id === eu?.equipe);
+    return equipe?.membros.find((m) => m.slug === eu?.slug)?.papel ?? null;
+  });
+
   protected email = signal('');
   protected entrando = signal(false);
   protected erroAoEntrar = signal('');

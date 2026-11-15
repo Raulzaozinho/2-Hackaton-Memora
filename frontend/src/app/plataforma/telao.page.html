@@ -25,14 +25,15 @@
           <ol>
             @for (linha of resultado(); track linha.barraca?.id) {
               <li
-                [class.campea]="linha.posicao === 1 && linha.fichas > 0"
+                [class.campea]="linha.posicao === 1 && linha.total > 0"
                 [class.empate]="linha.empate"
                 [style.--cor]="linha.barraca?.cor"
                 [style.--texto]="corDoTexto(linha.barraca?.cor ?? '')"
               >
-                <span class="posicao">{{ linha.posicao === 1 && linha.fichas > 0 ? '🏆' : linha.posicao + 'º' }}</span>
+                <span class="posicao">{{ linha.posicao === 1 && linha.total > 0 ? '🏆' : linha.posicao + 'º' }}</span>
                 <span class="nome">{{ linha.barraca?.emoji }} {{ linha.barraca?.nome }}{{ linha.empate ? ' · empate' : '' }}</span>
-                <strong>🎟️ {{ linha.fichas }}</strong>
+                <span class="detalhe">⭐ {{ linha.pontosDoManual }} + 🎟️ {{ linha.fichas }} × 5</span>
+                <strong>{{ linha.total }} pts</strong>
               </li>
             }
           </ol>
@@ -50,6 +51,7 @@
                 <h2>{{ equipe.barraca.nome }}</h2>
                 <p>{{ equipe.barraca.slogan }}</p>
               </div>
+              <span class="pontos-equipe" title="Pontos do manual aprovados pela organização">⭐ {{ equipe.pontos }}</span>
             </header>
 
             <ul class="membros">
@@ -65,7 +67,7 @@
               }
             </ul>
 
-            <!-- A última entrega só interessa durante as rodadas; na feira aberta o espaço fica para as fichas. -->
+            <!-- A última entrega só interessa durante os ciclos. -->
             @if (estado.etapa.rodada > 0) {
               <p class="ultima-entrega" [class.recusada]="equipe.entrega && !equipe.entrega.ok">
                 @if (equipe.entrega; as entrega) {
@@ -84,8 +86,15 @@
       </section>
     }
 
+    @if (estado.etapa.tipo === 'AVALIACAO') {
+      <section class="feira-aberta">
+        <p>⭐ A organização está conferindo o manual de cada barraca. Os pontos aparecem aqui na hora.</p>
+      </section>
+    }
+
     @if (estado.feiraAberta) {
       <section class="feira-aberta">
+        <p><strong>Votação do ciclo {{ estado.etapa.rodada }}:</strong> visitem as barracas das outras equipes e deem 2 fichas.</p>
         @if (estado.endereco) {
           <p>
             Abra no seu computador: <strong>{{ estado.endereco }}</strong>

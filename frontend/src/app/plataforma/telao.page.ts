@@ -4,23 +4,13 @@ import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
 import { Membro } from './tipos';
 import { classificarResultado } from './resultado';
 
-/** Rodadas 1 a 3: modo cego, cada papel enxerga só uma parte (docs/papeis.md). */
-const PAPEIS_NO_MODO_CEGO: Record<string, string> = {
+/** Nos 3 ciclos vale o modo cego: cada papel enxerga só uma parte (docs/papeis.md). */
+const PAPEIS: Record<string, string> = {
   piloto: '⌨️ Piloto · só o código',
-  copiloto: '🧭 Copiloto · só o cartão',
+  copiloto: '🧭 Copiloto · só o manual',
   reporter: '📣 Repórter · só o resultado',
   apoio: '🤝 Apoio',
 };
-
-/** Rodada 4: os três veem tudo. */
-const PAPEIS_LIVRES: Record<string, string> = {
-  piloto: '⌨️ Piloto · digita',
-  copiloto: '🧭 Copiloto · orienta',
-  reporter: '📣 Repórter · apresenta',
-  apoio: '🤝 Apoio',
-};
-
-const ULTIMA_RODADA_DO_MODO_CEGO = 3;
 
 /** A tela grande da sala: etapa, relógio, quem faz o quê em cada equipe e a última entrega de cada uma. */
 @Component({
@@ -45,7 +35,13 @@ export class TelaoPage {
     const estado = this.feira.estado();
     return BARRACAS.map((barraca) => {
       const equipe = estado?.equipes.find((e) => e.id === barraca.id);
-      return { barraca, membros: equipe?.membros ?? [], entrega: equipe?.ultimaEntrega ?? null, entregas: equipe?.entregas ?? 0 };
+      return {
+        barraca,
+        membros: equipe?.membros ?? [],
+        entrega: equipe?.ultimaEntrega ?? null,
+        entregas: equipe?.entregas ?? 0,
+        pontos: equipe?.pontosDoManual ?? 0,
+      };
     });
   });
 
@@ -62,12 +58,7 @@ export class TelaoPage {
   });
 
   protected papel(membro: Membro): string {
-    if (!membro.papel) {
-      return '';
-    }
-    const rodada = this.feira.estado()?.etapa.rodada ?? 0;
-    const papeis = rodada <= ULTIMA_RODADA_DO_MODO_CEGO ? PAPEIS_NO_MODO_CEGO : PAPEIS_LIVRES;
-    return papeis[membro.papel];
+    return membro.papel ? PAPEIS[membro.papel] : '';
   }
 
   protected haQuanto(quando: string): string {

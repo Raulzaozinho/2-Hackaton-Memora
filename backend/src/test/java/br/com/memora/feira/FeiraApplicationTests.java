@@ -47,7 +47,7 @@ class FeiraApplicationTests {
         assertThat(estado.etapa().codigo()).isEqualTo("ABERTURA");
         assertThat(estado.terminaEm()).isNull();
         assertThat(estado.equipes()).hasSize(3).allSatisfy(equipe -> assertThat(equipe.membros()).hasSize(3));
-        assertThat(estado.fichasTotal()).isEqualTo(45);
+        assertThat(estado.fichasTotal()).isZero(); // só há fichas durante a votação
         assertThat(estado.resultado()).isNull();
     }
 
@@ -83,10 +83,9 @@ class FeiraApplicationTests {
     }
 
     @Test
-    void emQuatroRodadasTodoMundoDaEquipeEPiloto() {
+    void emTresCiclosTodoMundoDaEquipeEPiloto() {
         Set<String> pilotos = new HashSet<>();
-        feira.proximaEtapa(); // rodada 1
-        for (int etapa = 0; etapa < 5; etapa++) {
+        while (true) {
             List<Membro> membros = feira.estado().equipes().get(0).membros();
             if (feira.estado().etapa().rodada() > 0) {
                 assertThat(membros).extracting(Membro::papel)
@@ -95,15 +94,16 @@ class FeiraApplicationTests {
             } else {
                 assertThat(membros).extracting(Membro::papel).containsOnlyNulls();
             }
+            if (feira.estado().etapa().codigo().equals("PREMIACAO")) break;
             feira.proximaEtapa();
         }
         assertThat(pilotos).hasSize(3);
     }
 
     @Test
-    void fichaSoValeComAFeiraAberta() {
+    void fichaSoValeDuranteAVotacao() {
         assertThatThrownBy(() -> fichas.dar("demo-1", "equipe-2"))
-                .isInstanceOf(RegraException.class).hasMessageContaining("feira aberta");
+                .isInstanceOf(RegraException.class).hasMessageContaining("durante a votação");
     }
 
     @Test
@@ -114,13 +114,16 @@ class FeiraApplicationTests {
     }
 
     @Test
-    void fecharAFeiraTambemBloqueiaDevolverFichas() {
+    void fecharAVotacaoBloqueiaDevolverEOProximoCicloTemFichasNovas() {
         irParaAFeira();
         fichas.dar("demo-1", "equipe-2");
+        assertThat(fichas.minhas("demo-1").restantes()).isEqualTo(1);
         feira.proximaEtapa();
         assertThatThrownBy(() -> fichas.devolver("demo-1", "equipe-2"))
-                .isInstanceOf(RegraException.class).hasMessageContaining("feira aberta");
-        assertThat(fichas.minhas("demo-1").restantes()).isEqualTo(4);
+                .isInstanceOf(RegraException.class).hasMessageContaining("durante a votação");
+        irParaAFeira(); // votação do ciclo 2
+        assertThat(feira.estado().etapa().codigo()).isEqualTo("VOTACAO_2");
+        assertThat(fichas.minhas("demo-1").restantes()).isEqualTo(2);
     }
 
     @Test
@@ -129,7 +132,7 @@ class FeiraApplicationTests {
         fichas.dar("demo-1", "equipe-2");
         fichas.devolver("demo-1", "equipe-2");
         assertThatThrownBy(() -> fichas.devolver("demo-1", "equipe-2")).isInstanceOf(RegraException.class);
-        assertThat(fichas.minhas("demo-1").restantes()).isEqualTo(5);
+        assertThat(fichas.minhas("demo-1").restantes()).isEqualTo(2);
     }
 
     @Test
@@ -153,7 +156,7 @@ class FeiraApplicationTests {
     }
 
     @Test
-    void naoValeDarFichaParaAPropriaEquipeNemPassarDeCinco() {
+    void naoValeDarFichaParaAPropriaEquipeNemPassarDeDuasPorVotacao() {
         irParaAFeira();
         // demo-1 é da equipe-1
         assertThatThrownBy(() -> fichas.dar("demo-1", "equipe-1"))
@@ -161,9 +164,8 @@ class FeiraApplicationTests {
         assertThatThrownBy(() -> fichas.dar("demo-1", "modelo"))
                 .isInstanceOf(RegraException.class);
 
-        for (int i = 0; i < 5; i++) {
-            fichas.dar("demo-1", i % 2 == 0 ? "equipe-2" : "equipe-3");
-        }
+        fichas.dar("demo-1", "equipe-2");
+        fichas.dar("demo-1", "equipe-3");
         assertThat(fichas.minhas("demo-1").restantes()).isZero();
         assertThatThrownBy(() -> fichas.dar("demo-1", "equipe-2"))
                 .isInstanceOf(RegraException.class).hasMessageContaining("acabaram");
@@ -183,6 +185,28 @@ class FeiraApplicationTests {
         feira.revelarResultado(true);
         assertThat(feira.estado().resultado().get(0).barraca()).isEqualTo("equipe-3");
         assertThat(feira.estado().resultado().get(0).fichas()).isEqualTo(2);
+        assertThat(feira.estado().resultado().get(0).total()).isEqualTo(10);
+    }
+
+    @Autowired Repositorios.Avaliacoes avaliacoes;
+
+    @Test
+    void pontosDoManualSomamComAsFichasNoPlacar() {
+        avaliacoes.save(new br.com.memora.feira.plataforma.Avaliacao("equipe-1", 1, "c1-nome", 10));
+        avaliacoes.save(new br.com.memora.feira.plataforma.Avaliacao("equipe-1", 1, "c1-cor", 10));
+        avaliacoes.save(new br.com.memora.feira.plataforma.Avaliacao("equipe-2", 1, "c1-nome", 10));
+        assertThat(feira.estado().equipes().get(0).pontosDoManual()).isEqualTo(20);
+        irParaAFeira();
+        fichas.dar("demo-1", "equipe-2");
+        fichas.dar("demo-3", "equipe-2");
+        fichas.dar("demo-4", "equipe-2");
+        var placar = feira.placar();
+        assertThat(placar.get(0).barraca()).isEqualTo("equipe-2");
+        assertThat(placar.get(0).total()).isEqualTo(25); // 10 do manual + 3 fichas x 5
+        assertThat(placar).filteredOn(p -> p.barraca().equals("equipe-1")).first()
+                .extracting(p -> p.total()).isEqualTo(20L);
+        feira.recomecar();
+        assertThat(avaliacoes.count()).isZero();
     }
 
     @Test

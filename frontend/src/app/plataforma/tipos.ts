@@ -39,7 +39,9 @@ export interface EtapaInfo {
   codigo: string;
   titulo: string;
   minutos: number;
+  /** Número do ciclo (1 a 3), ou 0 fora dos ciclos. */
   rodada: number;
+  tipo: 'AULA' | 'MISSAO' | 'AVALIACAO' | 'VOTACAO' | 'OUTRA';
   quadro: string | null;
   entrega: string;
 }
@@ -63,11 +65,23 @@ export interface EquipeInfo {
   membros: Membro[];
   ultimaEntrega: EntregaInfo | null;
   entregas: number;
+  /** A soma dos itens do manual que a organização aprovou. */
+  pontosDoManual: number;
 }
 
 export interface Placar {
   barraca: string;
+  pontosDoManual: number;
   fichas: number;
+  /** Pontos do manual mais as fichas (cada ficha vale 5 pontos). */
+  total: number;
+}
+
+export interface ItemAprovado {
+  equipe: string;
+  ciclo: number;
+  item: string;
+  pontos: number;
 }
 
 export interface EstadoDaFeira {

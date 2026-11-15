@@ -35,10 +35,47 @@
       <p class="dica">Mudar de etapa já inicia o relógio dela. O telão acompanha em até 3 segundos.</p>
     </section>
 
+    <section class="bloco avaliacao" [class.destaque]="estado.etapa.tipo === 'AVALIACAO'">
+      <h2>⭐ Avaliação do manual</h2>
+      <p class="dica">
+        Na etapa de avaliação, abra cada barraca na feira e marque os itens do manual que a equipe cumpriu.
+        Vale o que entrou no telão. Os pontos aparecem no telão na hora.
+      </p>
+      <div class="botoes">
+        @for (c of manual; track c.numero) {
+          <button class="botao" [class.claro]="cicloAvaliado() !== c.numero" (click)="cicloEscolhido.set(c.numero)">
+            Ciclo {{ c.numero }} · {{ c.titulo }}
+          </button>
+        }
+        <a class="botao claro" routerLink="/manual">📖 Ver o manual</a>
+      </div>
+      <div class="colunas">
+        @for (barraca of barracas; track barraca.id) {
+          <div class="coluna" [style.--cor]="barraca.cor">
+            <h3>
+              <a [routerLink]="['/barraca', barraca.id]" target="_blank">{{ barraca.emoji }} {{ barraca.nome }}</a>
+            </h3>
+            <p class="soma">Ciclo {{ cicloAvaliado() }}: <strong>{{ pontosNoCiclo(barraca.id) }}</strong> pontos</p>
+            <ul class="checklist">
+              @for (item of itensDoCiclo(); track item.id) {
+                <li>
+                  <label [class.ok]="aprovado(barraca.id, item)">
+                    <input type="checkbox" [checked]="aprovado(barraca.id, item)" (change)="alternarItem(barraca.id, item)" />
+                    <span class="titulo-item">{{ item.titulo }}</span>
+                    <span class="pts">+{{ item.pontos }}</span>
+                  </label>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    </section>
+
     <section class="bloco">
       <h2>Equipes</h2>
       <p class="dica">
-        A ordem dentro da equipe define o rodízio: quem aparece primeiro no telão é piloto na rodada 1.
+        A ordem dentro da equipe define o rodízio: quem aparece primeiro no telão é piloto no ciclo 1, e a cada ciclo os papéis giram.
       </p>
       <ul class="pessoas">
         @for (pessoa of feira.participantes(); track pessoa.slug) {
@@ -72,11 +109,17 @@
     </section>
 
     <section class="bloco">
-      <h2>Resultado</h2>
-      <p class="dica">Só esta tela vê as fichas antes da revelação. {{ estado.fichasGastas }} de {{ estado.fichasTotal }} gastas.</p>
+      <h2>Placar</h2>
+      <p class="dica">
+        Só esta tela vê as fichas antes da revelação. Cada ficha vale 5 pontos.
+        @if (estado.feiraAberta) { Nesta votação: {{ estado.fichasGastas }} de {{ estado.fichasTotal }} fichas gastas. }
+      </p>
       <ol class="placar">
         @for (linha of placar(); track linha.barraca) {
-          <li>{{ nomeDaBarraca(linha.barraca) }} — 🎟️ {{ linha.fichas }}</li>
+          <li>
+            {{ nomeDaBarraca(linha.barraca) }} — ⭐ {{ linha.pontosDoManual }} do manual · 🎟️ {{ linha.fichas }} fichas ·
+            <strong>{{ linha.total }} pontos</strong>
+          </li>
         }
       </ol>
       <div class="botoes">
@@ -90,10 +133,10 @@
 
     <section class="bloco">
       <h2>Recomeçar</h2>
-      <p class="dica">Para ensaios: volta para a abertura e apaga as fichas. Não mexe nas equipes nem nas barracas.</p>
+      <p class="dica">Para ensaios: volta para a abertura e apaga as fichas e as avaliações. Não mexe nas equipes nem nas barracas.</p>
       <div class="botoes">
         @if (confirmando() === 'recomecar') {
-          <span class="confirmacao">Volta para a abertura e apaga todas as fichas.</span>
+          <span class="confirmacao">Volta para a abertura e apaga fichas e avaliações.</span>
           <button class="botao" (click)="recomecar()">Sim, recomeçar</button>
           <button class="botao claro" (click)="cancelarConfirmacao()">Cancelar</button>
         } @else {

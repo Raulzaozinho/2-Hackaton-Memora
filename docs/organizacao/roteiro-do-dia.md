@@ -1,106 +1,97 @@
 # Roteiro do dia — para a organização
 
-Três horas, do início ao fim. O painel da organização já traz as etapas nesta ordem: a cada mudança, clique em **Próxima etapa** e o relógio do telão começa sozinho.
+Duas horas e quarenta e cinco minutos, em **3 ciclos**. Em cada ciclo, cada pessoa da equipe tem um papel e enxerga só uma parte do trabalho: o piloto executa sem ver o resultado, o copiloto tem o manual e o repórter vê a tela. No ciclo seguinte os papéis giram e a equipe continua o código de onde parou. Em três ciclos, todo mundo passa pelos três papéis.
+
+O painel da organização já traz as etapas nesta ordem: a cada mudança, clique em **Próxima etapa** e o relógio do telão começa sozinho.
 
 | Tempo | Etapa | Duração |
 |---|---|---|
 | 0:00 | Abertura | 10 min |
-| 0:10 | Rodada 1 — Levantar a barraca | 30 min |
-| 0:40 | Rodada 2 — Abastecer a barraca | 30 min |
-| 1:10 | Intervalo | 10 min |
-| 1:20 | Rodada 3 — Atender o visitante | 30 min |
-| 1:50 | Rodada 4 — A atração | 30 min |
-| 2:20 | Feira aberta | 25 min |
-| 2:45 | Premiação | 10 min |
+| 0:10 | **Ciclo 1** · Aula → Missão → Avaliação → Votação | 5 + 30 + 5 + 5 min |
+| 0:55 | **Ciclo 2** · Aula → Missão → Avaliação → Votação | 5 + 30 + 5 + 5 min |
+| 1:40 | Intervalo | 10 min |
+| 1:50 | **Ciclo 3** · Aula → Missão → Avaliação → Votação | 5 + 30 + 5 + 5 min |
+| 2:35 | Premiação | 10 min |
 
-Sobram 5 minutos de folga. Se uma etapa apertar, use **+1 minuto**; evite passar de 3 minutos extras por rodada.
+Sobram 15 minutos de folga para as avaliações que demorarem ou para **+1 minuto** no fim de uma missão.
+
+## Como se ganha ponto
+
+- **Manual:** cada item do manual vale pontos (10 a 20). Na avaliação, você abre cada barraca na feira e marca no painel o que a equipe cumpriu. Vale o que **entrou no telão** até o relógio da missão zerar. Cada ciclo vale até 100 pontos.
+- **Votação:** depois de cada avaliação, cada pessoa dá **2 fichas** às barracas das outras equipes. Cada ficha vale **5 pontos**.
+- **Placar:** os pontos do manual aparecem no telão na hora; as fichas ficam secretas até a premiação.
 
 ## As regras, para dizer na abertura
 
-1. **Cada equipe monta uma barraca** dentro da mesma feira. A cada rodada ela ganha uma coisa nova.
-2. **Modo cego e rodízio:** nas rodadas 1 a 3, o **piloto** só vê o código, o **copiloto** só vê o cartão e o **repórter** só vê o resultado (a barraca rodando, os erros e o telão). Só dá certo se os três conversarem. Cada equipe tem 2 espiadas de 30 segundos por rodada. A cada rodada os papéis giram, e o telão mostra quem é quem. Na rodada 4 os três veem tudo. As regras completas estão em [papeis.md](../papeis.md).
-3. **Três níveis** em cada cartão: o mínimo todo mundo alcança; o bom e o extra são para quem tiver tempo.
-4. **Copo vermelho** na mesa quer dizer "travamos". Ninguém fica parado em silêncio.
-5. **Entregar é dar push.** A mensagem do commit aparece no telão, com o nome de quem enviou.
-6. **IA:** não nas rodadas 1 e 2; liberada nas rodadas 3 e 4, e uma pessoa sorteada da equipe explica o código.
-7. **No fim a feira abre:** cada pessoa tem 5 fichas para dar às barracas das outras equipes.
+1. **Cada equipe monta uma barraca** dentro da mesma feira, em três missões.
+2. **Três papéis, cada um no próprio computador:**
+   - **Piloto:** só o editor de código. Não vê o manual nem o navegador.
+   - **Copiloto:** só o manual, que abre na página da feira. Não vê a tela do piloto.
+   - **Repórter:** só o painel do repórter: a barraca rodando e as mensagens de erro.
+3. **Ninguém mostra a tela para ninguém.** Cada equipe tem 2 espiadas de 30 segundos por ciclo no computador do piloto.
+4. **A cada ciclo os papéis giram** (o telão mostra quem é quem) e a equipe continua o código de onde parou.
+5. **Só pontua o que entrar no telão.** Entreguem cedo e de novo a cada item feito.
+6. **Copo vermelho** na mesa quer dizer "travamos".
+7. **IA:** não nos ciclos 1 e 2; liberada no ciclo 3, e uma pessoa sorteada da equipe explica o código na votação.
 
-## Como é uma rodada guiada (1, 2 e 3)
+## O que cada um faz em cada fase
 
-| Minutos | O quê |
-|---|---|
-| 0 a 5 | Aula no quadro (roteiros abaixo) |
-| 5 a 25 | Mão na massa, com o cartão da rodada |
-| 25 a 30 | Vitrine: todos olham o telão; o repórter de cada equipe fala 30 segundos |
-
-Aos 20 minutos, avise: "faltam 5 para entregar". O que vale é o que entrou no telão.
-
-A aula de 5 minutos é o que dá à equipe um vocabulário em comum. No modo cego o piloto não lê o cartão: ele só entende "abre o .ts e cria um signal" se ouviu na aula o que é um `.ts` e o que é um signal. Por isso cada aula termina com as palavras que eles vão usar na rodada.
-
-Na rodada 1, antes da aula, gaste 2 minutos mostrando a arrumação, cada um no próprio computador: o piloto só com o editor, o copiloto com o cartão aberto no GitHub, o repórter com o painel do repórter. Mostre o piloto rodando `node scripts/piloto.mjs` e o repórter abrindo o endereço que termina em `/painel`.
-
-Durante a mão na massa, circule. Olhe primeiro para as mesas sem copo vermelho que estão quietas demais.
+| Fase | Você | Piloto | Copiloto | Repórter |
+|---|---|---|---|---|
+| **Aula** (5 min) | Ensina no quadro o assunto do ciclo e as palavras do manual | Assiste | Assiste | Assiste |
+| **Missão** (30 min) | Circula, atende copos vermelhos, fiscaliza as espiadas, avisa aos 20 e aos 25 minutos | `git pull`, `node scripts/piloto.mjs`, executa o que o copiloto pede, entrega com `git push` | Abre o manual, explica item por item, dita a entrega | Abre o painel do piloto, conta o que apareceu, lê os erros, confere no telão se a entrega entrou |
+| **Avaliação** (5 min) | Abre cada barraca e marca no painel os itens cumpridos | Descansa | Confere no manual o que deveria ter saído | Acompanha no telão os pontos da equipe |
+| **Votação** (5 min) | Chama todos para visitar as barracas | Visita e dá 2 fichas | Visita e dá 2 fichas | Visita e dá 2 fichas |
 
 ---
 
 ## Abertura (10 min)
 
-- Telão na etapa **Abertura**. Mostre a feira com as três barracas ainda "em montagem".
-- Abra a **barraca modelo** (Barraca do Pastel) e use-a por 1 minuto: faça um pedido, sorteie um sabor. "No fim do dia a barraca de vocês faz coisas assim."
-- Diga as sete regras.
-- Mostre as equipes no telão. Cada equipe confere o ramo: `git fetch` e `git switch equipe-N`.
+- Telão na etapa **Abertura**. Mostre a feira com as três barracas "em montagem".
+- Monte as equipes no painel (ou **Sortear equipes**). A ordem define o rodízio.
+- Peça para todos entrarem na feira com o e-mail. Cada um vê o próprio papel do ciclo 1 na página da feira.
+- Diga as regras e mostre a arrumação: o piloto de frente para o notebook, o copiloto de costas com o manual, o repórter com o painel. Mostre o piloto rodando `node scripts/piloto.mjs` e o repórter abrindo o endereço que termina em `/painel`.
+- Abra a **barraca modelo** e faça um pedido nela: "no fim do dia a barraca de vocês faz coisas assim".
 
-## Rodada 1 — aula: como uma página é montada
+## Ciclo 1 — Levantar a barraca
 
-**Ideia central:** uma página é feita de caixas dentro de caixas, e cada caixa é um componente.
+**Aula: como uma página é montada.** Uma página é feita de caixas dentro de caixas, e cada caixa é um componente.
 
-**Desenhe:** um retângulo grande, "a feira". Dentro, um retângulo "moldura da barraca" (o toldo colorido e o balcão de fichas). Dentro dele, um retângulo destacado: "a página da equipe". Pinte só esse: "esta caixa é de vocês".
-
-Ao lado, três fichas empilhadas:
+Desenhe um retângulo grande, "a feira"; dentro, a moldura da barraca; dentro dela, destacada, "a página da equipe": "esta caixa é de vocês". Ao lado, quatro fichas:
 
 ```
-equipe-N.html   → o que aparece
-equipe-N.css    → como aparece
-equipe-N.ts     → os dados e as ações
+barraca.config.ts → nome, slogan, emoji, cor
+equipe-N.html     → o que aparece
+equipe-N.css      → como aparece
+equipe-N.ts       → os dados e as ações
 ```
 
-E uma quarta, separada: `barraca.config.ts → nome, slogan, emoji, cor`.
+**Palavras do manual:** aspas simples, `<h2>`, `<p>`, `<section>`, `<ul>` e `<li>`. Mostre ao vivo: troque o emoji da barraca modelo e a página atualiza sozinha.
 
-**Mostre ao vivo:** mude o emoji da barraca modelo, salve, e a página se atualiza sozinha.
+**Missão:** nome, slogan, emoji, cor, título e texto da vitrine (essenciais); visual no CSS e "Quem atende aqui" (bônus); três motivos em lista (desafio).
 
-**Pergunta para a turma:** "se eu quero mudar a cor do título, em qual dos três arquivos eu mexo?"
+## Ciclo 2 — Abastecer a barraca
 
-## Rodada 2 — aula: pedido e resposta
-
-**Ideia central:** o navegador não sabe nada sozinho; ele pede e o back-end responde.
-
-**Desenhe:** três caixas em linha.
+**Aula: pedido e resposta.** O navegador não sabe nada sozinho; ele pede e o back-end responde.
 
 ```
 [ Navegador ]  ──── pedido ───▶  [ Back-end ]  ────▶  [ Banco ]
    Angular     ◀─── resposta ──   Spring Boot          Supabase
 ```
 
-Em cima da seta de ida, escreva: `GET /api/barracas/modelo/itens`. Em cima da seta de volta, uma lista entre colchetes: `[ {nome: "Queijo"}, {nome: "Carne"} ]`.
+Em cima da seta de ida: `GET /api/barracas/modelo/itens`. Na de volta: `[ {nome: "Queijo"}, {nome: "Carne"} ]`. Abra esse endereço no navegador: "isto é a resposta pura, em JSON". Depois mostre o `@GetMapping("/itens")` no `ModeloController.java`.
 
-**Mostre ao vivo:** abra `http://localhost:8080/api/barracas/modelo/itens` no navegador. "Isto é a resposta pura, em JSON." Depois abra `ModeloController.java` e aponte: o `@GetMapping("/itens")` é a porta; o método é quem responde.
+**Palavras do manual:** `List.of`, `new Item`, signal ("uma caixinha com um valor"), subscribe ("quando a resposta chegar, faça isto"), `@for`. Lembre que o novo piloto começa com `git pull`.
 
-**Duas palavras novas, uma frase cada:**
-
-- **signal:** uma caixinha com um valor. Lê com `itens()`, troca com `itens.set(...)`. Quando o valor muda, a tela muda.
-- **subscribe:** "quando a resposta chegar, faça isto".
-
-**Pergunta para a turma:** "se eu mudar a lista no Java e não reiniciar o back-end, o que aparece na tela?"
+**Missão:** três itens no Java, a resposta pura, a caixinha da lista e a lista na tela (essenciais); contador e `@empty` (bônus); itens com cara de cartão (desafio).
 
 ## Intervalo (10 min)
 
-Bom momento para destravar no particular quem ficou para trás na rodada 2.
+Bom momento para destravar no particular quem ficou para trás.
 
-## Rodada 3 — aula: clique, estado e salvar
+## Ciclo 3 — Atender o visitante
 
-**Ideia central:** um formulário é um círculo: digitar, clicar, gravar, buscar de novo.
-
-**Desenhe o círculo**, com quatro paradas:
+**Aula: clique, estado e salvar.** Um formulário é um círculo:
 
 ```
 1. a pessoa digita        →  o texto vai para a caixinha  (ngModel)
@@ -109,38 +100,35 @@ Bom momento para destravar no particular quem ficou para trás na rodada 2.
 4. o front pede a lista   →  a tela mostra o registro novo
 ```
 
-Embaixo, desenhe a tabela `registro` com três linhas de exemplo e as colunas `id`, `barraca`, `autor`, `texto`. "Todas as barracas gravam na mesma tabela; a coluna `barraca` diz de quem é cada linha."
+Desenhe a tabela `registro` com as colunas `id`, `barraca`, `autor`, `texto`. Mostre ao vivo: faça um pedido na barraca modelo, recarregue e ele continua lá.
 
-**Mostre ao vivo:** na barraca modelo, faça um pedido, recarregue a página e mostre que ele continua lá. "Continua porque está no banco, não na tela."
+**Palavras do manual:** `[(ngModel)]`, `(click)`, `[disabled]`, `this.carregarRecados()`. IA liberada.
 
-**Pergunta para a turma:** "por que a gente busca a lista de novo depois de salvar?"
+**Missão:** caixinhas, enviar, lista carregada no começo, formulário e lista de recados (essenciais); total de recados (bônus); pescaria com endpoint novo no Java (desafio).
 
-## Rodada 4 — A atração (30 min, sem aula)
+## Avaliação (5 min, em cada ciclo)
 
-- Em 1 minuto: "vocês têm lista, formulário e, se quiserem, um endpoint novo. Combinem como quiserem. Sem ideia, sorteiem uma carta do cartão."
-- Aos 15 minutos: "quem ainda não deu push de nenhuma versão, dê agora".
-- Aos 25 minutos: "últimos 5 minutos; o que não entrar no telão não vai para a feira".
-- Não há vitrine nesta rodada: a vitrine é a própria feira.
+1. No painel da organização, na seção **Avaliação do manual**, o ciclo atual já vem escolhido.
+2. Abra cada barraca na feira do telão e marque os itens cumpridos. A linha "O repórter deve ver" do manual diz o que conferir.
+3. Os pontos aparecem no telão assim que você marca.
 
-## Feira aberta (25 min)
+Vale o que está na feira, isto é, o que entrou no telão. Se uma equipe fez mas não entregou, não pontua: é a regra que faz todos entregarem cedo.
 
-1. Clique em **Próxima etapa** para abrir a feira. O telão mostra o endereço que cada um abre no próprio computador.
-2. **Pregão (5 min):** em cada equipe, quem falou menos nas vitrines tem 1 minuto para convencer a turma a visitar a barraca.
-3. Cada pessoa abre a feira, **entra com o próprio e-mail** e visita as barracas das outras equipes. São 5 fichas por pessoa, e não dá para dar ficha à própria equipe.
-4. O telão mostra quantas fichas já foram gastas, sem dizer para quem.
-5. Faltando 3 minutos: "quem ainda tem ficha, gaste".
+## Votação (5 min, em cada ciclo)
+
+1. **Próxima etapa.** A feira libera 2 fichas por pessoa.
+2. Todos visitam as barracas das outras equipes e dão as fichas. Não dá para votar na própria.
+3. O telão mostra quantas fichas já foram gastas, sem dizer para quem.
+4. Na votação do ciclo 3, uma pessoa sorteada de cada equipe explica em 1 minuto um trecho do código (a condição da IA).
 
 ## Premiação (10 min)
 
 1. **Próxima etapa.** O telão mostra "Resultado trancado".
-2. Antes de revelar, uma rodada rápida: cada pessoa diz **uma frase** com o que aprendeu hoje.
+2. Uma rodada rápida: cada pessoa diz **uma frase** com o que aprendeu hoje.
 3. Entregue os dois prêmios da organização: **ideia mais criativa** e **melhor trabalho em equipe**.
-4. Clique em **Revelar no telão** para a barraca campeã, a que recebeu mais fichas.
+4. Clique em **Revelar no telão**: cada barraca aparece com os pontos do manual, as fichas e o total.
 
-Se duas ou três barracas tiverem a mesma pontuação, o telão mostra o empate e divide a posição.
-A ordem das equipes não é usada como desempate.
-
-Com três prêmios e três equipes, dá para cada equipe sair com um, se fizer sentido.
+Se duas ou três barracas empatarem no total, o telão mostra o empate e divide a posição.
 
 ## Depois
 

@@ -9,19 +9,19 @@ git fetch
 git switch equipe-N
 ```
 
-## No começo de cada rodada (quem vai pilotar)
+## No começo de cada missão (quem vai pilotar)
 
-Pega o que a equipe fez na rodada anterior:
+Pega o que a equipe fez no ciclo anterior:
 
 ```bash
 git pull
 ```
 
-## No fim de cada rodada: entregar
+## Durante a missão: entregar (cedo e várias vezes)
 
 ```bash
 git add .
-git commit -m "rodada 1: nome e cores da barraca"
+git commit -m "ciclo 1: nome e cores da barraca"
 git push
 ```
 

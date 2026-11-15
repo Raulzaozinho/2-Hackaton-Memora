@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class FeiraService {
 
     public static final List<String> EQUIPES = List.of("equipe-1", "equipe-2", "equipe-3");
-    /** Na rodada 1 a primeira pessoa da equipe é piloto; a cada rodada os papéis andam uma casa. */
+    /** No ciclo 1 a primeira pessoa da equipe é piloto; a cada ciclo os papéis andam uma casa. */
     private static final List<String> PAPEIS = List.of("piloto", "copiloto", "reporter");
 
     private final Repositorios.Eventos eventos;
@@ -35,14 +35,18 @@ public class FeiraService {
     private final Organizadores organizadores;
     private final Repositorios.Fichas fichas;
     private final Repositorios.Entregas entregas;
-    private final int fichasPorPessoa;
+    private final Repositorios.Avaliacoes avaliacoes;
+    private final int fichasPorCiclo;
+    private final int pontosPorFicha;
     private final String enderecoConfigurado;
     private final String porta;
     private final String pastaDoFront;
 
     public FeiraService(Repositorios.Eventos eventos, Repositorios.Participantes participantes,
             Repositorios.Fichas fichas, Repositorios.Entregas entregas,
-            @Value("${feira.fichas-por-pessoa:5}") int fichasPorPessoa,
+            Repositorios.Avaliacoes avaliacoes,
+            @Value("${feira.fichas-por-ciclo:2}") int fichasPorCiclo,
+            @Value("${feira.pontos-por-ficha:5}") int pontosPorFicha,
             @Value("${feira.endereco:}") String enderecoConfigurado,
             @Value("${server.port:8080}") String porta,
             @Value("${spring.web.resources.static-locations:}") String pastaDoFront,
@@ -51,15 +55,17 @@ public class FeiraService {
         this.participantes = participantes;
         this.fichas = fichas;
         this.entregas = entregas;
-        this.fichasPorPessoa = fichasPorPessoa;
+        this.avaliacoes = avaliacoes;
+        this.fichasPorCiclo = fichasPorCiclo;
+        this.pontosPorFicha = pontosPorFicha;
         this.enderecoConfigurado = enderecoConfigurado;
         this.porta = porta;
         this.pastaDoFront = pastaDoFront;
         this.organizadores = organizadores;
     }
 
-    public int fichasPorPessoa() {
-        return fichasPorPessoa;
+    public int fichasPorCiclo() {
+        return fichasPorCiclo;
     }
 
     @Transactional
@@ -85,23 +91,31 @@ public class FeiraService {
                 Arrays.stream(Etapa.values()).map(EtapaInfo::de).toList(),
                 evento.getTerminaEm(),
                 Instant.now(),
-                etapa == Etapa.FEIRA,
+                etapa.tipo == Etapa.Tipo.VOTACAO,
                 evento.isResultadoRevelado(),
                 equipes,
-                fichas.count(),
-                comEquipe * fichasPorPessoa,
+                fichas.countByCiclo(etapa.rodada),
+                etapa.tipo == Etapa.Tipo.VOTACAO ? comEquipe * fichasPorCiclo : 0,
                 evento.isResultadoRevelado() ? placar() : null,
                 endereco(),
                 versaoDoFront(),
                 participantes.existsByEmailIsNotNull() || organizadores.existe());
     }
 
-    /** As barracas ordenadas da que recebeu mais fichas para a que recebeu menos. */
+    /** As barracas ordenadas pelo total: pontos do manual mais as fichas de todas as votações. */
     public List<Placar> placar() {
         return EQUIPES.stream()
-                .map(id -> new Placar(id, fichas.countByBarraca(id)))
-                .sorted(Comparator.comparingLong(Placar::fichas).reversed())
+                .map(id -> {
+                    long manual = pontosDoManual(id);
+                    long recebidas = fichas.countByBarraca(id);
+                    return new Placar(id, manual, recebidas, manual + recebidas * pontosPorFicha);
+                })
+                .sorted(Comparator.comparingLong(Placar::total).reversed())
                 .toList();
+    }
+
+    public long pontosDoManual(String equipe) {
+        return avaliacoes.findByEquipe(equipe).stream().mapToLong(a -> a.getPontos() == null ? 0 : a.getPontos()).sum();
     }
 
     // ---------------------------------------------------------------- etapas e relógio
@@ -150,7 +164,7 @@ public class FeiraService {
         evento().setResultadoRevelado(revelado);
     }
 
-    /** Volta o dia para o começo: abertura, relógio parado, nenhuma ficha gasta. */
+    /** Volta o dia para o começo: abertura, relógio parado, nenhuma ficha e nenhuma avaliação. */
     @Transactional
     public void recomecar() {
         Evento evento = evento();
@@ -158,6 +172,7 @@ public class FeiraService {
         evento.setTerminaEm(null);
         evento.setResultadoRevelado(false);
         fichas.deleteAll();
+        avaliacoes.deleteAll();
     }
 
     // ---------------------------------------------------------------- equipes
@@ -210,10 +225,10 @@ public class FeiraService {
         EntregaInfo ultima = entregas.findFirstByEquipeOrderByIdDesc(id)
                 .map(e -> new EntregaInfo(e.isOk(), e.getMensagem(), e.getAutor(), e.getCriadoEm()))
                 .orElse(null);
-        return new EquipeInfo(id, membros, ultima, entregas.countByEquipeAndOkTrue(id));
+        return new EquipeInfo(id, membros, ultima, entregas.countByEquipeAndOkTrue(id), pontosDoManual(id));
     }
 
-    /** Quem está na posição do piloto muda a cada rodada, então em quatro rodadas todos digitam. */
+    /** Quem está na posição do piloto muda a cada ciclo, então em três ciclos todos digitam. */
     static String papel(int posicao, int tamanhoDaEquipe, int rodada) {
         if (rodada <= 0 || tamanhoDaEquipe == 0) {
             return null;

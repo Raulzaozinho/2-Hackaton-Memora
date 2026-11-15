@@ -21,9 +21,9 @@ export class Equipe2 {
   private api = inject(BarracaApi); // conversa com o back-end
   private feira = inject(FeiraService); // sabe quem está usando a tela: this.feira.meuNome()
 
-  // RODADA 2 — a lista de itens que vem do back-end entra aqui.
+  // CICLO 2 — a lista de itens que vem do back-end entra aqui.
 
-  // RODADA 3 — o que o visitante digita e a lista do que já foi gravado entram aqui.
+  // CICLO 3 — o que o visitante digita e a lista do que já foi gravado entram aqui.
 
-  // RODADA 4 — a atração de vocês!
+  // CICLO 3 · DESAFIO — a atração de vocês!
 }

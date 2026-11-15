@@ -1,0 +1,125 @@
+<div class="mesa">
+  @if (!podeLer()) {
+    <main class="trancado">
+      <div class="cadeado" aria-hidden="true">🔒</div>
+      <h1>Manual do copiloto</h1>
+      <p>{{ motivoDoBloqueio() }}</p>
+      <a class="botao" routerLink="/">Voltar para a feira</a>
+    </main>
+  } @else if (ciclo(); as ciclo) {
+    <header class="capa" [style.background]="barraca()?.cor" [style.color]="corDoTexto(barraca()?.cor ?? '#2b2118')">
+      <div class="capa-topo">
+        <a routerLink="/" class="voltar">← Feira</a>
+        <span class="relogio" aria-label="Tempo restante da etapa">⏱ {{ relogio() }}</span>
+      </div>
+      <p class="selo">Manual de campo · Ciclo {{ ciclo.numero }} de 3</p>
+      <h1>{{ ciclo.titulo }}</h1>
+      <p class="missao">{{ ciclo.missao }}</p>
+      <div class="capa-rodape">
+        @if (barraca(); as b) {
+          <span class="equipe">{{ b.emoji }} {{ b.nome }}</span>
+        }
+        <span class="pontos">Vale até <strong>{{ possiveis() }}</strong> pontos</span>
+        <span class="pontos">Já aprovados: <strong>{{ pontosDaEquipe() }}</strong></span>
+      </div>
+    </header>
+
+    @if (ehOrganizacao()) {
+      <nav class="organizacao" aria-label="Escolher equipe e ciclo">
+        <span>Organização:</span>
+        @for (b of barracas; track b.id) {
+          <button class="botao" [class.claro]="equipeEscolhida() !== b.id" (click)="equipeEscolhida.set(b.id)">
+            {{ b.emoji }} {{ b.id }}
+          </button>
+        }
+        @for (c of manual; track c.numero) {
+          <button class="botao" [class.claro]="numeroDoCiclo() !== c.numero" (click)="cicloEscolhido.set(c.numero)">
+            Ciclo {{ c.numero }}
+          </button>
+        }
+      </nav>
+    }
+
+    <div class="paginas">
+      <aside class="lateral">
+        <section class="bloco">
+          <h2>Como jogar</h2>
+          <ol>
+            <li>Você é o único que lê este manual. <strong>Não mostre a tela.</strong></li>
+            <li>Leia um item, explique ao piloto e espere ele dizer que fez.</li>
+            <li>Pergunte ao repórter o que apareceu. Se der erro, ele lê o arquivo e a linha.</li>
+            <li>Só pontua o que <strong>entrar no telão</strong> até o relógio zerar.</li>
+            <li>A equipe tem 2 espiadas de 30 segundos no computador do piloto.</li>
+          </ol>
+        </section>
+
+        <section class="bloco">
+          <h2>Dicionário de símbolos</h2>
+          <dl class="simbolos">
+            <dt>'</dt><dd>aspas simples</dd>
+            <dt>"</dt><dd>aspas duplas</dd>
+            <dt>{{ '{ }' }}</dt><dd>chaves</dd>
+            <dt>[ ]</dt><dd>colchetes</dd>
+            <dt>( )</dt><dd>parênteses</dd>
+            <dt>&lt; &gt;</dt><dd>menor que, maior que</dd>
+            <dt>;</dt><dd>ponto e vírgula</dd>
+            <dt>=&gt;</dt><dd>igual e maior (seta)</dd>
+            <dt>&#64;</dt><dd>arroba</dd>
+          </dl>
+        </section>
+
+        <section class="bloco entrega">
+          <h2>Para entregar</h2>
+          <p>Dite ao piloto, num terminal:</p>
+          <pre><code>git add .
+git commit -m "ciclo {{ ciclo.numero }}: o que fizemos"
+git push</code></pre>
+          <p>O repórter confere no telão se entrou. Entreguem cedo e entreguem de novo a cada item.</p>
+        </section>
+
+        <section class="bloco">
+          <h2>Seu rascunho</h2>
+          <p class="progresso-texto">Marcado por você: <strong>{{ pontosMarcados() }}</strong> de {{ possiveis() }} pontos</p>
+          <div class="barra" role="progressbar" [attr.aria-valuenow]="pontosMarcados()" [attr.aria-valuemax]="possiveis()">
+            <span [style.width.%]="possiveis() ? (pontosMarcados() / possiveis()) * 100 : 0"></span>
+          </div>
+          <p class="nota">Quem dá os pontos de verdade é a organização, olhando a feira.</p>
+        </section>
+      </aside>
+
+      <main class="itens">
+        @for (item of ciclo.itens; track item.id; let i = $index) {
+          <article class="item" [class.feito]="marcado(item)" [attr.data-nivel]="item.nivel">
+            <header class="item-topo">
+              <span class="numero">{{ numero(i) }}</span>
+              <div class="item-titulo">
+                <span class="nivel">{{ niveis[item.nivel] }}</span>
+                <h3>{{ item.titulo }}</h3>
+              </div>
+              <span class="valor">+{{ item.pontos }}</span>
+            </header>
+
+            <p class="arquivo"><span aria-hidden="true">📄</span> {{ texto(item.arquivo) }}</p>
+
+            <ol class="passos">
+              @for (passo of item.passos; track $index) {
+                <li>{{ texto(passo) }}</li>
+              }
+            </ol>
+
+            @if (item.codigo) {
+              <pre class="codigo"><code>{{ texto(item.codigo) }}</code></pre>
+            }
+
+            <p class="confere"><strong>O repórter deve ver:</strong> {{ texto(item.confere) }}</p>
+
+            <label class="marcar">
+              <input type="checkbox" [checked]="marcado(item)" (change)="alternar(item)" />
+              O piloto fez este item
+            </label>
+          </article>
+        }
+      </main>
+    </div>
+  }
+</div>

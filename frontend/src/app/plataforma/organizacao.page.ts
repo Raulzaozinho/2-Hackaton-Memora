@@ -5,7 +5,8 @@ import { RouterLink } from '@angular/router';
 import { BARRACAS } from '../barracas/registro';
 import { mensagemDeErro } from './barraca-api';
 import { FeiraService, formatarRelogio } from './feira.service';
-import { EstadoDaFeira, Placar } from './tipos';
+import { MANUAL, cicloDoManual, ItemDoManual } from './manual';
+import { EstadoDaFeira, ItemAprovado, Placar } from './tipos';
 
 const CHAVE_PIN = 'feira.pin';
 
@@ -27,12 +28,26 @@ export class OrganizacaoPage {
   protected placar = signal<Placar[]>([]);
   protected relogio = computed(() => formatarRelogio(this.feira.segundosRestantes()));
 
+  // Avaliação: a organização confere na feira cada item do manual e marca o que a equipe cumpriu.
+  protected manual = MANUAL;
+  protected cicloEscolhido = signal<number | null>(null);
+  protected cicloAvaliado = computed(() => this.cicloEscolhido() ?? (this.feira.estado()?.etapa?.rodada || 1));
+  protected itensDoCiclo = computed(() => cicloDoManual(this.cicloAvaliado())?.itens ?? []);
+  protected aprovados = signal<ItemAprovado[]>([]);
+  private cicloCarregado: number | null = null;
+
   constructor() {
     // O estado chega a cada três segundos. A distribuição também pode mudar
     // sem alterar o total de fichas, por isso consultamos a cada atualização.
     effect(() => {
       const estado = this.feira.estado();
       if (this.dentro() && estado) this.carregarPlacar();
+    });
+    effect(() => {
+      const ciclo = this.cicloAvaliado();
+      const rodada = this.feira.estado()?.etapa?.rodada ?? 0;
+      const querVer = this.cicloEscolhido() !== null || rodada > 0;
+      if (this.dentro() && querVer && ciclo !== this.cicloCarregado) this.carregarAvaliacoes(ciclo);
     });
     if (this.pin()) {
       this.entrar();
@@ -110,6 +125,54 @@ export class OrganizacaoPage {
           this.carregarPlacar();
         },
         error: (erro) => this.aviso.set(mensagemDeErro(erro)),
+      });
+  }
+
+  protected aprovado(equipe: string, item: ItemDoManual): boolean {
+    return this.aprovados().some((a) => a.equipe === equipe && a.item === item.id);
+  }
+
+  protected pontosNoCiclo(equipe: string): number {
+    return this.aprovados().filter((a) => a.equipe === equipe).reduce((soma, a) => soma + a.pontos, 0);
+  }
+
+  protected alternarItem(equipe: string, item: ItemDoManual) {
+    const ciclo = this.cicloAvaliado();
+    const feito = !this.aprovado(equipe, item);
+    // Mostra na hora; a resposta do servidor confirma.
+    this.aprovados.set(
+      feito
+        ? [...this.aprovados(), { equipe, ciclo, item: item.id, pontos: item.pontos }]
+        : this.aprovados().filter((a) => !(a.equipe === equipe && a.item === item.id)),
+    );
+    this.http
+      .put<EstadoDaFeira>(
+        '/api/organizacao/avaliacoes',
+        { equipe, ciclo, item: item.id, pontos: item.pontos, feito },
+        { headers: this.cabecalho() },
+      )
+      .subscribe({
+        next: (estado) => {
+          this.feira.estado.set(estado);
+          this.carregarAvaliacoes(ciclo);
+          this.carregarPlacar();
+        },
+        error: (erro) => {
+          this.aviso.set(mensagemDeErro(erro));
+          this.carregarAvaliacoes(ciclo);
+        },
+      });
+  }
+
+  private carregarAvaliacoes(ciclo: number) {
+    this.cicloCarregado = ciclo;
+    this.http
+      .get<ItemAprovado[]>('/api/organizacao/avaliacoes', { params: { ciclo }, headers: this.cabecalho() })
+      .subscribe({
+        next: (lista) => {
+          if (this.cicloAvaliado() === ciclo) this.aprovados.set(lista);
+        },
+        error: () => undefined,
       });
   }
 

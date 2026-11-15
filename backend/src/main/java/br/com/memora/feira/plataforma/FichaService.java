@@ -6,7 +6,10 @@ import java.util.TreeMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/** As regras das fichas: cada pessoa tem um número fixo e só gasta nas barracas das outras equipes. */
+/**
+ * As regras das fichas: em cada votação (uma por ciclo) cada pessoa tem um número fixo de fichas
+ * e só pode dá-las às barracas das outras equipes.
+ */
 @Service
 public class FichaService {
 
@@ -22,20 +25,22 @@ public class FichaService {
         this.feira = feira;
     }
 
+    /** As fichas da pessoa no ciclo atual. */
     @Transactional(readOnly = true)
     public MinhasFichas minhas(String slug) {
+        int ciclo = feira.evento().getEtapa().rodada;
         Map<String, Long> porBarraca = new TreeMap<>();
-        for (Ficha ficha : fichas.findByParticipante(slug)) {
+        for (Ficha ficha : fichas.findByParticipanteAndCiclo(slug, ciclo)) {
             porBarraca.merge(ficha.getBarraca(), 1L, Long::sum);
         }
         long gastas = porBarraca.values().stream().mapToLong(Long::longValue).sum();
-        return new MinhasFichas(feira.fichasPorPessoa() - gastas, feira.fichasPorPessoa(), porBarraca);
+        return new MinhasFichas(feira.fichasPorCiclo() - gastas, feira.fichasPorCiclo(), porBarraca);
     }
 
     @Transactional
     public MinhasFichas dar(String slug, String barraca) {
         Participante participante = participanteParaAlterarFichas(slug);
-        exigirFeiraAberta();
+        int ciclo = cicloDaVotacao();
         if (barraca == null || !FeiraService.EQUIPES.contains(barraca)) {
             throw new RegraException("Essa barraca não recebe fichas");
         }
@@ -45,31 +50,33 @@ public class FichaService {
         if (barraca.equals(participante.getEquipe())) {
             throw new RegraException("Não vale dar ficha para a barraca da própria equipe");
         }
-        if (fichas.countByParticipante(slug) >= feira.fichasPorPessoa()) {
-            throw new RegraException("Suas fichas acabaram");
+        if (fichas.countByParticipanteAndCiclo(slug, ciclo) >= feira.fichasPorCiclo()) {
+            throw new RegraException("Suas fichas desta votação acabaram");
         }
-        fichas.save(new Ficha(slug, barraca));
+        fichas.save(new Ficha(slug, barraca, ciclo));
         return minhas(slug);
     }
 
     @Transactional
     public MinhasFichas devolver(String slug, String barraca) {
         participanteParaAlterarFichas(slug);
-        exigirFeiraAberta();
-        Ficha ficha = fichas.findFirstByParticipanteAndBarracaOrderByIdDesc(slug, barraca)
-                .orElseThrow(() -> new RegraException("Você não deu ficha para essa barraca"));
+        int ciclo = cicloDaVotacao();
+        Ficha ficha = fichas.findFirstByParticipanteAndBarracaAndCicloOrderByIdDesc(slug, barraca, ciclo)
+                .orElseThrow(() -> new RegraException("Você não deu ficha para essa barraca nesta votação"));
         fichas.delete(ficha);
         return minhas(slug);
     }
 
     private Participante participanteParaAlterarFichas(String slug) {
         return participantes.findBySlug(slug == null ? "" : slug)
-                .orElseThrow(() -> new RegraException("Escolha quem você é antes de dar fichas"));
+                .orElseThrow(() -> new RegraException("Entre com o seu e-mail antes de dar fichas"));
     }
 
-    private void exigirFeiraAberta() {
-        if (feira.evento().getEtapa() != Etapa.FEIRA) {
-            throw new RegraException("As fichas só valem com a feira aberta");
+    private int cicloDaVotacao() {
+        Etapa etapa = feira.evento().getEtapa();
+        if (etapa.tipo != Etapa.Tipo.VOTACAO) {
+            throw new RegraException("As fichas só valem durante a votação");
         }
+        return etapa.rodada;
     }
 }

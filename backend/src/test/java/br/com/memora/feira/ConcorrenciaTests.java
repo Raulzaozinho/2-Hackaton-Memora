@@ -22,7 +22,7 @@ class ConcorrenciaTests {
     @Autowired FichaService fichas;
 
     @Test
-    void cliquesSimultaneosNaoGastamMaisDeCincoFichas() throws Exception {
+    void cliquesSimultaneosNaoGastamMaisFichasQueAVotacaoPermite() throws Exception {
         feira.recomecar();
         while (!feira.estado().feiraAberta()) feira.proximaEtapa();
         var largada = new CountDownLatch(1);
@@ -47,7 +47,7 @@ class ConcorrenciaTests {
             assertThat(todosProntos).isTrue();
             int aceitas = 0;
             for (var resultado : resultados) if (resultado.get(20, TimeUnit.SECONDS)) aceitas++;
-            assertThat(aceitas).isEqualTo(5);
+            assertThat(aceitas).isEqualTo(2);
             assertThat(fichas.minhas("demo-1").restantes()).isZero();
         }
     }

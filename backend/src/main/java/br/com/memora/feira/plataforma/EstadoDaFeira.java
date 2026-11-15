@@ -9,6 +9,7 @@ public record EstadoDaFeira(
         List<EtapaInfo> etapas,
         Instant terminaEm,
         Instant agora,
+        /** Verdadeiro durante a votação de um ciclo: as fichas valem. */
         boolean feiraAberta,
         boolean resultadoRevelado,
         List<EquipeInfo> equipes,
@@ -21,18 +22,21 @@ public record EstadoDaFeira(
         /** Verdadeiro quando há e-mails cadastrados: cada pessoa entra com o próprio e-mail em vez de escolher numa lista. */
         boolean entrarComEmail) {
 
-    public record EtapaInfo(String codigo, String titulo, int minutos, int rodada, String quadro, String entrega) {
+    /** "rodada" é o número do ciclo (1 a 3); "tipo" é AULA, MISSAO, AVALIACAO, VOTACAO ou OUTRA. */
+    public record EtapaInfo(String codigo, String titulo, int minutos, int rodada, String tipo, String quadro, String entrega) {
         static EtapaInfo de(Etapa etapa) {
-            return new EtapaInfo(etapa.name(), etapa.titulo, etapa.minutos, etapa.rodada, etapa.quadro, etapa.entrega);
+            return new EtapaInfo(etapa.name(), etapa.titulo, etapa.minutos, etapa.rodada, etapa.tipo.name(), etapa.quadro, etapa.entrega);
         }
     }
 
-    public record EquipeInfo(String id, List<Membro> membros, EntregaInfo ultimaEntrega, long entregas) { }
+    /** "pontosDoManual" é a soma do que a organização aprovou nas avaliações. As fichas ficam secretas até a premiação. */
+    public record EquipeInfo(String id, List<Membro> membros, EntregaInfo ultimaEntrega, long entregas, long pontosDoManual) { }
 
-    /** O papel só existe durante as rodadas: piloto, copiloto, reporter ou apoio. */
+    /** O papel só existe durante os ciclos: piloto, copiloto, reporter ou apoio. */
     public record Membro(String slug, String nome, String emoji, String papel) { }
 
     public record EntregaInfo(boolean ok, String mensagem, String autor, Instant quando) { }
 
-    public record Placar(String barraca, long fichas) { }
+    /** Pontos do manual, fichas recebidas em todas as votações e o total (cada ficha vale "pontos-por-ficha"). */
+    public record Placar(String barraca, long pontosDoManual, long fichas, long total) { }
 }

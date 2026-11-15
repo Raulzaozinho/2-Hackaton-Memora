@@ -24,10 +24,17 @@ public final class Repositorios {
     }
 
     public interface Fichas extends JpaRepository<Ficha, Long> {
-        long countByParticipante(String participante);
+        long countByParticipanteAndCiclo(String participante, Integer ciclo);
         long countByBarraca(String barraca);
-        List<Ficha> findByParticipante(String participante);
-        Optional<Ficha> findFirstByParticipanteAndBarracaOrderByIdDesc(String participante, String barraca);
+        long countByCiclo(Integer ciclo);
+        List<Ficha> findByParticipanteAndCiclo(String participante, Integer ciclo);
+        Optional<Ficha> findFirstByParticipanteAndBarracaAndCicloOrderByIdDesc(String participante, String barraca, Integer ciclo);
+    }
+
+    public interface Avaliacoes extends JpaRepository<Avaliacao, Long> {
+        List<Avaliacao> findByCiclo(Integer ciclo);
+        List<Avaliacao> findByEquipe(String equipe);
+        Optional<Avaliacao> findByEquipeAndCicloAndItem(String equipe, Integer ciclo, String item);
     }
 
     public interface RegistrosDoBanco extends JpaRepository<Registro, Long> {

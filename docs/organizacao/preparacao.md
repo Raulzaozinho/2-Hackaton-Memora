@@ -44,7 +44,7 @@ O `--demo` cria nove participantes inventados, já em equipes. Abra:
 O modo demo ignora os crachás reais do projeto. Não combine `--demo` e `--supabase`:
 o ensaio deve ficar separado do banco oficial.
 
-Passe por todas as etapas com **Próxima etapa**, dê algumas fichas por outro computador e revele o resultado. No fim, clique em **Recomeçar o dia**.
+Passe por todas as etapas com **Próxima etapa**. Numa avaliação, marque alguns itens do manual e veja os pontos no telão; numa votação, dê fichas por outro computador; na premiação, revele o resultado. No fim, clique em **Recomeçar o dia**, que apaga fichas e avaliações.
 
 **Teste a rede com dois computadores.** O telão mostra um endereço como `http://192.168.0.10:8080`: abra-o em outro computador no mesmo Wi-Fi. Depois, nesse outro computador, rode `node scripts/piloto.mjs` e abra o painel do repórter (porta 4201) a partir de um terceiro computador. Algumas redes de empresa bloqueiam um computador de falar com outro; se não abrir, o plano B é todos entrarem no roteador de um celular.
 
@@ -68,7 +68,7 @@ npm install
 
 Copie para a pasta `backend` desse clone os dois arquivos que não vão para o Git: o `.env` (conexão com o Supabase) e o `emails.local.properties` (o e-mail de cada participante, para entrar na feira). O modelo do segundo está em `backend/emails.local.example.properties`: uma linha por pessoa, no formato `nome-do-arquivo-do-crachá=email`.
 
-**3. Imprima** a folha dos papéis ([papeis.md](../papeis.md)) e a cola de Git, um jogo por equipe; os cartões das rodadas o copiloto lê no computador, pelo GitHub. Separe três copos vermelhos.
+**3. Imprima** a folha dos papéis ([papeis.md](../papeis.md)) e a cola de Git, um jogo por equipe; o manual o copiloto abre na própria feira. Separe três copos vermelhos.
 
 ## No dia, 20 minutos antes
 

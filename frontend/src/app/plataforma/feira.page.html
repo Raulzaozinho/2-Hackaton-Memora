@@ -58,14 +58,31 @@
       </select>
     }
     @if (feira.estado()?.feiraAberta && feira.fichas(); as fichas) {
-      <p class="minhas-fichas">🎟️ {{ fichas.restantes }} de {{ fichas.total }} fichas para gastar</p>
+      <p class="minhas-fichas">🎟️ {{ fichas.restantes }} de {{ fichas.total }} fichas para gastar nesta votação</p>
     }
   </section>
 
+  @if (meuPapel(); as papel) {
+    <section class="meu-papel" [attr.data-papel]="papel">
+      @switch (papel) {
+        @case ('copiloto') {
+          <p><strong>🧭 Neste ciclo você é o copiloto.</strong> Só você lê o manual: explique ao piloto o que fazer.</p>
+          <a class="botao" routerLink="/manual">📖 Abrir o manual</a>
+        }
+        @case ('piloto') {
+          <p><strong>⌨️ Neste ciclo você é o piloto.</strong> Rode <code>git pull</code> e <code>node scripts/piloto.mjs</code>, leia o endereço em voz alta e fique só no editor.</p>
+        }
+        @case ('reporter') {
+          <p><strong>📣 Neste ciclo você é o repórter.</strong> Abra no seu computador o endereço que o piloto ler em voz alta e conte o que aparece.</p>
+        }
+      }
+    </section>
+  }
+
   @if (feira.estado()?.feiraAberta) {
     <p class="aviso">
-      <strong>A feira está aberta!</strong> Entre nas barracas das outras equipes, use o que elas fizeram e dê suas
-      fichas para as que você mais gostar.
+      <strong>Votação do ciclo {{ feira.estado()?.etapa?.rodada }}!</strong> Entre nas barracas das outras equipes, use o que
+      elas fizeram e dê suas fichas para as que você mais gostar. Cada ficha vale 5 pontos.
     </p>
   }
 
@@ -76,7 +93,7 @@
         @for (linha of resultado(); track linha.barraca?.id) {
           <li [value]="linha.posicao">
             <span>{{ linha.barraca?.emoji }} {{ linha.barraca?.nome }}</span>
-            <strong>🎟️ {{ linha.fichas }}{{ linha.empate ? ' · empate' : '' }}</strong>
+            <strong>{{ linha.total }} pts{{ linha.empate ? ' · empate' : '' }}</strong>
           </li>
         }
       </ol>

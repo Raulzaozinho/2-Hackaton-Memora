@@ -19,7 +19,7 @@
     @if (recebeFichas()) {
       <footer class="fichas">
         @if (!feira.estado()?.feiraAberta) {
-          <p>🎟️ As fichas valem quando a feira abrir.</p>
+          <p>🎟️ As fichas valem na votação, no fim de cada ciclo.</p>
         } @else if (feira.organizador()) {
           <p>🎟️ A organização não dá fichas: elas são dos participantes.</p>
         } @else if (!feira.eu()) {

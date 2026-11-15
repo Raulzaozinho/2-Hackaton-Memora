@@ -133,3 +133,24 @@
     transition: none;
   }
 }
+
+.meu-papel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 14px 18px;
+  border-radius: var(--raio);
+  background: var(--cartao);
+  border: 2px solid var(--linha);
+  border-left: 8px solid var(--tinta);
+}
+
+.meu-papel[data-papel='copiloto'] {
+  border-left-color: #c9a227;
+}
+
+.meu-papel p {
+  flex: 1;
+  min-width: 240px;
+}

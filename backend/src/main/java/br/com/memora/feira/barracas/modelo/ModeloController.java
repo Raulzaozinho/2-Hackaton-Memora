@@ -25,13 +25,13 @@ public class ModeloController {
 
     private final Random sorte = new Random();
 
-    /** RODADA 2 — a lista do que a barraca oferece. O front pede em GET /api/barracas/modelo/itens. */
+    /** CICLO 2 — a lista do que a barraca oferece. O front pede em GET /api/barracas/modelo/itens. */
     @GetMapping("/itens")
     public List<Item> itens() {
         return SABORES;
     }
 
-    /** RODADA 4 — um endpoint inventado pela barraca: sorteia um sabor surpresa a cada pedido. */
+    /** CICLO 3 · DESAFIO — um endpoint inventado pela barraca: sorteia um sabor surpresa a cada pedido. */
     @GetMapping("/surpresa")
     public Item surpresa() {
         return SABORES.get(sorte.nextInt(SABORES.size()));

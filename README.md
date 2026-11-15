@@ -1,15 +1,15 @@
 # 🎪 Feira Dev
 
-O hackathon dos estagiários da Memora. Todas as equipes trabalham no mesmo aplicativo: uma feira que aparece ao vivo no telão. Cada equipe monta a sua **barraca**, uma página pequena dentro da feira, que ganha uma capacidade nova a cada rodada. No fim, a feira abre e todo mundo visita as barracas pelo computador.
+O hackathon dos estagiários da Memora. Todas as equipes trabalham no mesmo aplicativo: uma feira que aparece ao vivo no telão. Cada equipe monta a sua **barraca**, uma página pequena dentro da feira, que ganha uma capacidade nova a cada ciclo. Ao fim de cada ciclo, a organização confere o manual e todo mundo vota nas barracas das outras equipes.
 
-São 3 horas, 3 equipes de 3 pessoas e 4 rodadas curtas.
+São menos de 3 horas, 3 equipes de 3 pessoas e 3 ciclos. Em cada ciclo, uma pessoa executa sem ver o resultado, outra guia pelo manual e a terceira conta o que aparece na tela.
 
 ## Por onde começar
 
 | Você é… | Leia |
 |---|---|
 | Participante, antes do dia | [Missão Zero](docs/missao-zero.md) |
-| Participante, no dia | [Os papéis](docs/papeis.md) · [Rodada 1](docs/rodadas/rodada-1.md) · [Rodada 2](docs/rodadas/rodada-2.md) · [Rodada 3](docs/rodadas/rodada-3.md) · [Rodada 4](docs/rodadas/rodada-4.md) · [Cola de Git](docs/cola-git.md) |
+| Participante, no dia | [Os papéis](docs/papeis.md) · [Cola de Git](docs/cola-git.md) · o manual do copiloto abre na própria feira |
 | Organização | [Preparação](docs/organizacao/preparacao.md) · [Roteiro do dia](docs/organizacao/roteiro-do-dia.md) |
 
 ## O que você precisa instalar
@@ -83,7 +83,8 @@ backend/src/main/java/br/com/memora/feira/
   plataforma/      etapas, relógio, fichas e registros (não precisa mexer)
 
 backend/src/main/resources/crachas/   um arquivo .json por participante
-docs/                                 os cartões das rodadas e o guia da organização
+docs/                                 os papéis, a cola de Git e o guia da organização
+frontend/src/app/plataforma/manual.ts o manual do copiloto: as missões dos 3 ciclos e os pontos
 scripts/telao.mjs                     sobe a feira oficial na máquina da organização
 ```
 

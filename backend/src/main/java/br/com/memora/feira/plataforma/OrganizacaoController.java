@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /** O painel de quem conduz o dia. Toda chamada precisa do PIN no cabeçalho X-Pin. */
@@ -25,14 +27,21 @@ public class OrganizacaoController {
 
     public record NovaEntrega(String equipe, boolean ok, String mensagem, String autor) { }
 
+    /** Marca (feito = true) ou desmarca um item do manual para uma equipe. Os pontos vêm do manual. */
+    public record ItemAvaliado(String equipe, int ciclo, String item, int pontos, boolean feito) { }
+
+    public record ItemAprovado(String equipe, int ciclo, String item, int pontos) { }
+
     private final FeiraService feira;
     private final Repositorios.Entregas entregas;
+    private final Repositorios.Avaliacoes avaliacoes;
     private final String pin;
 
-    public OrganizacaoController(FeiraService feira, Repositorios.Entregas entregas,
+    public OrganizacaoController(FeiraService feira, Repositorios.Entregas entregas, Repositorios.Avaliacoes avaliacoes,
             @Value("${feira.pin:feira}") String pin) {
         this.feira = feira;
         this.entregas = entregas;
+        this.avaliacoes = avaliacoes;
         this.pin = pin;
     }
 
@@ -87,6 +96,39 @@ public class OrganizacaoController {
     public EstadoDaFeira recomecar(@RequestHeader(value = "X-Pin", required = false) String pin) {
         exigirPin(pin);
         feira.recomecar();
+        return feira.estado();
+    }
+
+    /** O que já foi aprovado num ciclo, para o painel marcar as caixinhas. */
+    @GetMapping("/avaliacoes")
+    public List<ItemAprovado> avaliacoes(@RequestHeader(value = "X-Pin", required = false) String pin,
+            @RequestParam int ciclo) {
+        exigirPin(pin);
+        return avaliacoes.findByCiclo(ciclo).stream()
+                .map(a -> new ItemAprovado(a.getEquipe(), a.getCiclo(), a.getItem(), a.getPontos()))
+                .toList();
+    }
+
+    @PutMapping("/avaliacoes")
+    @Transactional
+    public EstadoDaFeira avaliar(@RequestHeader(value = "X-Pin", required = false) String pin,
+            @RequestBody ItemAvaliado avaliado) {
+        exigirPin(pin);
+        if (!FeiraService.EQUIPES.contains(avaliado.equipe())) {
+            throw new RegraException("Equipe desconhecida: " + avaliado.equipe());
+        }
+        if (avaliado.ciclo() < 1 || avaliado.ciclo() > 3 || avaliado.item() == null || avaliado.item().isBlank()) {
+            throw new RegraException("Item do manual inválido");
+        }
+        var existente = avaliacoes.findByEquipeAndCicloAndItem(avaliado.equipe(), avaliado.ciclo(), avaliado.item());
+        if (avaliado.feito()) {
+            Avaliacao avaliacao = existente.orElseGet(() ->
+                    new Avaliacao(avaliado.equipe(), avaliado.ciclo(), avaliado.item(), avaliado.pontos()));
+            avaliacao.setPontos(Math.max(0, avaliado.pontos()));
+            avaliacoes.save(avaliacao);
+        } else {
+            existente.ifPresent(avaliacoes::delete);
+        }
         return feira.estado();
     }
 
