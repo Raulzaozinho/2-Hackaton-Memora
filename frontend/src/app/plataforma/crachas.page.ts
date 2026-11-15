@@ -18,11 +18,8 @@ import { FeiraService } from './feira.service';
       <section class="mural">
         @for (pessoa of feira.participantes(); track pessoa.slug) {
           <article>
-            <span class="emoji" aria-hidden="true">{{ pessoa.emoji }}</span>
+            <span class="inicial" aria-hidden="true">{{ pessoa.nome.charAt(0) }}</span>
             <h2>{{ pessoa.nome }}</h2>
-            @if (pessoa.frase) {
-              <p>“{{ pessoa.frase }}”</p>
-            }
             <small>{{ pessoa.slug }}.json</small>
           </article>
         } @empty {
@@ -53,9 +50,16 @@ import { FeiraService } from './feira.service';
       background: var(--cartao);
       border: 2px solid var(--linha);
     }
-    .emoji {
-      font-size: 3rem;
-      line-height: 1;
+    .inicial {
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--tinta, #2b211a);
+      color: var(--cartao, #fff);
+      font-size: 1.8rem;
+      font-weight: 700;
     }
     h2 {
       font-size: 1.2rem;

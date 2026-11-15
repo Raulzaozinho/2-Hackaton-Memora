@@ -55,7 +55,7 @@
             <ul class="membros">
               @for (membro of equipe.membros; track membro.slug) {
                 <li>
-                  <span class="pessoa">{{ membro.emoji }} {{ membro.nome }}</span>
+                  <span class="pessoa">{{ membro.nome }}</span>
                   @if (membro.papel) {
                     <span class="papel" [class.piloto]="membro.papel === 'piloto'">{{ papel(membro) }}</span>
                   }

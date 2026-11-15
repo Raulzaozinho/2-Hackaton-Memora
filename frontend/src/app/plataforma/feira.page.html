@@ -27,7 +27,7 @@
     >
       <option value="">Só estou visitando</option>
       @for (pessoa of feira.participantes(); track pessoa.slug) {
-        <option [value]="pessoa.slug">{{ pessoa.emoji }} {{ pessoa.nome }}</option>
+        <option [value]="pessoa.slug">{{ pessoa.nome }}</option>
       }
     </select>
     @if (feira.estado()?.feiraAberta && feira.fichas(); as fichas) {

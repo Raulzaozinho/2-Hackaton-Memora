@@ -30,7 +30,7 @@ export class FeiraPage {
 
   protected equipeDe(barracaId: string): string {
     const equipe = this.feira.estado()?.equipes.find((e) => e.id === barracaId);
-    return (equipe?.membros ?? []).map((membro) => `${membro.emoji} ${membro.nome}`).join(' · ');
+    return (equipe?.membros ?? []).map((membro) => membro.nome).join(' · ');
   }
 
   protected fichasQueDei(barracaId: string): number {

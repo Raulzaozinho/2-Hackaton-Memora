@@ -43,7 +43,7 @@
       <ul class="pessoas">
         @for (pessoa of feira.participantes(); track pessoa.slug) {
           <li>
-            <span>{{ pessoa.emoji }} {{ pessoa.nome }}</span>
+            <span>{{ pessoa.nome }}</span>
             <select
               class="campo"
               [attr.aria-label]="'Equipe de ' + pessoa.nome"

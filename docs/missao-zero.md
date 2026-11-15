@@ -1,6 +1,6 @@
 # Missão Zero — antes do dia
 
-**Objetivo:** chegar no dia com o projeto rodando na sua máquina e com o seu crachá personalizado na feira.
+**Objetivo:** chegar no dia com o projeto rodando na sua máquina e com o seu crachá na feira.
 Leva uns 20 minutos. Se travar em qualquer passo, chame alguém da organização: é para isso que a Missão Zero existe.
 
 ## 1. Instale
@@ -50,24 +50,22 @@ npm start
 
 Abra <http://localhost:4200>. Você deve ver a feira com três barracas.
 
-## 5. Personalize o seu crachá
+## 5. Ajuste o seu crachá
 
-O seu crachá já existe, com um emoji e uma frase provisórios. Agora você deixa ele com a sua cara.
+O seu crachá já existe e só tem o seu nome. Agora você escreve como quer aparecer no telão no dia.
 
 1. Vá até a pasta `backend/src/main/resources/crachas` e abra o arquivo com o seu nome. Exemplo: `bruno.json`.
-2. Troque o emoji e a frase. Se quiser ser chamado de outro jeito, troque o nome também:
+2. Troque o nome pelo jeito que você quer ser chamado: um apelido, ou o nome com a inicial do sobrenome.
 
 ```json
 {
-  "nome": "Bruno",
-  "emoji": "🚀",
-  "frase": "Quero aprender a fazer uma API do zero"
+  "nome": "Bruno S."
 }
 ```
 
 3. **Não mude o nome do arquivo.** É por ele que a feira sabe quem é você.
 4. Pare o back-end (Ctrl+C no terminal dele) e rode de novo.
-5. Abra <http://localhost:4200/#/crachas>. O seu crachá deve aparecer com o emoji e a frase novos.
+5. Abra <http://localhost:4200/#/crachas>. O seu crachá deve aparecer com o nome novo.
 
 Se não mudou, olhe o terminal do back-end: ele avisa quando um crachá tem erro. O mais comum é faltar uma vírgula ou uma aspa.
 
@@ -80,7 +78,7 @@ Troque `bruno` pelo nome do seu arquivo:
 ```bash
 git switch -c cracha/bruno
 git add backend/src/main/resources/crachas/bruno.json
-git commit -m "personaliza o crachá do Bruno"
+git commit -m "ajusta o crachá do Bruno"
 git push -u origin cracha/bruno
 ```
 
