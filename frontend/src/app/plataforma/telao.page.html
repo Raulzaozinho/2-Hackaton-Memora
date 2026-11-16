@@ -138,6 +138,13 @@
         <div class="carta pergunta-carta">
           <p class="carta-selo">⚡ Pergunta relâmpago · +5 para quem responder primeiro</p>
           <h2>{{ p.pergunta }}</h2>
+          @if (p.opcoes) {
+            <ol class="opcoes">
+              @for (opcao of p.opcoes; track $index) {
+                <li><strong>{{ letras[$index] }})</strong> {{ opcao }}</li>
+              }
+            </ol>
+          }
           @if (estado.respostaVisivel) {
             <p class="carta-texto pergunta-resposta">✅ {{ p.resposta }}</p>
           } @else {

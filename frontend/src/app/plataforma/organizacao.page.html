@@ -108,6 +108,11 @@
         @if (perguntaAtual(); as p) {
           <p class="agora-carta">
             No telão: <strong>{{ p.pergunta }}</strong><br />
+            @if (p.opcoes) {
+              @for (opcao of p.opcoes; track $index) {
+                <span>{{ letras[$index] }}) {{ opcao }}</span><br />
+              }
+            }
             Resposta: {{ p.resposta }} {{ estado.respostaVisivel ? '(já aparece no telão)' : '(escondida)' }}
           </p>
         }

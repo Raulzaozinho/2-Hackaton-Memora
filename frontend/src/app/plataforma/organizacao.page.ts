@@ -6,7 +6,7 @@ import { BARRACAS } from '../barracas/registro';
 import { mensagemDeErro } from './barraca-api';
 import { FeiraService, formatarRelogio } from './feira.service';
 import { MANUAL, cicloDoManual, ItemDoManual } from './manual';
-import { perguntaDoCiclo } from './perguntas';
+import { LETRAS, perguntaDoCiclo } from './perguntas';
 import { AjusteFeito, EstadoDaFeira, ItemAprovado, Placar } from './tipos';
 
 const CHAVE_PIN = 'feira.pin';
@@ -62,6 +62,7 @@ export class OrganizacaoPage {
 
   // Dinâmicas: cartas de evento, pontos fora do manual e a pergunta relâmpago.
   protected cartas = CARTAS;
+  protected letras = LETRAS;
   protected ajustes = signal<AjusteFeito[]>([]);
   protected perguntaAtual = computed(() => {
     const estado = this.feira.estado();

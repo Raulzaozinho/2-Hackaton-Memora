@@ -40,7 +40,7 @@ Toda aula tem 5 minutos no relógio do telão. Você **não** precisa falar tudo
 | 2:30 | Aponte a cozinha | "O `@GetMapping` é uma etiqueta que diz: este método atende neste endereço. A equipe 1 vai criar `/api/barracas/equipe-1/destaque`." |
 | 3:00 | Mágica: aba da barraca modelo | "Esta é a vitrine." |
 | 3:20 | Troque para a aba do `/itens` | "Isto é o que a cozinha manda: só texto, sem cor, sem botão. A vitrine pega isso e deixa bonito." Volte e aponte os mesmos sabores. |
-| 4:00 | Pergunta valendo aplauso | "Quem prepara o destaque do dia: a vitrine ou a cozinha?" (A cozinha. A vitrine só mostra.) |
+| 4:00 | Pergunta valendo aplauso | "Quem prepara o destaque do dia?" (A cozinha. A vitrine só mostra.) |
 | 4:30 | Ponte com o SSM | "Toda API do SSM tem controllers assim: `@RestController`, endereço `/api/módulo/recurso` e nomes em português, como `consultarPorId`. O de vocês vai se chamar `consultarDestaque`." |
 | 4:50 | Fechamento | "Fáceis primeiro. Item pronto, commit e push: um commit para cada item." |
 
@@ -184,7 +184,7 @@ Desenhe durante o intervalo:
 | 1:00 | Passos 1 e 2 | "O que a pessoa digita vai direto para a caixinha. O `[(ngModel)]`, colchete com parêntese, é um fio de duas mãos: do campo para a caixinha e da caixinha para o campo. No clique, roda o `cadastrarRecado()`." |
 | 1:50 | Passos 3 e 4 | "O `cadastrarRecado` manda o recado num POST. Quando a cozinha responde que gravou, a gente limpa o campo e busca a lista de novo, para a carta nova aparecer no mural." |
 | 2:30 | Aponte o `[disabled]` | "Atenção: no `[(ngModel)]` vai a caixinha inteira, sem parênteses: `recado`. Para ler o valor, com parênteses: `!recado()`. O ponto de exclamação é 'não': apagado enquanto não tem texto." |
-| 3:00 | Mágica e pergunta | No telão, na barraca modelo: "Olhem o Pedir apagado." Escolha um sabor: "Acendeu. Isso é o `[disabled]`." Clique em **Pedir**. Pergunte, valendo aplauso: "Se eu recarregar a página, o pedido some ou fica? Por quê?" Deixe responderem e aperte F5: "Fica: está no banco, não na tela." Clique três vezes em **🎲 Sabor surpresa**: "O Java sorteia um sabor a cada clique. A pescaria de vocês faz a mesma coisa, com o `Random`." |
+| 3:00 | Mágica e pergunta | No telão, na barraca modelo: "Olhem o Pedir apagado." Escolha um sabor: "Acendeu. Isso é o `[disabled]`." Clique em **Pedir**. Pergunte, valendo aplauso: "O que acontece com este pedido se eu recarregar a página? Por quê?" Deixe responderem e aperte F5: "Fica: está no banco, não na tela." Clique três vezes em **🎲 Sabor surpresa**: "O Java sorteia um sabor a cada clique. A pescaria de vocês faz a mesma coisa, com o `Random`." |
 | 4:30 | Ponte com o SSM | "No SSM quem cria um registro se chama `cadastrar`, é sempre um POST e termina com uma mensagem como 'Marca cadastrada com sucesso!'. Hoje vocês fazem o `cadastrarRecado` e a mensagem 'Recado cadastrado com sucesso!'." |
 
 ### Para explicar (estoque)

@@ -109,7 +109,7 @@ Aponte as três linhas de baixo: "Com essas três coisas vocês fazem o botão d
 
 **A mágica (1 min).** No telão, abra a barraca modelo e mostre os sabores. Abra uma aba nova em `http://localhost:8080/api/barracas/modelo/itens`: "Isto é o que a cozinha manda: só texto, sem cor, sem botão. A vitrine pega isso e deixa bonito." Volte para a barraca e aponte os mesmos sabores.
 
-**A pergunta (30 s).** "Quem prepara o destaque do dia: a vitrine ou a cozinha?" (A cozinha, o Spring Boot. A vitrine só mostra.)
+**A pergunta (30 s).** "Quem prepara o destaque do dia?" (A cozinha, o Spring Boot. A vitrine só mostra.)
 
 **Ponte com o SSM (30 s).** "Toda API do SSM tem controllers assim: `@RestController`, endereço `/api/<modulo>/<recurso>` e métodos com nome em português, como `consultarPorId`. O de vocês vai se chamar `consultarDestaque`."
 
@@ -171,7 +171,7 @@ Bom momento para destravar no particular quem ficou para trás. E para desenhar 
 
 Aponte o `[(ngModel)]`: "colchete e parêntese juntos é um fio de duas mãos: o que a pessoa digita vai para a caixinha, e o que está na caixinha aparece no campo. Atenção: no `[(ngModel)]` vai a caixinha inteira, sem parênteses: `recado`. Para ler o valor, com parênteses: `!recado()`."
 
-**A mágica e a pergunta (1 min e meio).** No telão, na barraca modelo, mostre o botão **Pedir** apagado: "Olhem o Pedir apagado." Escolha um sabor: "Acendeu. Isso é o `[disabled]`." Clique em **Pedir**. Agora a pergunta valendo aplauso, **antes** de apertar F5: "Se eu recarregar a página, o pedido some ou fica? Por quê?" Deixe responderem e aperte F5: o pedido continua na fila. "Fica: está no banco, não na tela." Para fechar, clique três vezes em **🎲 Sabor surpresa**: "o Java sorteia um sabor a cada clique. A pescaria de vocês faz a mesma coisa, com o `Random`."
+**A mágica e a pergunta (1 min e meio).** No telão, na barraca modelo, mostre o botão **Pedir** apagado: "Olhem o Pedir apagado." Escolha um sabor: "Acendeu. Isso é o `[disabled]`." Clique em **Pedir**. Agora a pergunta valendo aplauso, **antes** de apertar F5: "O que acontece com este pedido se eu recarregar a página? Por quê?" Deixe responderem e aperte F5: o pedido continua na fila. "Fica: está no banco, não na tela." Para fechar, clique três vezes em **🎲 Sabor surpresa**: "o Java sorteia um sabor a cada clique. A pescaria de vocês faz a mesma coisa, com o `Random`."
 
 **Ponte com o SSM (30 s).** "No SSM quem cria um registro se chama `cadastrar`, é sempre um POST e termina com uma mensagem como 'Marca cadastrada com sucesso!'. Hoje vocês fazem o `cadastrarRecado` e a mensagem 'Recado cadastrado com sucesso!'."
 

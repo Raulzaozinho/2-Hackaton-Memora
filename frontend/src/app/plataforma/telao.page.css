@@ -501,3 +501,15 @@
   font-weight: 900;
   color: #1e7a3c;
 }
+
+.pergunta-carta .opcoes {
+  list-style: none;
+  margin: 0.4em auto 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35em;
+  text-align: left;
+  font-size: 1.25em;
+  width: fit-content;
+  max-width: 100%;
+}

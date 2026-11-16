@@ -3,7 +3,7 @@ import { BARRACAS } from '../barracas/registro';
 import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
 import { Membro } from './tipos';
 import { REVELACAO, classificarResultado, duracaoDaRevelacao, momentoDaPosicao } from './resultado';
-import { perguntaDoCiclo } from './perguntas';
+import { LETRAS, perguntaDoCiclo } from './perguntas';
 
 /** Nos 3 ciclos vale o modo cego: cada papel enxerga só uma parte (docs/papeis.md). */
 const PAPEIS: Record<string, string> = {
@@ -37,6 +37,8 @@ export class TelaoPage {
     if (!termina) return '';
     return formatarRelogio(Math.max(0, Math.round((Date.parse(termina) - this.feira.agora()) / 1000)));
   });
+
+  protected letras = LETRAS;
 
   protected pergunta = computed(() => {
     const estado = this.feira.estado();
