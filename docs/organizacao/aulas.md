@@ -42,7 +42,7 @@ Toda aula tem 5 minutos no relógio do telão. Você **não** precisa falar tudo
 | 3:20 | Troque para a aba do `/itens` | "Isto é o que a cozinha manda: só texto, sem cor, sem botão. A vitrine pega isso e deixa bonito." Volte e aponte os mesmos sabores. |
 | 4:00 | Pergunta valendo aplauso | "Quem prepara o destaque do dia: a vitrine ou a cozinha?" (A cozinha. A vitrine só mostra.) |
 | 4:30 | Ponte com o SSM | "Toda API do SSM tem controllers assim: `@RestController`, endereço `/api/módulo/recurso` e nomes em português, como `consultarPorId`. O de vocês vai se chamar `consultarDestaque`." |
-| 4:50 | Fechamento | "Fáceis primeiro, entreguem cedo e entreguem de novo a cada item." |
+| 4:50 | Fechamento | "Fáceis primeiro. Item pronto, commit e push: um commit para cada item." |
 
 ### Para explicar (estoque)
 

@@ -83,7 +83,7 @@ Regras que deixam a aula curta:
 - **Desenhe antes.** O do ciclo 1, antes de todos chegarem; o do ciclo 2, durante a votação do ciclo 1; o do ciclo 3, no intervalo. Na aula você só aponta.
 - Explique só o que aparece nos itens **médios**. Os fáceis eles fazem lendo o manual, e o desafio é para quem quiser ir além.
 - O dia inteiro usa **uma imagem só**: a barraca tem uma vitrine (Angular), uma cozinha (Spring Boot) e um garçom que leva e traz (a requisição HTTP, com o JSON no papel).
-- Termine sempre com: "Fáceis primeiro, entreguem cedo e entreguem de novo a cada item".
+- Termine sempre com: "Fáceis primeiro. Item pronto, commit e push: um commit para cada item".
 
 As mágicas usam a barraca modelo no navegador do telão: `http://localhost:8080/#/barraca/modelo`.
 
