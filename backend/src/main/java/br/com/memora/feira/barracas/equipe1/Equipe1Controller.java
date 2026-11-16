@@ -28,8 +28,6 @@ public class Equipe1Controller {
                 new Item("🌿", "Dogão Vegano (de Tchola)", "Completo de Tchola"));
     }
 
-
-
     // CICLO 1 — o destaque do dia entra aqui.
 
     // CICLO 2 — o endpoint de um item só entra aqui.
