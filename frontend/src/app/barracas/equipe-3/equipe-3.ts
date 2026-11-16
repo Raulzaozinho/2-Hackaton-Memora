@@ -28,9 +28,16 @@ export class Equipe3 {
 
   // CICLO 3 — o recado do visitante e a pescaria entram aqui.
 
+recado = signal('');
+recados = signal<Registro[]>([]);
+
+carregarRecados(){
+  this.api.registros('equipe-3').subscribe((lista) =>this.recados.set(lista))
+}
+
   constructor() {
     this.api.itens('equipe-3').subscribe((lista)=> this.itens.set(lista));
     // O que precisa ser buscado assim que a barraca abre entra aqui dentro
-
+    this.carregarRecados();
   }
 }
