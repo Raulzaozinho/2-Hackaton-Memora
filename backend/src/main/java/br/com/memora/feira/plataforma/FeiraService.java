@@ -126,8 +126,20 @@ public class FeiraService {
         return estado;
     }
 
-    /** Entregas (da mais nova para a mais antiga), pontos do manual e extras de todas as equipes, em três consultas. */
-    private record Pontuacao(Map<String, List<Entrega>> entregas, Map<String, Long> manual, Map<String, Long> extras) {
+    /** O combo: a cada 3 tarefas do manual aprovadas pela organização, a equipe ganha +5. */
+    public static final int TAREFAS_DO_COMBO = 3;
+    public static final int PONTOS_DO_COMBO = 5;
+
+    static long pontosDeCombo(long tarefasAprovadas) {
+        return (tarefasAprovadas / TAREFAS_DO_COMBO) * PONTOS_DO_COMBO;
+    }
+
+    /**
+     * Entregas (da mais nova para a mais antiga), pontos do manual, tarefas aprovadas e extras
+     * (ajustes da organização mais o combo) de todas as equipes, em três consultas.
+     */
+    private record Pontuacao(Map<String, List<Entrega>> entregas, Map<String, Long> manual, Map<String, Long> tarefas,
+            Map<String, Long> extras) {
         List<Entrega> entregasDe(String equipe) {
             return entregas.getOrDefault(equipe, List.of());
         }
@@ -137,15 +149,18 @@ public class FeiraService {
         Map<String, List<Entrega>> porEquipe = entregas.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
                 .filter(e -> e.getEquipe() != null)
                 .collect(Collectors.groupingBy(Entrega::getEquipe));
-        Map<String, Long> manual = avaliacoes.findAll().stream()
-                .filter(a -> a.getEquipe() != null)
+        List<Avaliacao> aprovadas = avaliacoes.findAll().stream().filter(a -> a.getEquipe() != null).toList();
+        Map<String, Long> manual = aprovadas.stream()
                 .collect(Collectors.groupingBy(Avaliacao::getEquipe,
                         Collectors.summingLong(a -> a.getPontos() == null ? 0 : a.getPontos())));
-        Map<String, Long> extras = ajustes.findAll().stream()
+        Map<String, Long> tarefas = aprovadas.stream()
+                .collect(Collectors.groupingBy(Avaliacao::getEquipe, Collectors.counting()));
+        Map<String, Long> extras = new java.util.HashMap<>(ajustes.findAll().stream()
                 .filter(a -> a.getEquipe() != null)
                 .collect(Collectors.groupingBy(Ajuste::getEquipe,
-                        Collectors.summingLong(a -> a.getPontos() == null ? 0 : a.getPontos())));
-        return new Pontuacao(porEquipe, manual, extras);
+                        Collectors.summingLong(a -> a.getPontos() == null ? 0 : a.getPontos()))));
+        tarefas.forEach((equipe, quantas) -> extras.merge(equipe, pontosDeCombo(quantas), Long::sum));
+        return new Pontuacao(porEquipe, manual, tarefas, extras);
     }
 
     /** As barracas ordenadas pelo total: pontos do manual, extras e as fichas de todas as votações. */
@@ -177,8 +192,10 @@ public class FeiraService {
         return seguidas;
     }
 
+    /** Ajustes da organização (espiadas, bônus, perguntas) mais o combo de tarefas. */
     public long pontosExtras(String equipe) {
-        return ajustes.findByEquipe(equipe).stream().mapToLong(a -> a.getPontos() == null ? 0 : a.getPontos()).sum();
+        long ajustados = ajustes.findByEquipe(equipe).stream().mapToLong(a -> a.getPontos() == null ? 0 : a.getPontos()).sum();
+        return ajustados + pontosDeCombo(avaliacoes.findByEquipe(equipe).size());
     }
 
     /** Quantas entregas aceitas seguidas a equipe tem, contando da mais recente até a última recusa. */
@@ -321,7 +338,7 @@ public class FeiraService {
                 .orElse(null);
         long aceitas = entregasDaEquipe.stream().filter(Entrega::isOk).count();
         return new EquipeInfo(id, membros, ultima, aceitas, pontuacao.manual().getOrDefault(id, 0L),
-                pontuacao.extras().getOrDefault(id, 0L), sequencia(entregasDaEquipe));
+                pontuacao.extras().getOrDefault(id, 0L), pontuacao.tarefas().getOrDefault(id, 0L));
     }
 
     /** Quem está na posição do piloto muda a cada ciclo, então em três ciclos todos digitam. */

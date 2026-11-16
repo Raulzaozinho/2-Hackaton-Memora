@@ -17,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DinamicaService {
 
     /** A cada 3 entregas aceitas seguidas, sem recusa no meio, a equipe ganha estes pontos. */
-    public static final int PONTOS_DO_COMBO = 5;
-    public static final int ENTREGAS_DO_COMBO = 3;
 
     private final FeiraService feira;
     private final Repositorios.Ajustes ajustes;
@@ -80,14 +78,7 @@ public class DinamicaService {
         return ajustes.findAllByOrderByIdDesc();
     }
 
-    /** Chamado a cada entrega aceita: a cada 3 seguidas, sem recusa no meio, vale o combo. */
-    @Transactional
-    public void conferirCombo(String equipe) {
-        long sequencia = feira.sequenciaDeEntregas(equipe);
-        if (sequencia > 0 && sequencia % ENTREGAS_DO_COMBO == 0) {
-            ajustes.save(new Ajuste(equipe, PONTOS_DO_COMBO, "🔥 Combo de " + ENTREGAS_DO_COMBO + " entregas seguidas"));
-        }
-    }
+    // O combo agora é calculado pelas tarefas aprovadas (FeiraService.pontosDeCombo), não pelas entregas.
 
     // ---------------------------------------------------------------- pergunta relâmpago
 

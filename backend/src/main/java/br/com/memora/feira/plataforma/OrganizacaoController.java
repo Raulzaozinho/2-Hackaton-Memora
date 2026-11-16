@@ -199,9 +199,6 @@ public class OrganizacaoController {
         String mensagem = nova.mensagem() == null ? "" : nova.mensagem();
         entregas.save(new Entrega(nova.equipe(), nova.ok(),
                 mensagem.length() > 500 ? mensagem.substring(0, 500) : mensagem, nova.autor()));
-        if (nova.ok()) {
-            dinamicas.conferirCombo(nova.equipe());
-        }
     }
 
     private void exigirPin(String recebido) {

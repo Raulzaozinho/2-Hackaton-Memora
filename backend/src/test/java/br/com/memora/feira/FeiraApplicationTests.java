@@ -219,20 +219,30 @@ class FeiraApplicationTests {
     @Autowired br.com.memora.feira.plataforma.DinamicaService dinamicas;
     @Autowired Repositorios.Entregas entregasDoBanco;
 
+    @Autowired Repositorios.Avaliacoes avaliacoesDoBanco;
+
     @Test
-    void tresEntregasSeguidasValemComboEUmaRecusaZeraASequencia() {
-        entregasDoBanco.deleteAll();
-        for (int i = 0; i < 3; i++) {
-            entregasDoBanco.save(new br.com.memora.feira.plataforma.Entrega("equipe-3", true, "ok " + i, "Carla"));
-            dinamicas.conferirCombo("equipe-3");
+    void aCadaTresTarefasAprovadasOComboVale5EEntregasRepetidasNaoContam() {
+        // Muitas entregas não dão combo: só as tarefas que a organização aprova.
+        for (int i = 0; i < 4; i++) {
+            entregasDoBanco.save(new br.com.memora.feira.plataforma.Entrega("equipe-3", true, "mesma tarefa " + i, "Carla"));
         }
+        assertThat(feira.pontosExtras("equipe-3")).isZero();
+
+        String[] itens = {"c1-nome", "c1-emoji-cor", "c1-vitrine", "c1-equipe", "c1-curtir", "c1-estilo"};
+        for (int i = 0; i < 2; i++) avaliacoesDoBanco.save(new br.com.memora.feira.plataforma.Avaliacao("equipe-3", 1, itens[i], 10));
+        assertThat(feira.pontosExtras("equipe-3")).isZero();
+        avaliacoesDoBanco.save(new br.com.memora.feira.plataforma.Avaliacao("equipe-3", 1, itens[2], 10));
         assertThat(feira.pontosExtras("equipe-3")).isEqualTo(5);
-        entregasDoBanco.save(new br.com.memora.feira.plataforma.Entrega("equipe-3", false, "não compilou", "Carla"));
-        assertThat(feira.sequenciaDeEntregas("equipe-3")).isZero();
-        entregasDoBanco.save(new br.com.memora.feira.plataforma.Entrega("equipe-3", true, "voltou", "Carla"));
-        dinamicas.conferirCombo("equipe-3");
-        assertThat(feira.pontosExtras("equipe-3")).isEqualTo(5);
-        entregasDoBanco.deleteAll();
+        for (int i = 3; i < 6; i++) avaliacoesDoBanco.save(new br.com.memora.feira.plataforma.Avaliacao("equipe-3", 1, itens[i], 10));
+        assertThat(feira.pontosExtras("equipe-3")).isEqualTo(10);
+
+        var equipe3 = feira.estado().equipes().get(2);
+        assertThat(equipe3.pontosDoManual()).isEqualTo(60);
+        assertThat(equipe3.pontosExtras()).isEqualTo(10);
+        assertThat(equipe3.sequencia()).isEqualTo(6);
+        assertThat(feira.placar()).filteredOn(p -> p.barraca().equals("equipe-3")).first()
+                .extracting(p -> p.total()).isEqualTo(70L);
     }
 
     @Test

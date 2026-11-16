@@ -44,7 +44,7 @@ public record EstadoDaFeira(
     /** "pontosDoManual" é a soma do que a organização aprovou nas avaliações. As fichas ficam secretas até a premiação. */
     public record EquipeInfo(String id, List<Membro> membros, EntregaInfo ultimaEntrega, long entregas, long pontosDoManual,
             /** Espiadas compradas, bônus, perguntas e combos. */ long pontosExtras,
-            /** Entregas aceitas seguidas, sem recusa no meio. */ long sequencia) { }
+            /** Tarefas do manual aprovadas pela organização (a cada 3, o combo vale +5). */ long sequencia) { }
 
     public record CartaInfo(String codigo, String emoji, String titulo, String texto, java.time.Instant terminaEm) { }
 
