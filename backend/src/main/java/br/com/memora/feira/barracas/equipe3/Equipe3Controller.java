@@ -20,8 +20,10 @@ public class Equipe3Controller {
      * CICLO 2 — a lista do que a barraca de vocês oferece.
      * Troquem o item de exemplo e acrescentem os de vocês, separados por vírgula.
      */
+
+    
     @GetMapping("/itens")
-    public List<Item> itens() {
+    public List<Item> itens() { 
         return List.of(
                 new Item("🍓", "Merge de Morango", "sem conflitos, só sabor"),
                 new Item("🍫", "commit de chocolate", "dificil de desfazer "),
