@@ -23,10 +23,12 @@ Todos entram na feira com o próprio e-mail. A página da feira diz o papel de c
 
 **Piloto**, no computador dele:
 
-```bash
+```powershell
 git pull
-node scripts/piloto.mjs
+.piloto.cmd
 ```
+
+(No Mac ou Linux: `node scripts/piloto.mjs`.)
 
 O comando liga o back-end e o front-end e escreve um endereço como `http://192.168.0.25:4201/painel`. Leia esse endereço em voz alta e minimize a janela: dali em diante você só usa o editor. Quando você salva um arquivo Java, o back-end reinicia sozinho.
 

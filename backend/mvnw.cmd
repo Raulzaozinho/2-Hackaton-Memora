@@ -88,11 +88,12 @@ if (-not (Test-Path -Path $MAVEN_M2_PATH)) {
     New-Item -Path $MAVEN_M2_PATH -ItemType Directory | Out-Null
 }
 
-$MAVEN_WRAPPER_DISTS = $null
-if ((Get-Item $MAVEN_M2_PATH).Target[0] -eq $null) {
-  $MAVEN_WRAPPER_DISTS = "$MAVEN_M2_PATH/wrapper/dists"
-} else {
-  $MAVEN_WRAPPER_DISTS = (Get-Item $MAVEN_M2_PATH).Target[0] + "/wrapper/dists"
+# Feira Dev: no Windows PowerShell 5.1, ".Target" de uma pasta comum pode ser nulo e o "[0]" quebrava
+# com "Nao e possivel indexar em uma matriz nula". So segue o link quando a pasta for um link.
+$MAVEN_WRAPPER_DISTS = "$MAVEN_M2_PATH/wrapper/dists"
+$MAVEN_M2_TARGET = @((Get-Item $MAVEN_M2_PATH).Target) | Where-Object { $_ }
+if ($MAVEN_M2_TARGET) {
+  $MAVEN_WRAPPER_DISTS = "$(@($MAVEN_M2_TARGET)[0])/wrapper/dists"
 }
 
 $MAVEN_HOME_PARENT = "$MAVEN_WRAPPER_DISTS/$distributionUrlNameMain"

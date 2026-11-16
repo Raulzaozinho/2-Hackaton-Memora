@@ -152,4 +152,17 @@
 .meu-papel p {
   flex: 1;
   min-width: 240px;
+  line-height: 1.8;
+}
+
+/* Um comando para digitar no terminal: fácil de ler e de copiar. */
+.comando {
+  display: inline-block;
+  padding: 1px 8px;
+  margin: 0 2px;
+  border-radius: 6px;
+  background: #2b2118;
+  color: #fff;
+  font-weight: 700;
+  user-select: all;
 }

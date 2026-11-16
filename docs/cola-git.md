@@ -2,7 +2,9 @@
 
 No dia, a equipe trabalha num ramo próprio (`equipe-1`, `equipe-2` ou `equipe-3`). Troque o `N` pelo número da sua equipe.
 
-## Uma vez só, no começo do dia
+## Uma vez só, no começo do dia (todos da equipe)
+
+Troque o `N` pelo número da sua equipe. A página da feira mostra o comando certo.
 
 ```bash
 git fetch

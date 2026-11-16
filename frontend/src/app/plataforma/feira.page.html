@@ -13,7 +13,7 @@
 
   @if (feira.semConexao()) {
     <p class="aviso erro">
-      Sem resposta do back-end. Ele está rodando? Na pasta <code>backend</code>: <code>./mvnw spring-boot:run</code>
+      Sem conexão com a feira. Se uma equipe acabou de entregar código Java, ela volta sozinha em alguns segundos.
     </p>
   }
 
@@ -62,6 +62,17 @@
     }
   </section>
 
+  @if (minhaEquipe(); as equipe) {
+    @if (!meuPapel()) {
+      <section class="meu-papel">
+        <p>
+          <strong>Você está na equipe {{ equipe.numero }}.</strong> No terminal, dentro da pasta <code>feira-dev</code>, rode uma vez:
+          <code class="comando">git fetch</code> e depois <code class="comando">git switch {{ equipe.id }}</code>
+        </p>
+      </section>
+    }
+  }
+
   @if (meuPapel(); as papel) {
     <section class="meu-papel" [attr.data-papel]="papel">
       @switch (papel) {
@@ -70,7 +81,7 @@
           <a class="botao" routerLink="/manual">📖 Abrir o manual</a>
         }
         @case ('piloto') {
-          <p><strong>⌨️ Neste ciclo você é o piloto.</strong> Rode <code>git pull</code> e <code>node scripts/piloto.mjs</code>, leia o endereço em voz alta e fique só no editor.</p>
+          <p><strong>⌨️ Neste ciclo você é o piloto.</strong> No terminal, na pasta <code>feira-dev</code>: <code class="comando">git switch {{ minhaEquipe()?.id }}</code> <code class="comando">git pull</code> <code class="comando">.piloto.cmd</code> Depois leia o endereço em voz alta e fique só no editor.</p>
         }
         @case ('reporter') {
           <p><strong>📣 Neste ciclo você é o repórter.</strong> Abra no seu computador o endereço que o piloto ler em voz alta e conte o que aparece.</p>

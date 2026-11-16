@@ -1,110 +1,65 @@
-# Missão Zero — antes do dia
+# Missão Zero — prepare o seu computador
 
-**Objetivo:** chegar no dia com o projeto rodando na sua máquina e com o seu crachá na feira.
-Leva uns 20 minutos. Se travar em qualquer passo, chame alguém da organização: é para isso que a Missão Zero existe.
+No hackathon cada um vai programar **no próprio notebook**, com Angular e Spring Boot. Para não perder tempo no dia, deixe o computador pronto antes. Leva uns **15 minutos**, quase tudo esperando download.
 
-## 1. Instale
+## 1. Mande o seu usuário do GitHub para o Raul
 
-- Git
-- Node.js 24 (LTS)
-- Java (JDK) 21 ou mais novo
-- VS Code ou IntelliJ
+É o que deixa você enviar código para o projeto. Não tem conta? Crie em <https://github.com/signup>.
 
-Para conferir, abra um terminal e rode os três comandos. Cada um deve responder com um número de versão:
+Quando chegar o convite (no e-mail da conta), aceite. Ou abra direto: <https://github.com/Raulzaozinho/2-Hackaton-Memora/invitations>.
 
-```bash
-git --version
-node --version
-java --version
-```
+## 2. Baixe o projeto e rode o preparar
 
-## 2. Baixe o projeto
+Abra o **PowerShell** e cole, uma linha de cada vez:
 
-```bash
-git clone https://github.com/Raulzaozinho/2-Hackaton-Memora.git feira-dev
+```powershell
+cd $HOME
+git clone -c core.longpaths=true https://github.com/Raulzaozinho/2-Hackaton-Memora.git feira-dev
 cd feira-dev
+.\preparar.cmd
 ```
 
-Para enviar o seu crachá (passo 6) você precisa ser colaborador do repositório. A organização manda o convite para o seu usuário do GitHub; aceite pelo e-mail ou em <https://github.com/Raulzaozinho/2-Hackaton-Memora/invitations>.
+O `preparar` pergunta duas coisas:
 
-## 3. Rode o back-end
+- **o seu usuário do GitHub**;
+- **o seu nome como vai aparecer no telão** (por exemplo, `Bruno`).
 
-```bash
-cd backend
-./mvnw spring-boot:run
+Depois ele faz o resto sozinho:
+
+- Se o seu Node ou o seu Java forem antigos para o projeto, ele baixa um **Node 24** e um **Java 21** numa pasta separada (`feira-ferramentas`). **Nada muda no SSM** nem nos outros projetos.
+- Baixa as dependências do front-end e do back-end.
+- Confere se você já consegue enviar código para o GitHub. Se abrir uma janela do GitHub, entre com a sua conta.
+
+No fim aparece **"Tudo pronto!"** ou uma lista com o que falta e o que fazer. Se faltar algo, resolva e rode o `.\preparar.cmd` de novo.
+
+## 3. Teste
+
+Ainda na pasta `feira-dev`:
+
+```powershell
+.\piloto.cmd
 ```
 
-No PowerShell do Windows: `.\mvnw.cmd spring-boot:run`.
+Espere uns 30 segundos e abra <http://localhost:4201/painel>. Você deve ver a feira de um lado e o quadro de erros do outro. Se o Windows perguntar se o Node pode usar a rede, clique em **Permitir**.
 
-A primeira vez demora, porque ele baixa as dependências. Está pronto quando aparecer `Started FeiraApplication`. Deixe esse terminal aberto.
+Para fechar: **Ctrl+C** no PowerShell.
 
-## 4. Rode o front-end
+Pronto, missão cumprida. 🎉
 
-Abra **outro** terminal, na pasta do projeto:
+## No dia
 
-```bash
-cd frontend
-npm install
-npm start
-```
-
-Abra <http://localhost:4200>. Você deve ver a feira com três barracas.
-
-## 5. Ajuste o seu crachá
-
-O seu crachá já existe e só tem o seu nome. Agora você escreve como quer aparecer no telão no dia.
-
-1. Vá até a pasta `backend/src/main/resources/crachas` e abra o arquivo com o seu nome. Exemplo: `bruno.json`.
-2. Troque o nome pelo jeito que você quer ser chamado: um apelido, ou o nome com a inicial do sobrenome.
-
-```json
-{
-  "nome": "Bruno S."
-}
-```
-
-3. **Não mude o nome do arquivo.** É por ele que a feira sabe quem é você.
-4. Pare o back-end (Ctrl+C no terminal dele) e rode de novo.
-5. Abra <http://localhost:4200/#/crachas>. O seu crachá deve aparecer com o nome novo.
-
-Se não mudou, olhe o terminal do back-end: ele avisa quando um crachá tem erro. O mais comum é faltar uma vírgula ou uma aspa.
-
-Não achou um arquivo com o seu nome? Avise a organização.
-
-## 6. Envie o seu crachá
-
-Troque `bruno` pelo nome do seu arquivo:
-
-```bash
-git switch -c cracha/bruno
-git add backend/src/main/resources/crachas/bruno.json
-git commit -m "ajusta o crachá do Bruno"
-git push -u origin cracha/bruno
-```
-
-Depois abra o repositório no GitHub e clique em **Compare & pull request**. Esse é o seu primeiro PR (pedido para juntar o seu código ao principal). A organização aprova.
-
-## 7. Teste o jeito do dia
-
-No dia, quem pilota liga tudo com um comando só. Pare o back-end e o front-end (Ctrl+C nos dois terminais) e, na pasta do projeto, rode:
-
-```bash
-node scripts/piloto.mjs
-```
-
-Espere uns 30 segundos e abra <http://localhost:4201/painel>. É o **painel do repórter**: a barraca à esquerda e os erros à direita. Se o Windows perguntar se o Node pode usar a rede, clique em **Permitir**: é isso que deixa o computador de um colega abrir o seu painel no dia.
-
-Para encerrar, Ctrl+C.
-
-## Pronto
-
-Missão cumprida quando o seu PR estiver aberto. No dia você só precisa chegar com o notebook.
+- Traga o notebook **carregado** e o **carregador**.
+- Feche o que estiver usando a porta 8080 (por exemplo, o SSM rodando).
+- Quem pilota não usa IA: se o seu editor tiver o GitHub Copilot ou outro assistente, deixe-o desligado.
 
 ## Se der problema
 
 | O que aparece | O que fazer |
 |---|---|
-| `Port 8080 was already in use` | O back-end já está rodando em outro terminal. Feche o outro. |
-| A feira abre, mas avisa "Sem resposta do back-end" | O terminal do back-end fechou ou ainda está subindo. |
-| `npm` ou `java` "não é reconhecido" | A instalação não terminou ou o terminal é antigo. Feche e abra o terminal de novo. |
-| `Permission denied` no `./mvnw` (Mac ou Linux) | Rode `chmod +x mvnw` uma vez. |
+| `git` não é reconhecido | Instale o Git em <https://git-scm.com> e abra o PowerShell de novo |
+| "ainda sem permissão para enviar código" | Confira se o Raul recebeu o seu usuário e se você aceitou o convite. Depois rode `.\preparar.cmd` de novo |
+| "a porta 8080 está ocupada" | Outro projeto está rodando. Feche-o antes de rodar o `piloto.cmd` |
+| O `npm ci` ou o Maven falharam | Quase sempre é a rede. Tente de novo; se continuar, mande um print para o Raul |
+| Usa Mac ou Linux | Instale o Node 24 e o Java 21, depois rode `node scripts/preparar.mjs` e, para testar, `node scripts/piloto.mjs` |
+
+Travou em qualquer passo? Mande um print para o Raul. É melhor resolver hoje do que no dia.

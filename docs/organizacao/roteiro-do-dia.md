@@ -51,7 +51,7 @@ Errou um clique? A lista de ajustes no painel tem **Desfazer**.
 | Fase | Você | Piloto | Copiloto | Repórter |
 |---|---|---|---|---|
 | **Aula** (5 min) | Ensina no quadro o assunto do ciclo e as palavras do manual | Assiste | Assiste | Assiste |
-| **Missão** (30 min) | Circula, atende copos vermelhos, fiscaliza as espiadas, avisa aos 20 e aos 25 minutos | `git pull`, `node scripts/piloto.mjs`, executa o que o copiloto pede, entrega com `git push` | Abre o manual, explica item por item, pesquisa quando travar, dita a entrega | Abre o painel do piloto, conta o que apareceu, lê e pesquisa os erros, confere no telão se a entrega entrou |
+| **Missão** (30 min) | Circula, atende copos vermelhos, fiscaliza as espiadas, avisa aos 20 e aos 25 minutos | `git pull`, `.piloto.cmd`, executa o que o copiloto pede, entrega com `git push` | Abre o manual, explica item por item, pesquisa quando travar, dita a entrega | Abre o painel do piloto, conta o que apareceu, lê e pesquisa os erros, confere no telão se a entrega entrou |
 | **Avaliação** (5 min) | Abre cada barraca e marca no painel os itens cumpridos | Descansa | Confere no manual o que deveria ter saído | Acompanha no telão os pontos da equipe |
 | **Votação** (5 min) | Chama todos para visitar as barracas | Visita e dá 2 fichas | Visita e dá 2 fichas | Visita e dá 2 fichas |
 
@@ -62,7 +62,7 @@ Errou um clique? A lista de ajustes no painel tem **Desfazer**.
 - Telão na etapa **Abertura**. Mostre a feira com as três barracas "em montagem".
 - Monte as equipes no painel (ou **Sortear equipes**). A ordem define o rodízio.
 - Peça para todos entrarem na feira com o e-mail. Cada um vê o próprio papel do ciclo 1 na página da feira.
-- Diga as regras e mostre a arrumação: o piloto de frente para o notebook, o copiloto de costas com o manual, o repórter com o painel. Mostre o piloto rodando `node scripts/piloto.mjs` e o repórter abrindo o endereço que termina em `/painel`.
+- Diga as regras e mostre a arrumação: o piloto de frente para o notebook, o copiloto de costas com o manual, o repórter com o painel. Peça para **todos** rodarem `git switch equipe-N` (o número da própria equipe; a página da feira mostra o comando certo). Mostre o piloto rodando `.piloto.cmd` e o repórter abrindo o endereço que termina em `/painel`.
 - Abra a **barraca modelo** e faça um pedido nela: "no fim do dia a barraca de vocês faz coisas assim".
 
 ## Como dar a aula de 5 minutos

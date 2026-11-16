@@ -28,6 +28,12 @@ export class FeiraPage {
     return equipe?.membros.find((m) => m.slug === eu?.slug)?.papel ?? null;
   });
 
+  /** A equipe de quem está na tela, para mostrar o ramo do Git certo. */
+  protected minhaEquipe = computed(() => {
+    const id = this.feira.eu()?.equipe;
+    return id ? { id, numero: id.replace('equipe-', '') } : null;
+  });
+
   protected email = signal('');
   protected entrando = signal(false);
   protected erroAoEntrar = signal('');

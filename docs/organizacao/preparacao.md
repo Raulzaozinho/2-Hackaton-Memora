@@ -6,7 +6,7 @@ O que fazer antes do dia, na ordem. O dia em si está no [roteiro](roteiro-do-di
 
 **1. Repositório.** O projeto está em <https://github.com/Raulzaozinho/2-Hackaton-Memora>, com o `main` e os ramos `equipe-1`, `equipe-2` e `equipe-3` já criados. Peça o usuário do GitHub de cada participante e adicione os nove como colaboradores em **Settings → Collaborators → Add people**. Sem o convite aceito, ninguém consegue enviar o crachá nem as entregas do dia.
 
-**2. Missão Zero.** Envie aos participantes o endereço do repositório e o link de [docs/missao-zero.md](../missao-zero.md). Os crachás já estão no projeto, um arquivo por pessoa, só com o nome; cada participante ajusta o nome do jeito que quer ser chamado e abre um PR. Aprove e junte os PRs ao `main`. Quem não abrir o PR continua na feira, só que com o nome que está no arquivo.
+**2. Missão Zero.** Envie aos participantes o link de [docs/missao-zero.md](../missao-zero.md). Cada um clona o projeto e roda o `preparar.cmd`, que baixa um Node 24 e um Java 21 numa pasta separada quando os do computador não servem, baixa as dependências e confere o acesso ao GitHub. Os crachás já estão no projeto, só com o primeiro nome.
 
 Para incluir alguém novo, copie `backend/src/main/resources/crachas/_exemplo.json` para um arquivo com o primeiro nome da pessoa, em minúsculas e sem acentos. O repositório é público: use só o primeiro nome.
 
@@ -46,7 +46,7 @@ o ensaio deve ficar separado do banco oficial.
 
 Passe por todas as etapas com **Próxima etapa**. Numa avaliação, marque alguns itens do manual e veja os pontos no telão; numa votação, dê fichas por outro computador; na premiação, revele o resultado. No fim, clique em **Recomeçar o dia**, que apaga fichas e avaliações.
 
-**Teste a rede com dois computadores.** O telão mostra um endereço como `http://192.168.0.10:8080`: abra-o em outro computador no mesmo Wi-Fi. Depois, nesse outro computador, rode `node scripts/piloto.mjs` e abra o painel do repórter (porta 4201) a partir de um terceiro computador. Algumas redes de empresa bloqueiam um computador de falar com outro; se não abrir, o plano B é todos entrarem no roteador de um celular.
+**Teste a rede com dois computadores.** O telão mostra um endereço como `http://192.168.0.10:8080`: abra-o em outro computador no mesmo Wi-Fi. Depois, nesse outro computador, rode `.piloto.cmd` e abra o painel do repórter (porta 4201) a partir de um terceiro computador. Algumas redes de empresa bloqueiam um computador de falar com outro; se não abrir, o plano B é todos entrarem no roteador de um celular.
 
 ## Na véspera
 
