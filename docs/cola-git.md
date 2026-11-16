@@ -27,7 +27,7 @@ git commit -m "ciclo 1: nome e cores da barraca"
 git push
 ```
 
-A mensagem do commit aparece no telão, com o seu nome. Escreva o que mudou, em uma frase curta.
+Faça **um commit e um push para cada item do manual**, com o nome do item na mensagem (o manual mostra o commit pronto). A mensagem aparece no telão, com o seu nome.
 
 Em até um minuto o telão responde:
 

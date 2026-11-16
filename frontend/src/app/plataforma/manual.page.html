@@ -75,9 +75,9 @@
           <p>Dite ao piloto, num terminal novo (o do piloto.cmd continua rodando):</p>
           <pre><code>cd $HOME\2-Hackaton-Memora
 git add .
-git commit -m "ciclo {{ ciclo.numero }}: o que fizemos"
+git commit -m "ciclo {{ ciclo.numero }}: nome do item"
 git push</code></pre>
-          <p>O repórter confere no telão se entrou. Entreguem cedo e entreguem de novo a cada item.</p>
+          <p><strong>Um commit e um push para cada item</strong>, com o nome do item na mensagem: cada item tem o seu commit pronto logo abaixo do "O repórter deve ver". O repórter confere no telão se entrou.</p>
         </section>
 
         <section class="bloco">
@@ -118,6 +118,13 @@ git push</code></pre>
             }
 
             <p class="confere"><strong>O repórter deve ver:</strong> {{ texto(item.confere) }}</p>
+
+            <div class="entregar-item">
+              <strong>📦 Funcionou? Entregue este item agora</strong> (um commit por item):
+              <pre><code>git add .
+git commit -m "ciclo {{ ciclo.numero }}: {{ item.titulo }}"
+git push</code></pre>
+            </div>
 
             @if (item.noSsm) {
               <p class="no-ssm"><strong>🏢 No SSM:</strong> {{ item.noSsm }}</p>

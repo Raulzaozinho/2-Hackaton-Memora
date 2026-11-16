@@ -42,7 +42,7 @@ Errou um clique? A lista de ajustes no painel tem **Desfazer**.
    - **Repórter:** só o painel do repórter: a barraca rodando e as mensagens de erro.
 3. **Ninguém mostra a tela para ninguém.** Cada equipe tem 2 espiadas de 30 segundos por ciclo no computador do piloto.
 4. **A cada ciclo os papéis giram** (o telão mostra quem é quem) e a equipe continua o código de onde parou.
-5. **Só pontua o que entrar no telão.** Entreguem cedo e de novo a cada item feito.
+5. **Só pontua o que entrar no telão.** Um commit e um push para cada item do manual, com o nome do item na mensagem: o manual mostra o commit pronto.
 6. **Copo vermelho** na mesa quer dizer "travamos".
 7. **O piloto nunca usa IA nem pesquisa.** O copiloto e o repórter podem pesquisar à vontade (Google, documentação, IA) e explicar ao piloto o que fazer. O manual traz, em cada item difícil, o que pesquisar.
 
