@@ -29,7 +29,7 @@ export class Equipe3 {
   // CICLO 3 — o recado do visitante e a pescaria entram aqui.
 
   constructor() {
-    this.api.itens('equipe-3').subscribe((lista)=> this.itens.set)
+    this.api.itens('equipe-3').subscribe((lista)=> this.itens.set(lista));
     // O que precisa ser buscado assim que a barraca abre entra aqui dentro
 
   }
