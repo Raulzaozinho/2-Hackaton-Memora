@@ -30,8 +30,24 @@ export class Equipe2 {
 
 
   // CICLO 3 — o recado do visitante e a pescaria entram aqui.
+  
+  recado = signal('');
+  recados = signal<Registro[]>([]);
+
+  carregarRecados() {
+    this.api.registros('equipe-2').subscribe((lista) => this.recados.set(lista));
+  }
 
   constructor() {
     this.api.itens('equipe-2').subscribe((lista) => this.itens.set(lista));
+    this.carregarRecados();
   }
-}
+
+    cadastrarRecado() {
+      const novo = {autor: this.feira.meuNome(), texto: this.recado()};
+      this.api.salvar('equipe-2', novo).subscribe(() => {
+          this.recado.set('');
+          this.carregarRecados();
+        });
+    }
+  }
