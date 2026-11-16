@@ -5,6 +5,6 @@ import { ConfigDaBarraca } from '../barraca';
 export const EQUIPE_2: ConfigDaBarraca = {
   nome: 'Byte Dog',
   slogan: 'Cada bit, um novo sabor!',
-  emoji: '⛺',
-  cor: '#2e86ab',
+  emoji: '🌭',
+  cor: '#c0392b',
 };
