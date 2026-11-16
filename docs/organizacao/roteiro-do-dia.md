@@ -67,82 +67,108 @@ Errou um clique? A lista de ajustes no painel tem **Desfazer**.
 
 ## Como dar a aula de 5 minutos
 
-Toda aula tem o mesmo formato, para caber em 5 minutos e ser divertida:
+O telão marca os 5 minutos. Toda aula tem o mesmo formato:
 
-1. **Uma comparação com a feira** (1 min): uma imagem que todo mundo entende.
-2. **Um desenho no quadro** (2 min): no máximo três caixas e duas setas.
-3. **Uma mágica ao vivo** (1 min): você muda uma linha e a tela muda na hora.
-4. **Uma pergunta valendo aplauso** (1 min): quem acertar ganha palmas da turma.
+| Tempo | O quê |
+|---|---|
+| 0:00 | **A comparação** com a feira: uma imagem que todo mundo entende |
+| 1:00 | **O desenho** no quadro: no máximo três caixas e duas setas |
+| 3:00 | **A mágica** no telão: a barraca modelo funcionando de verdade |
+| 4:00 | **A pergunta valendo aplauso** e a ponte com o SSM |
 
-Cada missão tem tarefas fáceis, médias e um desafio, sempre misturando Angular e Spring Boot. A aula explica só o que aparece nos itens médios: os fáceis eles resolvem lendo o manual, e o desafio é para quem quiser ir além.
+Regras que deixam a aula curta:
 
-## Ciclo 1 — Levantar a barraca
+- Explique só o que aparece nos itens **médios**. Os fáceis eles fazem lendo o manual, e o desafio é para quem quiser ir além.
+- Deixe o desenho pronto no quadro **antes** de a aula começar (na votação do ciclo anterior ou no intervalo). Na aula você só aponta e conta.
+- Termine sempre com: "Fáceis primeiro, entreguem cedo e entreguem de novo a cada item".
 
-**A comparação:** "a barraca tem uma vitrine, que é o Angular, e uma cozinha, que é o Spring Boot. O cliente só vê a vitrine; quem prepara é a cozinha."
+As mágicas usam a barraca modelo no navegador do telão: `http://localhost:8080/#/barraca/modelo`.
 
-**O desenho:**
+## Ciclo 1 — Levantar a barraca: a vitrine e a cozinha
 
-```
- VITRINE (Angular)                         COZINHA (Spring Boot)
- equipe-N.html   o que aparece             @GetMapping("/destaque")
- equipe-N.ts     as caixinhas (signals)    devolve um Item, que vira JSON
- {{ curtidas() }}  mostra o valor
- (click)="..."     faz algo no clique
-```
+**A comparação (1 min).** "Toda barraca tem uma vitrine e uma cozinha. A vitrine é o Angular: é o que o cliente vê. A cozinha é o Spring Boot: prepara a comida e manda para a frente. Entre as duas anda um garçom com um papel escrito; esse papel se chama JSON."
 
-**A mágica:** na barraca modelo, troque o emoji no `barraca.config.ts` e a página muda sozinha. Depois abra `/api/barracas/modelo/itens` no navegador: "isto é o que a cozinha manda".
-
-**A pergunta:** "se eu quero que o número de curtidas apareça na tela, uso chaves duplas ou parênteses?" (chaves duplas).
-
-**Ponte com o SSM:** toda API do SSM tem controllers como o do destaque (`@RestController`, `/api/<modulo>/<recurso>`), com métodos em português, como `consultarPorId`.
-
-**Missão:** nome, slogan, emoji, cor, vitrine e "Quem atende aqui" (fáceis); botão de curtir, visual da vitrine e o endpoint do destaque (médios); o destaque do Java aparecendo na tela (desafio).
-
-## Ciclo 2 — Abastecer a barraca
-
-**A comparação:** "a cozinha manda uma bandeja com vários pratos; o garçom (o `@for`) leva cada prato até a mesa, um por vez."
-
-**O desenho:**
+**O desenho (2 min).**
 
 ```
-Java: List.of(item1, item2, item3)  ──▶  JSON: [ {...}, {...}, {...} ]  ──▶  @for desenha um <li> por item
-/itens/{posicao}  →  /itens/0 é o primeiro prato da bandeja
+ VITRINE (Angular)                            COZINHA (Spring Boot)
+ equipe-N.html   o que aparece                EquipeNController.java
+ equipe-N.ts     as caixinhas                 @GetMapping("/destaque")
+                                              devolve um Item
+          ◀────────  JSON  {"emoji": "⭐", "nome": "..."}  ────────
+
+ curtidas = signal(0)          uma caixinha com um valor dentro
+ {{ curtidas() }}              mostra na tela o que tem na caixinha
+ (click)="..."                 faz alguma coisa quando clicam
 ```
 
-**A mágica:** chame três voluntários para serem os itens da lista. Diga "@for, cumprimente cada um" e aperte a mão de um por um. Depois aponte o primeiro: "esse é o `$first`".
+Aponte as três linhas de baixo: "Com essas três coisas vocês fazem o botão de curtir." Depois aponte a cozinha: "e o `@GetMapping` cria um endereço novo na cozinha: o destaque do dia".
 
-**A pergunta:** "na lista do Java, qual é a posição do primeiro item: 0 ou 1?" (0).
+**A mágica (1 min).** No telão, abra a barraca modelo e mostre os sabores. Abra uma aba nova em `http://localhost:8080/api/barracas/modelo/itens`: "Isto é o que a cozinha manda. Feio, né? A vitrine pega isso e deixa bonito." Volte para a barraca e aponte os mesmos sabores.
 
-**Ponte com o SSM:** no SSM, o controller nunca trabalha sozinho: chama o `XxxService`, recebido pelo construtor. É o desafio deste ciclo. E `consultarPorId(@PathVariable Long id)` é um dos endpoints mais comuns de lá.
+**A pergunta (30 s).** "Quem prepara o destaque do dia: a vitrine ou a cozinha?" (A cozinha, o Spring Boot. A vitrine só mostra.)
 
-Lembre que o novo piloto começa com `git pull`.
+**Ponte com o SSM (30 s).** "Toda API do SSM tem controllers assim: `@RestController`, endereço `/api/<modulo>/<recurso>` e métodos com nome em português, como `consultarPorId`. O de vocês vai se chamar `consultarDestaque`."
 
-**Missão:** os três itens no Java, a resposta pura e o contador (fáceis); a caixinha da lista, a lista na tela, um item só pelo endereço (`@PathVariable`) e o selo de "mais pedido" com `$first` (médios); a camada de service, como no SSM (desafio).
+**Na missão:** nome, slogan, emoji, cor, vitrine e "Quem atende aqui" (fáceis); botão de curtir, visual da vitrine e o endpoint do destaque (médios); o destaque do Java aparecendo na tela (desafio).
+
+## Ciclo 2 — Abastecer a barraca: a bandeja
+
+**A comparação (1 min).** "No ciclo 1 a cozinha mandou um prato só. Agora ela manda uma bandeja cheia: uma lista. E o garçom, que é o `@for`, leva um prato de cada vez até a mesa."
+
+**O desenho (2 min).**
+
+```
+ Java:   List.of(prato 0, prato 1, prato 2)
+   ↓
+ JSON:   [ {...}, {...}, {...} ]                  colchetes = lista
+   ↓
+ itens = signal<Item[]>([])                       a caixinha agora guarda uma lista
+ @for (item of itens(); track item.nome) { <li>…</li> }     um <li> por prato
+
+ /itens/0  →  o primeiro prato da bandeja         @PathVariable pega o número do endereço
+```
+
+Aponte o `0`: "Na lista, quem chega primeiro é o zero, não o um".
+
+**A mágica (1 min).** Chame três voluntários para serem os pratos da bandeja. Diga "`@for`, cumprimente cada um" e aperte a mão de um por um. Aponte o primeiro: "este é o `$first`, o mais pedido". Pergunte quantos são: "três, isso é o `itens().length`". Se der tempo, abra de novo `http://localhost:8080/api/barracas/modelo/itens` e mostre os colchetes e as chaves.
+
+**A pergunta (30 s).** "Se a bandeja tem 3 pratos, quantas vezes o `@for` repete o bloco?" (Três: uma vez por prato.)
+
+**Ponte com o SSM (30 s).** Desenhe `Controller → Service`. "No SSM o controller nunca trabalha sozinho: ele recebe o pedido e chama o service, que vem pelo construtor. É o desafio de hoje. E `consultarPorId(@PathVariable Long id)` é um dos endpoints mais comuns de lá; vocês fazem o mesmo com a posição."
+
+**Lembrete:** os papéis giraram. O novo piloto começa com `git pull` e `.\piloto.cmd`.
+
+**Na missão:** os três itens no Java, a resposta pura e o contador (fáceis); a caixinha da lista, a lista na tela, um item pelo endereço e o selo de "mais pedido" (médios); a camada de service, como no SSM (desafio).
 
 ## Intervalo (10 min)
 
-Bom momento para destravar no particular quem ficou para trás.
+Bom momento para destravar no particular quem ficou para trás. E para desenhar no quadro a aula do ciclo 3.
 
-## Ciclo 3 — Atender o visitante
+## Ciclo 3 — Atender o visitante: o correio
 
-**A comparação:** "o formulário é o correio da barraca: o visitante escreve a carta, o botão leva até a cozinha, a cozinha guarda no arquivo (o banco), e o mural mostra todas as cartas."
+**A comparação (1 min).** "O formulário é o correio da barraca. O visitante escreve a carta, o botão leva até a cozinha, a cozinha guarda no arquivo, que é o banco, e o mural mostra todas as cartas."
 
-**O desenho:**
+**O desenho (2 min).**
 
 ```
-1. a pessoa digita        →  o texto vai para a caixinha  [(ngModel)]
-2. a pessoa clica         →  roda enviar()                 (click)
-3. o front manda um POST  →  o Spring Boot grava no banco
-4. o front busca de novo  →  o mural mostra a carta nova
+ 1. a pessoa digita        →  o texto vai para a caixinha    [(ngModel)]="recado"
+ 2. a pessoa clica         →  roda cadastrarRecado()          (click)
+ 3. o front manda um POST  →  o Spring Boot grava no banco
+ 4. o front busca de novo  →  o mural mostra a carta nova
+
+ [disabled]="!recado()"    o botão fica apagado enquanto o campo está vazio
 ```
 
-**A mágica:** faça um pedido na barraca modelo, recarregue a página e mostre que ele continua lá: "está no banco, não na tela". Depois abra `/api/barracas/modelo/surpresa` duas vezes: "o Java sorteou de novo".
+Aponte o `[(ngModel)]`: "colchete e parêntese juntos é um fio de duas mãos: o que a pessoa digita vai para a caixinha, e o que está na caixinha aparece no campo".
 
-**A pergunta:** "por que a gente busca a lista de novo depois de enviar?" (para a carta nova aparecer no mural).
+**A mágica (1 min).** No telão, na barraca modelo, escolha um sabor e clique em **Pedir**. Aperte F5: o pedido continua na fila. "Está no banco, não na tela." Depois clique três vezes em **🎲 Sabor surpresa**: "o Java sorteia um sabor a cada clique. A pescaria de vocês faz a mesma coisa, com o `Random`."
 
-**Ponte com o SSM:** no SSM, quem cria se chama `cadastrar`, é sempre um POST, e toda ação termina com uma mensagem como "Marca cadastrada com sucesso!". As tarefas deste ciclo seguem esse jeito.
+**A pergunta (30 s).** "Por que a gente busca a lista de novo depois de enviar?" (Para a carta nova aparecer no mural.)
 
-**Missão:** o convite, a lista de recados e a mensagem de sucesso (fáceis); as caixinhas, o cadastrarRecado, o formulário e a pescaria no Java (médios); o botão de pescar na tela (desafio).
+**Ponte com o SSM (30 s).** "No SSM quem cria um registro se chama `cadastrar`, é sempre um POST e termina com uma mensagem como 'Marca cadastrada com sucesso!'. Hoje vocês fazem o `cadastrarRecado` e a mensagem 'Recado cadastrado com sucesso!'."
+
+**Na missão:** o convite, a lista de recados e a mensagem de sucesso (fáceis); as caixinhas, o `cadastrarRecado`, o formulário e a pescaria no Java (médios); o botão de pescar na tela (desafio).
 
 ## Avaliação (5 min, em cada ciclo)
 
