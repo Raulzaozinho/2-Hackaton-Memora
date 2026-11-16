@@ -41,7 +41,7 @@ public enum Etapa {
             "Visitem as barracas das outras equipes e deem suas fichas"),
 
     PREMIACAO("Premiação", 10, 0, Tipo.OUTRA, null,
-            "Placar final: pontos do manual mais fichas. E uma frase de cada um");
+            "Placar final: pontos do manual mais os extras. E uma frase de cada um");
 
     public enum Tipo { OUTRA, AULA, MISSAO, AVALIACAO, VOTACAO }
 

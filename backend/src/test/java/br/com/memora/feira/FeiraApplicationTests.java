@@ -363,6 +363,25 @@ class FeiraApplicationTests {
     }
 
     @Test
+    void semVotacaoAsEtapasDeVotacaoSaoPuladasEAsFichasNaoContam() {
+        org.springframework.test.util.ReflectionTestUtils.setField(feira, "votacao", false);
+        try {
+            assertThat(feira.estado().etapas()).hasSize(12)
+                    .noneMatch(e -> e.tipo().equals("VOTACAO"));
+            while (!feira.estado().etapa().codigo().equals("AVALIACAO_1")) feira.proximaEtapa();
+            feira.proximaEtapa();
+            assertThat(feira.estado().etapa().codigo()).isEqualTo("AULA_2");
+            feira.etapaAnterior();
+            assertThat(feira.estado().etapa().codigo()).isEqualTo("AVALIACAO_1");
+            assertThat(feira.estado().feiraAberta()).isFalse();
+            String alguem = participantes.findAll().get(0).getSlug();
+            assertThatThrownBy(() -> fichas.dar(alguem, "equipe-2")).hasMessage("Hoje não tem votação");
+        } finally {
+            org.springframework.test.util.ReflectionTestUtils.setField(feira, "votacao", true);
+        }
+    }
+
+    @Test
     void umCalculoQueComecouAntesNaoSubstituiOMaisNovo() {
         // Uma tela começou a calcular antes da última marcação da organização e terminou depois:
         // o telão não pode voltar a mostrar os pontos antigos.

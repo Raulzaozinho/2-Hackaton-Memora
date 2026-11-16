@@ -202,13 +202,13 @@
     <section class="bloco" id="placar">
       <h2>Placar</h2>
       <p class="dica">
-        Só esta tela vê as fichas antes da revelação. Cada ficha vale 5 pontos.
+        Só esta tela vê o placar antes da revelação.
         @if (estado.feiraAberta) { Nesta votação: {{ estado.fichasGastas }} de {{ estado.fichasTotal }} fichas gastas. }
       </p>
       <ol class="placar">
         @for (linha of placar(); track linha.barraca) {
           <li>
-            {{ nomeDaBarraca(linha.barraca) }} — ⭐ {{ linha.pontosDoManual }} do manual · ✨ {{ linha.pontosExtras ?? 0 }} extras · 🎟️ {{ linha.fichas }} fichas ·
+            {{ nomeDaBarraca(linha.barraca) }} — ⭐ {{ linha.pontosDoManual }} do manual · ✨ {{ linha.pontosExtras ?? 0 }} extras ·
             <strong>{{ linha.total }} pontos</strong>
           </li>
         }

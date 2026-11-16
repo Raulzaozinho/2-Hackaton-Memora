@@ -40,7 +40,7 @@
               >
                 <span class="posicao">{{ linha.posicao === 1 && linha.total > 0 ? '🏆' : linha.posicao + 'º' }}</span>
                 <span class="nome">{{ linha.barraca?.emoji }} {{ linha.barraca?.nome }}{{ linha.empate ? ' · empate' : '' }}</span>
-                <span class="detalhe">⭐ {{ linha.pontosDoManual }} + ✨ {{ linha.pontosExtras ?? 0 }} + 🎟️ {{ linha.fichas }} × 5</span>
+                <span class="detalhe">⭐ {{ linha.pontosDoManual }} do manual + ✨ {{ linha.pontosExtras ?? 0 }} extras{{ linha.fichas ? ' + 🎟️ ' + linha.fichas + ' × 5' : '' }}</span>
                 <strong>{{ linha.total }} pts</strong>
               </li>
             }

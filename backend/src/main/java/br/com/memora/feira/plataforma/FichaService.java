@@ -74,6 +74,9 @@ public class FichaService {
 
     private int cicloDaVotacao() {
         Etapa etapa = feira.evento().getEtapa();
+        if (!feira.temVotacao()) {
+            throw new RegraException("Hoje não tem votação");
+        }
         if (etapa.tipo != Etapa.Tipo.VOTACAO) {
             throw new RegraException("As fichas só valem durante a votação");
         }

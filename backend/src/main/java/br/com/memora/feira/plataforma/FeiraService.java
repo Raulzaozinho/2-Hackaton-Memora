@@ -44,6 +44,8 @@ public class FeiraService {
     private final Repositorios.RegistrosDoBanco registros;
     private final int fichasPorCiclo;
     private final int pontosPorFicha;
+    /** Falso: o dia não tem votação (as etapas de votação são puladas e as fichas não contam). */
+    private boolean votacao;
     private final String enderecoConfigurado;
     private final String porta;
     private final String pastaDoFront;
@@ -56,6 +58,7 @@ public class FeiraService {
             Repositorios.RegistrosDoBanco registros,
             @Value("${feira.fichas-por-ciclo:2}") int fichasPorCiclo,
             @Value("${feira.pontos-por-ficha:5}") int pontosPorFicha,
+            @Value("${feira.votacao:false}") boolean votacao,
             @Value("${feira.endereco:}") String enderecoConfigurado,
             @Value("${server.port:8080}") String porta,
             @Value("${spring.web.resources.static-locations:}") String pastaDoFront,
@@ -71,6 +74,7 @@ public class FeiraService {
         this.registros = registros;
         this.fichasPorCiclo = fichasPorCiclo;
         this.pontosPorFicha = pontosPorFicha;
+        this.votacao = votacao;
         this.enderecoConfigurado = enderecoConfigurado;
         this.porta = porta;
         this.pastaDoFront = pastaDoFront;
@@ -107,14 +111,14 @@ public class FeiraService {
         long comEquipe = todos.stream().filter(p -> p.getEquipe() != null).count();
         EstadoDaFeira estado = new EstadoDaFeira(
                 EtapaInfo.de(etapa),
-                Arrays.stream(Etapa.values()).map(EtapaInfo::de).toList(),
+                etapasDoDia().stream().map(EtapaInfo::de).toList(),
                 evento.getTerminaEm(),
                 Instant.now(),
-                etapa.tipo == Etapa.Tipo.VOTACAO,
+                votacao && etapa.tipo == Etapa.Tipo.VOTACAO,
                 evento.isResultadoRevelado(),
                 equipes,
-                fichas.countByCiclo(etapa.rodada),
-                etapa.tipo == Etapa.Tipo.VOTACAO ? comEquipe * fichasPorCiclo : 0,
+                votacao ? fichas.countByCiclo(etapa.rodada) : 0,
+                votacao && etapa.tipo == Etapa.Tipo.VOTACAO ? comEquipe * fichasPorCiclo : 0,
                 evento.isResultadoRevelado() ? placar(pontuacao) : null,
                 endereco(),
                 versaoDoFront(),
@@ -170,8 +174,10 @@ public class FeiraService {
     }
 
     private List<Placar> placar(Pontuacao pontuacao) {
-        Map<String, Long> recebidas = fichas.findAll().stream()
-                .collect(Collectors.groupingBy(Ficha::getBarraca, Collectors.counting()));
+        // Sem votação, as fichas não contam no placar.
+        Map<String, Long> recebidas = votacao
+                ? fichas.findAll().stream().collect(Collectors.groupingBy(Ficha::getBarraca, Collectors.counting()))
+                : Map.of();
         return EQUIPES.stream()
                 .map(id -> {
                     long manual = pontuacao.manual().getOrDefault(id, 0L);
@@ -217,24 +223,35 @@ public class FeiraService {
 
     // ---------------------------------------------------------------- etapas e relógio
 
+    public boolean temVotacao() {
+        return votacao;
+    }
+
+    /** As etapas que acontecem hoje: sem votação, as etapas de votação ficam de fora. */
+    public List<Etapa> etapasDoDia() {
+        return Arrays.stream(Etapa.values()).filter(e -> votacao || e.tipo != Etapa.Tipo.VOTACAO).toList();
+    }
+
     @Transactional
     public void proximaEtapa() {
         Evento evento = evento();
-        int proxima = evento.getEtapa().ordinal() + 1;
-        if (proxima >= Etapa.values().length) {
-            throw new RegraException("A premiação já é a última etapa");
-        }
-        irPara(evento, Etapa.values()[proxima]);
+        Etapa proxima = Arrays.stream(Etapa.values())
+                .filter(e -> e.ordinal() > evento.getEtapa().ordinal())
+                .filter(e -> votacao || e.tipo != Etapa.Tipo.VOTACAO)
+                .findFirst()
+                .orElseThrow(() -> new RegraException("A premiação já é a última etapa"));
+        irPara(evento, proxima);
     }
 
     @Transactional
     public void etapaAnterior() {
         Evento evento = evento();
-        int anterior = evento.getEtapa().ordinal() - 1;
-        if (anterior < 0) {
-            throw new RegraException("A abertura já é a primeira etapa");
-        }
-        irPara(evento, Etapa.values()[anterior]);
+        Etapa anterior = Arrays.stream(Etapa.values())
+                .filter(e -> e.ordinal() < evento.getEtapa().ordinal())
+                .filter(e -> votacao || e.tipo != Etapa.Tipo.VOTACAO)
+                .reduce((primeira, segunda) -> segunda)
+                .orElseThrow(() -> new RegraException("A abertura já é a primeira etapa"));
+        irPara(evento, anterior);
     }
 
     @Transactional
