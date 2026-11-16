@@ -32,7 +32,7 @@ public class Organizadores {
 
     /** "maria.silva@exemplo.com" vira "Maria". */
     public static String nomeDoEmail(String email) {
-        String inicio = email.trim().split("[@.]")[0];
+        String inicio = email.trim().toLowerCase(java.util.Locale.ROOT).split("[@.]")[0];
         return inicio.isEmpty() ? "Organização" : Character.toUpperCase(inicio.charAt(0)) + inicio.substring(1);
     }
 }

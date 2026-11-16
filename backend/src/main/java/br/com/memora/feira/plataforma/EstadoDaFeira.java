@@ -27,6 +27,13 @@ public record EstadoDaFeira(
         /** Verdadeiro quando há e-mails cadastrados: cada pessoa entra com o próprio e-mail em vez de escolher numa lista. */
         boolean entrarComEmail) {
 
+    /** O mesmo estado com a hora atual, para o relógio das telas não atrasar quando a resposta vem da memória. */
+    public EstadoDaFeira comAgora(Instant novoAgora) {
+        return new EstadoDaFeira(etapa, etapas, terminaEm, novoAgora, feiraAberta, resultadoRevelado, equipes,
+                fichasGastas, fichasTotal, resultado, endereco, versaoDoFront, carta, pergunta, respostaVisivel,
+                entrarComEmail);
+    }
+
     /** "rodada" é o número do ciclo (1 a 3); "tipo" é AULA, MISSAO, AVALIACAO, VOTACAO ou OUTRA. */
     public record EtapaInfo(String codigo, String titulo, int minutos, int rodada, String tipo, String quadro, String entrega) {
         static EtapaInfo de(Etapa etapa) {

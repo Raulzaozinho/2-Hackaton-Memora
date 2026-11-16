@@ -29,9 +29,11 @@ public class FeiraController {
     private final Registros registros;
     private final Repositorios.Participantes participantes;
     private final Organizadores organizadores;
+    private final EstadoEmCache cache;
 
     public FeiraController(FeiraService feira, FichaService fichas, Registros registros,
-            Repositorios.Participantes participantes, Organizadores organizadores) {
+            Repositorios.Participantes participantes, Organizadores organizadores, EstadoEmCache cache) {
+        this.cache = cache;
         this.organizadores = organizadores;
         this.feira = feira;
         this.fichas = fichas;
@@ -39,17 +41,18 @@ public class FeiraController {
         this.participantes = participantes;
     }
 
+    /** Todas as telas chamam a cada 3 segundos: a resposta vem da memória se tiver menos de 1 segundo. */
     @GetMapping("/feira/estado")
     public EstadoDaFeira estado() {
-        return feira.estado();
+        return cache.estado(feira::estado);
     }
 
     @GetMapping("/participantes")
     public List<Cracha> participantes() {
-        return participantes.findAll().stream()
+        return cache.crachas(() -> participantes.findAll().stream()
                 .sorted(Comparator.comparing(Participante::getNome, String.CASE_INSENSITIVE_ORDER))
                 .map(p -> new Cracha(p.getSlug(), p.getNome(), p.getEmoji(), p.getFrase(), p.getEquipe()))
-                .toList();
+                .toList());
     }
 
     public record PedidoDeEntrada(String email) { }

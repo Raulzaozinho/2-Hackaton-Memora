@@ -55,6 +55,8 @@ export class FeiraService {
         this.diferencaParaOServidor = Date.parse(estado.agora) - Date.now();
         this.estado.set(estado);
         this.semConexao.set(false);
+        // As fichas só mudam na votação; fora dela, a tela não pergunta (menos consultas ao banco).
+        if (estado.feiraAberta || this.fichas() === null) this.atualizarFichas();
       },
       error: () => this.semConexao.set(true),
     });
@@ -62,7 +64,6 @@ export class FeiraService {
       next: (lista) => this.participantes.set(lista),
       error: () => undefined,
     });
-    this.atualizarFichas();
   }
 
   escolherQuemSou(slug: string | null) {

@@ -6,8 +6,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import br.com.memora.feira.plataforma.Erros.RegraException;
 import br.com.memora.feira.plataforma.EstadoDaFeira;
 import br.com.memora.feira.plataforma.EstadoDaFeira.Membro;
+import br.com.memora.feira.plataforma.EstadoEmCache;
 import br.com.memora.feira.plataforma.FeiraService;
 import br.com.memora.feira.plataforma.FichaService;
+import br.com.memora.feira.plataforma.Organizadores;
 import br.com.memora.feira.plataforma.Registros;
 import br.com.memora.feira.plataforma.Repositorios;
 import java.util.HashSet;
@@ -29,6 +31,7 @@ class FeiraApplicationTests {
     @Autowired Registros registros;
     @Autowired Repositorios.Participantes participantes;
     @Autowired Repositorios.Eventos eventos;
+    @Autowired EstadoEmCache cache;
 
     @BeforeEach
     void recomecar() {
@@ -266,5 +269,29 @@ class FeiraApplicationTests {
                 .isInstanceOf(RegraException.class);
         assertThatThrownBy(() -> registros.listar("barraca-que-nao-existe"))
                 .isInstanceOf(RegraException.class);
+    }
+
+    @Test
+    void asTelasRecebemOEstadoDaMemoriaEAsAcoesDaOrganizacaoAtualizamNaHora() {
+        cache.esquecer();
+        int[] calculos = {0};
+        EstadoDaFeira primeiro = cache.estado(() -> { calculos[0]++; return feira.estado(); });
+        EstadoDaFeira segundo = cache.estado(() -> { calculos[0]++; return feira.estado(); });
+        assertThat(calculos[0]).isEqualTo(1);
+        assertThat(segundo.equipes()).isEqualTo(primeiro.equipes());
+        assertThat(segundo.agora()).isAfterOrEqualTo(primeiro.agora());
+
+        // Depois de uma ação, o controller devolve feira.estado(), que já guarda o estado novo.
+        feira.proximaEtapa();
+        feira.estado();
+        assertThat(cache.estado(() -> { calculos[0]++; return feira.estado(); }).etapa().codigo()).isEqualTo("AULA_1");
+        assertThat(calculos[0]).isEqualTo(1);
+        cache.esquecer();
+    }
+
+    @Test
+    void oNomeDaOrganizacaoNaoDependeDeComoOEmailFoiDigitado() {
+        assertThat(Organizadores.nomeDoEmail("MARIA.SILVA@EXEMPLO.COM")).isEqualTo("Maria");
+        assertThat(Organizadores.nomeDoEmail("maria.silva@exemplo.com")).isEqualTo("Maria");
     }
 }

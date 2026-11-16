@@ -19,7 +19,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +46,7 @@ public class FeiraService {
     private final String enderecoConfigurado;
     private final String porta;
     private final String pastaDoFront;
+    private final EstadoEmCache cache;
 
     public FeiraService(Repositorios.Eventos eventos, Repositorios.Participantes participantes,
             Repositorios.Fichas fichas, Repositorios.Entregas entregas,
@@ -53,7 +57,9 @@ public class FeiraService {
             @Value("${feira.endereco:}") String enderecoConfigurado,
             @Value("${server.port:8080}") String porta,
             @Value("${spring.web.resources.static-locations:}") String pastaDoFront,
-            Organizadores organizadores) {
+            Organizadores organizadores,
+            EstadoEmCache cache) {
+        this.cache = cache;
         this.eventos = eventos;
         this.participantes = participantes;
         this.fichas = fichas;
@@ -83,14 +89,19 @@ public class FeiraService {
         if (!eventos.existsById(1)) eventos.save(new Evento());
     }
 
+    /**
+     * O estado calculado agora, direto do banco (e guardado para as telas). Faz poucas consultas,
+     * todas de uma vez, porque com o Supabase cada consulta custa uns 170 ms.
+     */
     @Transactional
     public EstadoDaFeira estado() {
         Evento evento = evento();
         Etapa etapa = evento.getEtapa();
         List<Participante> todos = participantes.findAll();
-        List<EquipeInfo> equipes = EQUIPES.stream().map(id -> equipe(id, todos, etapa.rodada)).toList();
+        Pontuacao pontuacao = pontuacao();
+        List<EquipeInfo> equipes = EQUIPES.stream().map(id -> equipe(id, todos, etapa.rodada, pontuacao)).toList();
         long comEquipe = todos.stream().filter(p -> p.getEquipe() != null).count();
-        return new EstadoDaFeira(
+        EstadoDaFeira estado = new EstadoDaFeira(
                 EtapaInfo.de(etapa),
                 Arrays.stream(Etapa.values()).map(EtapaInfo::de).toList(),
                 evento.getTerminaEm(),
@@ -100,26 +111,66 @@ public class FeiraService {
                 equipes,
                 fichas.countByCiclo(etapa.rodada),
                 etapa.tipo == Etapa.Tipo.VOTACAO ? comEquipe * fichasPorCiclo : 0,
-                evento.isResultadoRevelado() ? placar() : null,
+                evento.isResultadoRevelado() ? placar(pontuacao) : null,
                 endereco(),
                 versaoDoFront(),
                 cartaNoTelao(evento),
                 evento.getPergunta(),
                 evento.isRespostaVisivel(),
-                participantes.existsByEmailIsNotNull() || organizadores.existe());
+                todos.stream().anyMatch(p -> p.getEmail() != null) || organizadores.existe());
+        cache.guardar(estado);
+        return estado;
     }
 
-    /** As barracas ordenadas pelo total: pontos do manual mais as fichas de todas as votações. */
+    /** Entregas (da mais nova para a mais antiga), pontos do manual e extras de todas as equipes, em três consultas. */
+    private record Pontuacao(Map<String, List<Entrega>> entregas, Map<String, Long> manual, Map<String, Long> extras) {
+        List<Entrega> entregasDe(String equipe) {
+            return entregas.getOrDefault(equipe, List.of());
+        }
+    }
+
+    private Pontuacao pontuacao() {
+        Map<String, List<Entrega>> porEquipe = entregas.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
+                .filter(e -> e.getEquipe() != null)
+                .collect(Collectors.groupingBy(Entrega::getEquipe));
+        Map<String, Long> manual = avaliacoes.findAll().stream()
+                .filter(a -> a.getEquipe() != null)
+                .collect(Collectors.groupingBy(Avaliacao::getEquipe,
+                        Collectors.summingLong(a -> a.getPontos() == null ? 0 : a.getPontos())));
+        Map<String, Long> extras = ajustes.findAll().stream()
+                .filter(a -> a.getEquipe() != null)
+                .collect(Collectors.groupingBy(Ajuste::getEquipe,
+                        Collectors.summingLong(a -> a.getPontos() == null ? 0 : a.getPontos())));
+        return new Pontuacao(porEquipe, manual, extras);
+    }
+
+    /** As barracas ordenadas pelo total: pontos do manual, extras e as fichas de todas as votações. */
+    @Transactional
     public List<Placar> placar() {
+        return placar(pontuacao());
+    }
+
+    private List<Placar> placar(Pontuacao pontuacao) {
+        Map<String, Long> recebidas = fichas.findAll().stream()
+                .collect(Collectors.groupingBy(Ficha::getBarraca, Collectors.counting()));
         return EQUIPES.stream()
                 .map(id -> {
-                    long manual = pontosDoManual(id);
-                    long extras = pontosExtras(id);
-                    long recebidas = fichas.countByBarraca(id);
-                    return new Placar(id, manual, extras, recebidas, manual + extras + recebidas * pontosPorFicha);
+                    long manual = pontuacao.manual().getOrDefault(id, 0L);
+                    long extras = pontuacao.extras().getOrDefault(id, 0L);
+                    long fichasDaBarraca = recebidas.getOrDefault(id, 0L);
+                    return new Placar(id, manual, extras, fichasDaBarraca, manual + extras + fichasDaBarraca * pontosPorFicha);
                 })
                 .sorted(Comparator.comparingLong(Placar::total).reversed())
                 .toList();
+    }
+
+    private static long sequencia(List<Entrega> daMaisNova) {
+        long seguidas = 0;
+        for (Entrega entrega : daMaisNova) {
+            if (!entrega.isOk()) break;
+            seguidas++;
+        }
+        return seguidas;
     }
 
     public long pontosExtras(String equipe) {
@@ -128,12 +179,7 @@ public class FeiraService {
 
     /** Quantas entregas aceitas seguidas a equipe tem, contando da mais recente até a última recusa. */
     public long sequenciaDeEntregas(String equipe) {
-        long seguidas = 0;
-        for (Entrega entrega : entregas.findTop20ByEquipeOrderByIdDesc(equipe)) {
-            if (!entrega.isOk()) break;
-            seguidas++;
-        }
-        return seguidas;
+        return sequencia(entregas.findTop20ByEquipeOrderByIdDesc(equipe));
     }
 
     private CartaInfo cartaNoTelao(Evento evento) {
@@ -246,7 +292,7 @@ public class FeiraService {
         participante.setOrdem(proximaOrdem);
     }
 
-    private EquipeInfo equipe(String id, List<Participante> todos, int rodada) {
+    private EquipeInfo equipe(String id, List<Participante> todos, int rodada, Pontuacao pontuacao) {
         List<Participante> daEquipe = todos.stream()
                 .filter(p -> id.equals(p.getEquipe()))
                 .sorted(Comparator.comparing((Participante p) -> p.getOrdem() == null ? 0 : p.getOrdem())
@@ -257,11 +303,13 @@ public class FeiraService {
             Participante p = daEquipe.get(i);
             membros.add(new Membro(p.getSlug(), p.getNome(), p.getEmoji(), papel(i, daEquipe.size(), rodada)));
         }
-        EntregaInfo ultima = entregas.findFirstByEquipeOrderByIdDesc(id)
+        List<Entrega> entregasDaEquipe = pontuacao.entregasDe(id);
+        EntregaInfo ultima = entregasDaEquipe.stream().findFirst()
                 .map(e -> new EntregaInfo(e.isOk(), e.getMensagem(), e.getAutor(), e.getCriadoEm()))
                 .orElse(null);
-        return new EquipeInfo(id, membros, ultima, entregas.countByEquipeAndOkTrue(id), pontosDoManual(id),
-                pontosExtras(id), sequenciaDeEntregas(id));
+        long aceitas = entregasDaEquipe.stream().filter(Entrega::isOk).count();
+        return new EquipeInfo(id, membros, ultima, aceitas, pontuacao.manual().getOrDefault(id, 0L),
+                pontuacao.extras().getOrDefault(id, 0L), sequencia(entregasDaEquipe));
     }
 
     /** Quem está na posição do piloto muda a cada ciclo, então em três ciclos todos digitam. */
