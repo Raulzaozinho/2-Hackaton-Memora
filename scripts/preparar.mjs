@@ -51,15 +51,25 @@ function portaLivre(porta) {
 
 console.log(amarelo('Feira Dev — preparando este computador para pilotar'));
 
+/** Só o usuário do GitHub: tira ".\", "@", o endereço do site e espaços que vierem junto na hora de colar. */
+function limparUsuario(texto) {
+  return texto
+    .trim()
+    .replace(/^https?:\/\/(www\.)?github\.com\//i, '')
+    .replace(/^[.\\/@\s]+/, '')
+    .replace(/[\\/\s].*$/, '');
+}
+
 // ------------------------------------------------------------------ 1. quem é você
 titulo('Quem é você no Git');
 const emailAtual = git('config', '--local', 'user.email').saida;
-let usuario = emailAtual.endsWith('@users.noreply.github.com') ? emailAtual.split('@')[0].replace(/^\d+\+/, '') : '';
+let usuario = emailAtual.endsWith('@users.noreply.github.com') ? limparUsuario(emailAtual.split('@')[0].replace(/^\d+\+/, '')) : '';
 if (usuario) {
+  git('config', '--local', 'user.email', `${usuario}@users.noreply.github.com`);
   ok(`já configurado: ${git('config', '--local', 'user.name').saida} (GitHub: ${usuario})`);
 } else {
   const leitor = createInterface({ input: process.stdin, output: process.stdout });
-  while (!usuario) usuario = (await leitor.question('  Seu usuário do GitHub (ex.: brunofurtado): ')).trim().replace(/^@/, '');
+  while (!usuario) usuario = limparUsuario(await leitor.question('  Seu usuário do GitHub (ex.: brunofurtado): '));
   let nome = '';
   while (!nome) nome = (await leitor.question('  Seu nome como vai aparecer no telão (ex.: Bruno): ')).trim();
   leitor.close();
