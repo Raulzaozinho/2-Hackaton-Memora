@@ -6,9 +6,20 @@ import { BARRACAS } from '../barracas/registro';
 import { mensagemDeErro } from './barraca-api';
 import { FeiraService, formatarRelogio } from './feira.service';
 import { MANUAL, cicloDoManual, ItemDoManual } from './manual';
-import { EstadoDaFeira, ItemAprovado, Placar } from './tipos';
+import { perguntaDoCiclo } from './perguntas';
+import { AjusteFeito, EstadoDaFeira, ItemAprovado, Placar } from './tipos';
 
 const CHAVE_PIN = 'feira.pin';
+
+/** As cartas de evento (as mesmas do back-end, em Carta.java). */
+const CARTAS = [
+  { codigo: 'MUDO', nome: '🤐 Copiloto mudo' },
+  { codigo: 'TROCA', nome: '🔄 Troca relâmpago' },
+  { codigo: 'BONUS', nome: '⚡ Bônus relâmpago' },
+  { codigo: 'ECO', nome: '🦜 Modo papagaio' },
+  { codigo: 'SIM_OU_NAO', nome: '🎯 Sim ou não' },
+  { codigo: 'PRESENTE', nome: '🎁 Espiada de presente' },
+];
 
 /** O painel de quem conduz o dia: etapas, relógio, equipes e a revelação do resultado. */
 @Component({
@@ -35,6 +46,14 @@ export class OrganizacaoPage {
   protected itensDoCiclo = computed(() => cicloDoManual(this.cicloAvaliado())?.itens ?? []);
   protected aprovados = signal<ItemAprovado[]>([]);
   private cicloCarregado: number | null = null;
+
+  // Dinâmicas: cartas de evento, pontos fora do manual e a pergunta relâmpago.
+  protected cartas = CARTAS;
+  protected ajustes = signal<AjusteFeito[]>([]);
+  protected perguntaAtual = computed(() => {
+    const estado = this.feira.estado();
+    return estado ? perguntaDoCiclo(estado.etapa?.rodada || this.cicloAvaliado(), estado.pergunta) : null;
+  });
 
   constructor() {
     // O estado chega a cada três segundos. A distribuição também pode mudar
@@ -176,9 +195,33 @@ export class OrganizacaoPage {
       });
   }
 
+  protected mostrarCarta(codigo: string | null) {
+    this.chamar('POST', 'dinamicas/carta', { codigo });
+  }
+
+  protected tirarCarta() {
+    this.chamar('POST', 'dinamicas/carta/encerrar');
+  }
+
+  protected ajustar(equipe: string, pontos: number, motivo: string) {
+    this.chamar('POST', 'dinamicas/ajustes', { equipe, pontos, motivo });
+  }
+
+  protected desfazer(ajuste: AjusteFeito) {
+    this.chamar('POST', `dinamicas/ajustes/${ajuste.id}/desfazer`);
+  }
+
+  protected pergunta(acao: 'proxima' | 'revelar' | 'esconder') {
+    this.chamar('POST', `dinamicas/pergunta/${acao}`);
+  }
+
   private carregarPlacar() {
     this.http.get<Placar[]>('/api/organizacao/resultado', { headers: this.cabecalho() }).subscribe({
       next: (placar) => this.placar.set(placar),
+      error: () => undefined,
+    });
+    this.http.get<AjusteFeito[]>('/api/organizacao/dinamicas/ajustes', { headers: this.cabecalho() }).subscribe({
+      next: (lista) => this.ajustes.set(lista),
       error: () => undefined,
     });
   }

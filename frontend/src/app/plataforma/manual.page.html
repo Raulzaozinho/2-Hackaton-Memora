@@ -118,6 +118,10 @@ git push</code></pre>
 
             <p class="confere"><strong>O repórter deve ver:</strong> {{ texto(item.confere) }}</p>
 
+            @if (item.noSsm) {
+              <p class="no-ssm"><strong>🏢 No SSM:</strong> {{ item.noSsm }}</p>
+            }
+
             @if (item.pesquisa) {
               <p class="pesquisa">
                 <strong>🔎 Travou? Pesquise:</strong> <code>{{ item.pesquisa }}</code>

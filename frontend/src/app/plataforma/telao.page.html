@@ -32,7 +32,7 @@
               >
                 <span class="posicao">{{ linha.posicao === 1 && linha.total > 0 ? '🏆' : linha.posicao + 'º' }}</span>
                 <span class="nome">{{ linha.barraca?.emoji }} {{ linha.barraca?.nome }}{{ linha.empate ? ' · empate' : '' }}</span>
-                <span class="detalhe">⭐ {{ linha.pontosDoManual }} + 🎟️ {{ linha.fichas }} × 5</span>
+                <span class="detalhe">⭐ {{ linha.pontosDoManual }} + ✨ {{ linha.pontosExtras ?? 0 }} + 🎟️ {{ linha.fichas }} × 5</span>
                 <strong>{{ linha.total }} pts</strong>
               </li>
             }
@@ -51,7 +51,12 @@
                 <h2>{{ equipe.barraca.nome }}</h2>
                 <p>{{ equipe.barraca.slogan }}</p>
               </div>
-              <span class="pontos-equipe" title="Pontos do manual aprovados pela organização">⭐ {{ equipe.pontos }}</span>
+              <span class="pontos-equipe" title="Pontos do manual mais bônus, espiadas e combos">
+                ⭐ {{ equipe.pontos }}
+                @if (equipe.sequencia >= 2) {
+                  <span class="combo" title="Entregas aceitas seguidas">🔥{{ equipe.sequencia }}</span>
+                }
+              </span>
             </header>
 
             <ul class="membros">
@@ -89,6 +94,15 @@
     @if (estado.etapa.tipo === 'AVALIACAO') {
       <section class="feira-aberta">
         <p>⭐ A organização está conferindo o manual de cada barraca. Os pontos aparecem aqui na hora.</p>
+        @if (pergunta(); as p) {
+          <div class="pergunta">
+            <p class="pergunta-titulo">⚡ Pergunta relâmpago · vale +5 para quem responder primeiro</p>
+            <p class="pergunta-texto">{{ p.pergunta }}</p>
+            @if (estado.respostaVisivel) {
+              <p class="pergunta-resposta">✅ {{ p.resposta }}</p>
+            }
+          </div>
+        }
       </section>
     }
 
@@ -105,6 +119,18 @@
         </div>
         <p>🎟️ {{ estado.fichasGastas }} de {{ estado.fichasTotal }} fichas gastas</p>
       </section>
+    }
+
+    @if (estado.carta; as carta) {
+      <div class="carta-fundo" role="alertdialog" aria-live="assertive" [attr.aria-label]="'Carta de evento: ' + carta.titulo">
+        <div class="carta">
+          <p class="carta-selo">Carta de evento</p>
+          <div class="carta-emoji" aria-hidden="true">{{ carta.emoji }}</div>
+          <h2>{{ carta.titulo }}</h2>
+          <p class="carta-texto">{{ carta.texto }}</p>
+          <p class="carta-relogio">⏱ {{ relogioDaCarta() }}</p>
+        </div>
+      </div>
     }
 
     <footer class="trilha" aria-label="Etapas do dia">

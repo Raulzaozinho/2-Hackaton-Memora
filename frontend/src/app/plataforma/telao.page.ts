@@ -3,6 +3,7 @@ import { BARRACAS } from '../barracas/registro';
 import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
 import { Membro } from './tipos';
 import { classificarResultado } from './resultado';
+import { perguntaDoCiclo } from './perguntas';
 
 /** Nos 3 ciclos vale o modo cego: cada papel enxerga só uma parte (docs/papeis.md). */
 const PAPEIS: Record<string, string> = {
@@ -30,6 +31,18 @@ export class TelaoPage {
   });
   protected esgotado = computed(() => this.feira.segundosRestantes() === 0);
 
+  /** O relógio da carta de evento, que tem a própria duração. */
+  protected relogioDaCarta = computed(() => {
+    const termina = this.feira.estado()?.carta?.terminaEm;
+    if (!termina) return '';
+    return formatarRelogio(Math.max(0, Math.round((Date.parse(termina) - this.feira.agora()) / 1000)));
+  });
+
+  protected pergunta = computed(() => {
+    const estado = this.feira.estado();
+    return estado ? perguntaDoCiclo(estado.etapa.rodada, estado.pergunta) : null;
+  });
+
   /** Cada barraca junto com a equipe dela e a última entrega recebida. */
   protected equipes = computed(() => {
     const estado = this.feira.estado();
@@ -40,7 +53,8 @@ export class TelaoPage {
         membros: equipe?.membros ?? [],
         entrega: equipe?.ultimaEntrega ?? null,
         entregas: equipe?.entregas ?? 0,
-        pontos: equipe?.pontosDoManual ?? 0,
+        pontos: (equipe?.pontosDoManual ?? 0) + (equipe?.pontosExtras ?? 0),
+        sequencia: equipe?.sequencia ?? 0,
       };
     });
   });

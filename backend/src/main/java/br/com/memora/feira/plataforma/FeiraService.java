@@ -2,6 +2,7 @@ package br.com.memora.feira.plataforma;
 
 import br.com.memora.feira.plataforma.Erros.RegraException;
 import br.com.memora.feira.plataforma.Erros.InicializandoException;
+import br.com.memora.feira.plataforma.EstadoDaFeira.CartaInfo;
 import br.com.memora.feira.plataforma.EstadoDaFeira.EntregaInfo;
 import br.com.memora.feira.plataforma.EstadoDaFeira.EquipeInfo;
 import br.com.memora.feira.plataforma.EstadoDaFeira.EtapaInfo;
@@ -36,6 +37,7 @@ public class FeiraService {
     private final Repositorios.Fichas fichas;
     private final Repositorios.Entregas entregas;
     private final Repositorios.Avaliacoes avaliacoes;
+    private final Repositorios.Ajustes ajustes;
     private final int fichasPorCiclo;
     private final int pontosPorFicha;
     private final String enderecoConfigurado;
@@ -45,6 +47,7 @@ public class FeiraService {
     public FeiraService(Repositorios.Eventos eventos, Repositorios.Participantes participantes,
             Repositorios.Fichas fichas, Repositorios.Entregas entregas,
             Repositorios.Avaliacoes avaliacoes,
+            Repositorios.Ajustes ajustes,
             @Value("${feira.fichas-por-ciclo:2}") int fichasPorCiclo,
             @Value("${feira.pontos-por-ficha:5}") int pontosPorFicha,
             @Value("${feira.endereco:}") String enderecoConfigurado,
@@ -56,6 +59,7 @@ public class FeiraService {
         this.fichas = fichas;
         this.entregas = entregas;
         this.avaliacoes = avaliacoes;
+        this.ajustes = ajustes;
         this.fichasPorCiclo = fichasPorCiclo;
         this.pontosPorFicha = pontosPorFicha;
         this.enderecoConfigurado = enderecoConfigurado;
@@ -99,6 +103,9 @@ public class FeiraService {
                 evento.isResultadoRevelado() ? placar() : null,
                 endereco(),
                 versaoDoFront(),
+                cartaNoTelao(evento),
+                evento.getPergunta(),
+                evento.isRespostaVisivel(),
                 participantes.existsByEmailIsNotNull() || organizadores.existe());
     }
 
@@ -107,11 +114,34 @@ public class FeiraService {
         return EQUIPES.stream()
                 .map(id -> {
                     long manual = pontosDoManual(id);
+                    long extras = pontosExtras(id);
                     long recebidas = fichas.countByBarraca(id);
-                    return new Placar(id, manual, recebidas, manual + recebidas * pontosPorFicha);
+                    return new Placar(id, manual, extras, recebidas, manual + extras + recebidas * pontosPorFicha);
                 })
                 .sorted(Comparator.comparingLong(Placar::total).reversed())
                 .toList();
+    }
+
+    public long pontosExtras(String equipe) {
+        return ajustes.findByEquipe(equipe).stream().mapToLong(a -> a.getPontos() == null ? 0 : a.getPontos()).sum();
+    }
+
+    /** Quantas entregas aceitas seguidas a equipe tem, contando da mais recente até a última recusa. */
+    public long sequenciaDeEntregas(String equipe) {
+        long seguidas = 0;
+        for (Entrega entrega : entregas.findTop20ByEquipeOrderByIdDesc(equipe)) {
+            if (!entrega.isOk()) break;
+            seguidas++;
+        }
+        return seguidas;
+    }
+
+    private CartaInfo cartaNoTelao(Evento evento) {
+        Carta carta = evento.getCarta();
+        if (carta == null || evento.getCartaTerminaEm() == null || evento.getCartaTerminaEm().isBefore(Instant.now())) {
+            return null;
+        }
+        return new CartaInfo(carta.name(), carta.emoji, carta.titulo, carta.texto, evento.getCartaTerminaEm());
     }
 
     public long pontosDoManual(String equipe) {
@@ -173,6 +203,11 @@ public class FeiraService {
         evento.setResultadoRevelado(false);
         fichas.deleteAll();
         avaliacoes.deleteAll();
+        ajustes.deleteAll();
+        evento.setCarta(null);
+        evento.setCartaTerminaEm(null);
+        evento.setPergunta(null);
+        evento.setRespostaVisivel(false);
     }
 
     // ---------------------------------------------------------------- equipes
@@ -225,7 +260,8 @@ public class FeiraService {
         EntregaInfo ultima = entregas.findFirstByEquipeOrderByIdDesc(id)
                 .map(e -> new EntregaInfo(e.isOk(), e.getMensagem(), e.getAutor(), e.getCriadoEm()))
                 .orElse(null);
-        return new EquipeInfo(id, membros, ultima, entregas.countByEquipeAndOkTrue(id), pontosDoManual(id));
+        return new EquipeInfo(id, membros, ultima, entregas.countByEquipeAndOkTrue(id), pontosDoManual(id),
+                pontosExtras(id), sequenciaDeEntregas(id));
     }
 
     /** Quem está na posição do piloto muda a cada ciclo, então em três ciclos todos digitam. */

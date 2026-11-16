@@ -209,6 +209,52 @@ class FeiraApplicationTests {
         assertThat(avaliacoes.count()).isZero();
     }
 
+    @Autowired br.com.memora.feira.plataforma.DinamicaService dinamicas;
+    @Autowired Repositorios.Entregas entregasDoBanco;
+
+    @Test
+    void tresEntregasSeguidasValemComboEUmaRecusaZeraASequencia() {
+        entregasDoBanco.deleteAll();
+        for (int i = 0; i < 3; i++) {
+            entregasDoBanco.save(new br.com.memora.feira.plataforma.Entrega("equipe-3", true, "ok " + i, "Carla"));
+            dinamicas.conferirCombo("equipe-3");
+        }
+        assertThat(feira.pontosExtras("equipe-3")).isEqualTo(5);
+        entregasDoBanco.save(new br.com.memora.feira.plataforma.Entrega("equipe-3", false, "não compilou", "Carla"));
+        assertThat(feira.sequenciaDeEntregas("equipe-3")).isZero();
+        entregasDoBanco.save(new br.com.memora.feira.plataforma.Entrega("equipe-3", true, "voltou", "Carla"));
+        dinamicas.conferirCombo("equipe-3");
+        assertThat(feira.pontosExtras("equipe-3")).isEqualTo(5);
+        entregasDoBanco.deleteAll();
+    }
+
+    @Test
+    void ajustesCartaEPerguntaAparecemNoEstadoEOPlacarSomaTudo() {
+        dinamicas.ajustar("equipe-2", -5, "Espiada comprada");
+        dinamicas.ajustar("equipe-2", 10, "Bônus relâmpago");
+        assertThat(feira.estado().equipes().get(1).pontosExtras()).isEqualTo(5);
+        assertThat(feira.placar()).filteredOn(p -> p.barraca().equals("equipe-2")).first()
+                .extracting(p -> p.total()).isEqualTo(5L);
+        assertThatThrownBy(() -> dinamicas.ajustar("equipe-2", 0, "nada")).isInstanceOf(RegraException.class);
+
+        dinamicas.mostrarCarta("MUDO");
+        assertThat(feira.estado().carta().titulo()).isEqualTo("Copiloto mudo");
+        dinamicas.mostrarCarta(null);
+        assertThat(feira.estado().carta().codigo()).isNotEqualTo("MUDO");
+        dinamicas.encerrarCarta();
+        assertThat(feira.estado().carta()).isNull();
+
+        dinamicas.pergunta("proxima");
+        dinamicas.pergunta("proxima");
+        assertThat(feira.estado().pergunta()).isEqualTo(1);
+        dinamicas.pergunta("revelar");
+        assertThat(feira.estado().respostaVisivel()).isTrue();
+
+        feira.recomecar();
+        assertThat(feira.estado().pergunta()).isNull();
+        assertThat(feira.pontosExtras("equipe-2")).isZero();
+    }
+
     @Test
     void registrosSaoGuardadosPorBarraca() {
         registros.salvar("equipe-1", "Ana", "primeiro");

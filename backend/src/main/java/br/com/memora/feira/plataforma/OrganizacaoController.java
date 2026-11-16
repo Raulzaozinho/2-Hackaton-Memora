@@ -32,16 +32,25 @@ public class OrganizacaoController {
 
     public record ItemAprovado(String equipe, int ciclo, String item, int pontos) { }
 
+    public record NovaCarta(String codigo) { }
+
+    public record NovoAjuste(String equipe, int pontos, String motivo) { }
+
+    public record AjusteFeito(long id, String equipe, int pontos, String motivo, java.time.Instant criadoEm) { }
+
     private final FeiraService feira;
     private final Repositorios.Entregas entregas;
     private final Repositorios.Avaliacoes avaliacoes;
+    private final DinamicaService dinamicas;
     private final String pin;
 
     public OrganizacaoController(FeiraService feira, Repositorios.Entregas entregas, Repositorios.Avaliacoes avaliacoes,
+            DinamicaService dinamicas,
             @Value("${feira.pin:feira}") String pin) {
         this.feira = feira;
         this.entregas = entregas;
         this.avaliacoes = avaliacoes;
+        this.dinamicas = dinamicas;
         this.pin = pin;
     }
 
@@ -132,6 +141,53 @@ public class OrganizacaoController {
         return feira.estado();
     }
 
+    // ------------------------------------------------------------ dinâmicas
+
+    /** Mostra uma carta de evento no telão. Sem código, sorteia. */
+    @PostMapping("/dinamicas/carta")
+    public EstadoDaFeira carta(@RequestHeader(value = "X-Pin", required = false) String pin, @RequestBody NovaCarta nova) {
+        exigirPin(pin);
+        dinamicas.mostrarCarta(nova.codigo());
+        return feira.estado();
+    }
+
+    @PostMapping("/dinamicas/carta/encerrar")
+    public EstadoDaFeira encerrarCarta(@RequestHeader(value = "X-Pin", required = false) String pin) {
+        exigirPin(pin);
+        dinamicas.encerrarCarta();
+        return feira.estado();
+    }
+
+    /** Espiada comprada (-5), bônus relâmpago (+10), pergunta relâmpago (+5) ou outro ajuste. */
+    @PostMapping("/dinamicas/ajustes")
+    public EstadoDaFeira ajustar(@RequestHeader(value = "X-Pin", required = false) String pin, @RequestBody NovoAjuste novo) {
+        exigirPin(pin);
+        dinamicas.ajustar(novo.equipe(), novo.pontos(), novo.motivo());
+        return feira.estado();
+    }
+
+    @GetMapping("/dinamicas/ajustes")
+    public List<AjusteFeito> ajustes(@RequestHeader(value = "X-Pin", required = false) String pin) {
+        exigirPin(pin);
+        return dinamicas.ajustes().stream()
+                .map(a -> new AjusteFeito(a.getId(), a.getEquipe(), a.getPontos(), a.getMotivo(), a.getCriadoEm()))
+                .toList();
+    }
+
+    @PostMapping("/dinamicas/ajustes/{id}/desfazer")
+    public EstadoDaFeira desfazer(@RequestHeader(value = "X-Pin", required = false) String pin, @PathVariable long id) {
+        exigirPin(pin);
+        dinamicas.desfazer(id);
+        return feira.estado();
+    }
+
+    @PostMapping("/dinamicas/pergunta/{acao}")
+    public EstadoDaFeira pergunta(@RequestHeader(value = "X-Pin", required = false) String pin, @PathVariable String acao) {
+        exigirPin(pin);
+        dinamicas.pergunta(acao);
+        return feira.estado();
+    }
+
     /** Chamado pelo script do telão a cada push de equipe que ele aceita ou recusa. */
     @PostMapping("/entregas")
     public void registrarEntrega(@RequestHeader(value = "X-Pin", required = false) String pin,
@@ -143,6 +199,9 @@ public class OrganizacaoController {
         String mensagem = nova.mensagem() == null ? "" : nova.mensagem();
         entregas.save(new Entrega(nova.equipe(), nova.ok(),
                 mensagem.length() > 500 ? mensagem.substring(0, 500) : mensagem, nova.autor()));
+        if (nova.ok()) {
+            dinamicas.conferirCombo(nova.equipe());
+        }
     }
 
     private void exigirPin(String recebido) {

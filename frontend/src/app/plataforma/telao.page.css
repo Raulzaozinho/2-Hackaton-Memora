@@ -291,3 +291,99 @@
   opacity: 0.85;
   white-space: nowrap;
 }
+
+.combo {
+  margin-left: 0.3em;
+  font-size: 0.85em;
+}
+
+.pergunta {
+  margin-top: 0.6em;
+  padding: 0.8em 1.2em;
+  border-radius: 0.8em;
+  background: #fff7e0;
+  border: 0.12em solid #e0c070;
+  text-align: center;
+}
+
+.pergunta-titulo {
+  font-weight: 800;
+  color: #9a6400;
+}
+
+.pergunta-texto {
+  font-size: 1.8em;
+  font-weight: 800;
+  margin: 0.2em 0;
+}
+
+.pergunta-resposta {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--ok);
+}
+
+.carta-fundo {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(43, 33, 24, 0.55);
+  z-index: 10;
+  animation: aparecer 0.3s ease-out;
+}
+
+.carta {
+  width: min(90vw, 34em);
+  padding: 1.6em 2em 1.4em;
+  border-radius: 1.4em;
+  background: #fffdf6;
+  border: 0.35em solid #c9a227;
+  box-shadow: 0 1.2em 3em rgba(0, 0, 0, 0.35);
+  text-align: center;
+  display: grid;
+  gap: 0.4em;
+  animation: virar 0.5s ease-out;
+}
+
+.carta-selo {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 800;
+  color: #9a6400;
+}
+
+.carta-emoji {
+  font-size: 6em;
+  line-height: 1.1;
+}
+
+.carta h2 {
+  font-size: 3em;
+}
+
+.carta-texto {
+  font-size: 1.6em;
+}
+
+.carta-relogio {
+  font-size: 2.4em;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: var(--destaque);
+}
+
+@keyframes aparecer {
+  from { opacity: 0; }
+}
+
+@keyframes virar {
+  from { transform: rotateY(90deg) scale(0.8); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carta-fundo,
+  .carta {
+    animation: none;
+  }
+}

@@ -19,7 +19,19 @@ Sobram 15 minutos de folga para as avaliações que demorarem ou para **+1 minut
 
 - **Manual:** cada item do manual vale pontos (10 a 20). Na avaliação, você abre cada barraca na feira e marca no painel o que a equipe cumpriu. Vale o que **entrou no telão** até o relógio da missão zerar. Cada ciclo vale até 100 pontos.
 - **Votação:** depois de cada avaliação, cada pessoa dá **2 fichas** às barracas das outras equipes. Cada ficha vale **5 pontos**.
-- **Placar:** os pontos do manual aparecem no telão na hora; as fichas ficam secretas até a premiação.
+- **Extras:** espiada comprada (−5), bônus relâmpago (+10), pergunta relâmpago (+5) e combo de 3 entregas seguidas (+5, automático).
+- **Placar:** os pontos do manual e os extras aparecem no telão na hora; as fichas ficam secretas até a premiação.
+
+## As dinâmicas (todas no painel da organização, seção 🎲 Dinâmicas)
+
+| Dinâmica | Quando | Como funciona |
+|---|---|---|
+| 🃏 **Carta de evento** | Uma por missão, perto dos 15 minutos | Você sorteia (ou escolhe) e o telão mostra a carta com um relógio próprio: copiloto mudo, troca relâmpago, bônus relâmpago (+10 para quem entregar primeiro), modo papagaio, sim ou não, espiada de presente |
+| 👀 **Espiada comprada** | Quando uma equipe já usou as 2 espiadas do ciclo | A equipe pede, você clica em "Espiada comprada −5" e ela ganha mais 30 segundos de espiada |
+| 🔥 **Combo de entregas** | Sozinho, o tempo todo | A cada 3 entregas aceitas seguidas, sem recusa no meio, a equipe ganha +5. O telão mostra 🔥 com a sequência atual |
+| ⚡ **Pergunta relâmpago** | Durante a avaliação | Enquanto você confere as barracas, o telão mostra uma pergunta sobre a aula do ciclo. Quem responder primeiro em voz alta ganha +5 (botão "Pergunta relâmpago +5"). "Revelar resposta" mostra a resposta no telão |
+
+Errou um clique? A lista de ajustes no painel tem **Desfazer**.
 
 ## As regras, para dizer na abertura
 
@@ -82,6 +94,8 @@ Cada missão tem tarefas fáceis, médias e um desafio, sempre misturando Angula
 
 **A pergunta:** "se eu quero que o número de curtidas apareça na tela, uso chaves duplas ou parênteses?" (chaves duplas).
 
+**Ponte com o SSM:** toda API do SSM tem controllers como o do destaque (`@RestController`, `/api/<modulo>/<recurso>`), com métodos em português, como `consultarPorId`.
+
 **Missão:** nome, slogan, emoji, cor, vitrine e "Quem atende aqui" (fáceis); botão de curtir, visual da vitrine e o endpoint do destaque (médios); o destaque do Java aparecendo na tela (desafio).
 
 ## Ciclo 2 — Abastecer a barraca
@@ -99,9 +113,11 @@ Java: List.of(item1, item2, item3)  ──▶  JSON: [ {...}, {...}, {...} ]  �
 
 **A pergunta:** "na lista do Java, qual é a posição do primeiro item: 0 ou 1?" (0).
 
+**Ponte com o SSM:** no SSM, o controller nunca trabalha sozinho: chama o `XxxService`, recebido pelo construtor. É o desafio deste ciclo. E `consultarPorId(@PathVariable Long id)` é um dos endpoints mais comuns de lá.
+
 Lembre que o novo piloto começa com `git pull`.
 
-**Missão:** os três itens no Java, a resposta pura e o contador (fáceis); a caixinha da lista, a lista na tela, um item só pelo endereço (`@PathVariable`) e os cartões no CSS (médios); o selo de "mais pedido" com `$first` (desafio).
+**Missão:** os três itens no Java, a resposta pura e o contador (fáceis); a caixinha da lista, a lista na tela, um item só pelo endereço (`@PathVariable`) e o selo de "mais pedido" com `$first` (médios); a camada de service, como no SSM (desafio).
 
 ## Intervalo (10 min)
 
@@ -124,7 +140,9 @@ Bom momento para destravar no particular quem ficou para trás.
 
 **A pergunta:** "por que a gente busca a lista de novo depois de enviar?" (para a carta nova aparecer no mural).
 
-**Missão:** o convite, a lista de recados e o total (fáceis); as caixinhas, o enviar, o formulário e a pescaria no Java (médios); o botão de pescar na tela (desafio).
+**Ponte com o SSM:** no SSM, quem cria se chama `cadastrar`, é sempre um POST, e toda ação termina com uma mensagem como "Marca cadastrada com sucesso!". As tarefas deste ciclo seguem esse jeito.
+
+**Missão:** o convite, a lista de recados e a mensagem de sucesso (fáceis); as caixinhas, o cadastrarRecado, o formulário e a pescaria no Java (médios); o botão de pescar na tela (desafio).
 
 ## Avaliação (5 min, em cada ciclo)
 

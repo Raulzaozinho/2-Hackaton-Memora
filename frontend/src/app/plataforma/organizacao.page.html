@@ -35,6 +35,74 @@
       <p class="dica">Mudar de etapa já inicia o relógio dela. O telão acompanha em até 3 segundos.</p>
     </section>
 
+    <section class="bloco dinamicas">
+      <h2>🎲 Dinâmicas</h2>
+
+      <div class="dinamica">
+        <h3>🃏 Carta de evento</h3>
+        <p class="dica">No meio da missão, sorteie uma carta: o telão mostra a carta com um relógio próprio.</p>
+        @if (estado.carta; as carta) {
+          <p class="agora-carta">No telão agora: <strong>{{ carta.emoji }} {{ carta.titulo }}</strong> — {{ carta.texto }}</p>
+        }
+        <div class="botoes">
+          <button class="botao" (click)="mostrarCarta(null)">🃏 Sortear carta</button>
+          @for (c of cartas; track c.codigo) {
+            <button class="botao claro" (click)="mostrarCarta(c.codigo)">{{ c.nome }}</button>
+          }
+          @if (estado.carta) {
+            <button class="botao claro" (click)="tirarCarta()">✖ Tirar do telão</button>
+          }
+        </div>
+      </div>
+
+      <div class="dinamica">
+        <h3>✨ Pontos fora do manual</h3>
+        <p class="dica">
+          Espiada comprada quando acabarem as 2 do ciclo; bônus relâmpago para quem cumprir a carta; pergunta relâmpago
+          para quem responder primeiro. O combo de 3 entregas seguidas (+5) entra sozinho.
+        </p>
+        <div class="colunas">
+          @for (barraca of barracas; track barraca.id) {
+            <div class="coluna" [style.--cor]="barraca.cor">
+              <h4>{{ barraca.emoji }} {{ barraca.id }}</h4>
+              <button class="botao claro" (click)="ajustar(barraca.id, -5, '👀 Espiada comprada')">👀 Espiada comprada −5</button>
+              <button class="botao claro" (click)="ajustar(barraca.id, 10, '⚡ Bônus relâmpago')">⚡ Bônus relâmpago +10</button>
+              <button class="botao claro" (click)="ajustar(barraca.id, 5, '❓ Pergunta relâmpago')">❓ Pergunta relâmpago +5</button>
+            </div>
+          }
+        </div>
+        @if (ajustes().length) {
+          <ul class="ajustes">
+            @for (ajuste of ajustes().slice(0, 8); track ajuste.id) {
+              <li>
+                <span>{{ ajuste.equipe }} · {{ ajuste.motivo }}</span>
+                <strong [class.negativo]="ajuste.pontos < 0">{{ ajuste.pontos > 0 ? '+' : '' }}{{ ajuste.pontos }}</strong>
+                <button class="botao claro pequeno" (click)="desfazer(ajuste)">Desfazer</button>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+
+      <div class="dinamica">
+        <h3>⚡ Pergunta relâmpago</h3>
+        <p class="dica">Aparece no telão durante a avaliação, sobre a aula do ciclo. Quem responder primeiro ganha +5 (botão acima).</p>
+        @if (perguntaAtual(); as p) {
+          <p class="agora-carta">
+            No telão: <strong>{{ p.pergunta }}</strong><br />
+            Resposta: {{ p.resposta }} {{ estado.respostaVisivel ? '(já aparece no telão)' : '(escondida)' }}
+          </p>
+        }
+        <div class="botoes">
+          <button class="botao" (click)="pergunta('proxima')">{{ perguntaAtual() ? 'Próxima pergunta' : 'Mostrar pergunta' }}</button>
+          @if (perguntaAtual()) {
+            <button class="botao claro" (click)="pergunta('revelar')">Revelar resposta</button>
+            <button class="botao claro" (click)="pergunta('esconder')">✖ Tirar do telão</button>
+          }
+        </div>
+      </div>
+    </section>
+
     <section class="bloco avaliacao" [class.destaque]="estado.etapa.tipo === 'AVALIACAO'">
       <h2>⭐ Avaliação do manual</h2>
       <p class="dica">
@@ -117,7 +185,7 @@
       <ol class="placar">
         @for (linha of placar(); track linha.barraca) {
           <li>
-            {{ nomeDaBarraca(linha.barraca) }} — ⭐ {{ linha.pontosDoManual }} do manual · 🎟️ {{ linha.fichas }} fichas ·
+            {{ nomeDaBarraca(linha.barraca) }} — ⭐ {{ linha.pontosDoManual }} do manual · ✨ {{ linha.pontosExtras ?? 0 }} extras · 🎟️ {{ linha.fichas }} fichas ·
             <strong>{{ linha.total }} pontos</strong>
           </li>
         }

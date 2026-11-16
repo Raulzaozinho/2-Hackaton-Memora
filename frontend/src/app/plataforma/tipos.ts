@@ -67,11 +67,32 @@ export interface EquipeInfo {
   entregas: number;
   /** A soma dos itens do manual que a organização aprovou. */
   pontosDoManual: number;
+  /** Espiadas compradas, bônus, perguntas relâmpago e combos. */
+  pontosExtras: number;
+  /** Entregas aceitas seguidas, sem recusa no meio. */
+  sequencia: number;
+}
+
+export interface CartaInfo {
+  codigo: string;
+  emoji: string;
+  titulo: string;
+  texto: string;
+  terminaEm: string;
+}
+
+export interface AjusteFeito {
+  id: number;
+  equipe: string;
+  pontos: number;
+  motivo: string;
+  criadoEm: string;
 }
 
 export interface Placar {
   barraca: string;
   pontosDoManual: number;
+  pontosExtras?: number;
   fichas: number;
   /** Pontos do manual mais as fichas (cada ficha vale 5 pontos). */
   total: number;
@@ -100,6 +121,10 @@ export interface EstadoDaFeira {
   versaoDoFront: number | null;
   /** Verdadeiro quando há e-mails cadastrados: cada pessoa entra com o próprio e-mail. */
   entrarComEmail?: boolean;
+  carta?: CartaInfo | null;
+  /** A pergunta relâmpago no telão (posição na lista do ciclo). */
+  pergunta?: number | null;
+  respostaVisivel?: boolean;
 }
 
 export interface MinhasFichas {

@@ -18,6 +18,7 @@ describe('placar privado da organização', () => {
     fixture.detectChanges();
     http.expectOne('/api/organizacao/conferir').flush(null);
     fixture.detectChanges();
+    for (const request of http.match('/api/organizacao/dinamicas/ajustes')) request.flush([]);
     for (const request of http.match('/api/organizacao/resultado')) {
       expect(request.request.headers.get('X-Pin')).toBe('feira');
       request.flush([{ barraca: 'equipe-2', pontosDoManual: 0, fichas: 0, total: 0 }]);
@@ -25,6 +26,7 @@ describe('placar privado da organização', () => {
     estado.set({ fichasGastas: 2 });
     fixture.detectChanges();
     http.expectOne('/api/organizacao/resultado').flush([{ barraca: 'equipe-2', pontosDoManual: 0, fichas: 2, total: 10 }]);
+    for (const request of http.match('/api/organizacao/dinamicas/ajustes')) request.flush([]);
     expect(fixture.componentInstance['placar']()[0].fichas).toBe(2);
     http.verify();
     fixture.destroy();

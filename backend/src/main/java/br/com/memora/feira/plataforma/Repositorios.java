@@ -31,6 +31,11 @@ public final class Repositorios {
         Optional<Ficha> findFirstByParticipanteAndBarracaAndCicloOrderByIdDesc(String participante, String barraca, Integer ciclo);
     }
 
+    public interface Ajustes extends JpaRepository<Ajuste, Long> {
+        List<Ajuste> findByEquipe(String equipe);
+        List<Ajuste> findAllByOrderByIdDesc();
+    }
+
     public interface Avaliacoes extends JpaRepository<Avaliacao, Long> {
         List<Avaliacao> findByCiclo(Integer ciclo);
         List<Avaliacao> findByEquipe(String equipe);
@@ -43,6 +48,7 @@ public final class Repositorios {
 
     public interface Entregas extends JpaRepository<Entrega, Long> {
         Optional<Entrega> findFirstByEquipeOrderByIdDesc(String equipe);
+        List<Entrega> findTop20ByEquipeOrderByIdDesc(String equipe);
         long countByEquipeAndOkTrue(String equipe);
     }
 }
