@@ -23,8 +23,12 @@ public class Equipe1Controller {
     @GetMapping("/itens")
     public List<Item> itens() {
         return List.of(
-                new Item("❓", "Item de exemplo", "Troque por algo que a barraca de vocês oferece"));
+                new Item("🌭", "Dogão de uma Benga", "Completo com 1 benga"),
+                new Item("🌭🌭", "Dogão de  duas Benga", "Completo com 2 bengas"),
+                new Item("🌿", "Dogão Vegano (de Tchola)", "Completo de Tchola"));
     }
+
+
 
     // CICLO 1 — o destaque do dia entra aqui.
 
