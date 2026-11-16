@@ -211,10 +211,15 @@
   gap: 0.8em;
 }
 
+/* O detalhe dos pontos fica embaixo do nome, para o nome da campeã caber numa linha. */
 .premiacao li {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    'posicao nome total'
+    'posicao detalhe total';
   align-items: center;
-  gap: 1em;
+  column-gap: 0.8em;
   padding: 0.7em 1.2em;
   border-radius: 0.8em;
   background: var(--cor);
@@ -223,16 +228,26 @@
 }
 
 .premiacao li.campea {
-  font-size: 2.6em;
+  font-size: 2.3em;
 }
 
 .premiacao li.campea.empate {
   font-size: 2em;
 }
 
+.premiacao .posicao {
+  grid-area: posicao;
+}
+
 .premiacao .nome {
-  flex: 1;
+  grid-area: nome;
   font-weight: 700;
+  line-height: 1.15;
+}
+
+.premiacao li strong {
+  grid-area: total;
+  white-space: nowrap;
 }
 
 .trancado {
@@ -287,7 +302,8 @@
 }
 
 .premiacao .detalhe {
-  font-size: 0.55em;
+  grid-area: detalhe;
+  font-size: 0.45em;
   opacity: 0.85;
   white-space: nowrap;
 }
