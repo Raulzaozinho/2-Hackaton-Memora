@@ -40,7 +40,7 @@ export class TelaoPage {
 
   protected pergunta = computed(() => {
     const estado = this.feira.estado();
-    return estado ? perguntaDoCiclo(estado.etapa.rodada, estado.pergunta) : null;
+    return estado ? perguntaDoCiclo(estado.etapa.rodada || 1, estado.pergunta) : null;
   });
 
   /** Cada barraca junto com a equipe dela e a última entrega recebida. */

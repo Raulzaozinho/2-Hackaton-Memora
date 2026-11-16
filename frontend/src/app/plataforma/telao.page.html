@@ -114,15 +114,6 @@
     @if (estado.etapa.tipo === 'AVALIACAO') {
       <section class="feira-aberta">
         <p>⭐ A organização está conferindo o manual de cada barraca. Os pontos aparecem aqui na hora.</p>
-        @if (pergunta(); as p) {
-          <div class="pergunta">
-            <p class="pergunta-titulo">⚡ Pergunta relâmpago · vale +5 para quem responder primeiro</p>
-            <p class="pergunta-texto">{{ p.pergunta }}</p>
-            @if (estado.respostaVisivel) {
-              <p class="pergunta-resposta">✅ {{ p.resposta }}</p>
-            }
-          </div>
-        }
       </section>
     }
 
@@ -139,6 +130,21 @@
         </div>
         <p>🎟️ {{ estado.fichasGastas }} de {{ estado.fichasTotal }} fichas gastas</p>
       </section>
+    }
+
+    <!-- A pergunta relâmpago aparece em qualquer etapa, no centro da tela, até a organização tirar. -->
+    @if (pergunta(); as p) {
+      <div class="carta-fundo" role="alertdialog" aria-live="assertive" aria-label="Pergunta relâmpago">
+        <div class="carta pergunta-carta">
+          <p class="carta-selo">⚡ Pergunta relâmpago · +5 para quem responder primeiro</p>
+          <h2>{{ p.pergunta }}</h2>
+          @if (estado.respostaVisivel) {
+            <p class="carta-texto pergunta-resposta">✅ {{ p.resposta }}</p>
+          } @else {
+            <p class="carta-texto">Quem souber, levanta a mão e responde em voz alta!</p>
+          }
+        </div>
+      </div>
     }
 
     @if (estado.carta; as carta) {

@@ -490,3 +490,14 @@
     display: none;
   }
 }
+
+/* A pergunta relâmpago usa o mesmo cartão das cartas de evento. */
+.pergunta-carta h2 {
+  font-size: 2.1em;
+  line-height: 1.25;
+}
+
+.pergunta-carta .pergunta-resposta {
+  font-weight: 900;
+  color: #1e7a3c;
+}
