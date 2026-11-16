@@ -27,6 +27,11 @@ public class Equipe2Controller {
     }
 
     // CICLO 1 — o destaque do dia entra aqui.
+    @GetMapping("/destaque")
+    public Item consultarDestaque() {
+        return new Item("🌭", "Dogão completo, com molho da casa", "O destaque do dia");
+    }
+    
 
     // CICLO 2 — o endpoint de um item só entra aqui.
 
