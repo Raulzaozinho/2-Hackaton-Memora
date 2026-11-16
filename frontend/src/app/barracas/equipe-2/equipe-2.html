@@ -18,6 +18,7 @@
 <!-- CICLO 2 — a lista de itens entra aqui. -->
  <section>
   <h3>O que temos hoje:</h3>
+  <p>{{itens().length}} Opções: </p>
   <ul>
     @for (item of itens(); track item.nome) {
       <li>{{item.emoji}} <strong>{{item.nome}}</strong> - {{item.descricao}}</li>
