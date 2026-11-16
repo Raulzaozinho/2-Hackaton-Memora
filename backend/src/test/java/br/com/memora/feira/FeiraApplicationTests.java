@@ -310,4 +310,18 @@ class FeiraApplicationTests {
         feira.proximaEtapa();
         assertThat(feira.estado().etapa().codigo()).isEqualTo("AULA_1");
     }
+
+    @Test
+    void recomecarApagaOEnsaioInteiroMasNaoAsEquipes() {
+        entregasDoBanco.save(new br.com.memora.feira.plataforma.Entrega("equipe-1", true, "ensaio", "Ana"));
+        registros.salvar("equipe-1", "Ana", "recado do ensaio");
+        var alguem = participantes.findAll().get(0);
+        String equipeAntes = alguem.getEquipe();
+
+        feira.recomecar();
+
+        assertThat(entregasDoBanco.count()).isZero();
+        assertThat(registros.listar("equipe-1")).isEmpty();
+        assertThat(participantes.findById(alguem.getSlug()).orElseThrow().getEquipe()).isEqualTo(equipeAntes).isNotNull();
+    }
 }

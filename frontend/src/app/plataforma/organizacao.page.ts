@@ -34,6 +34,10 @@ export class OrganizacaoPage {
   protected barracas = BARRACAS;
 
   protected pin = signal(lerPin());
+  /** Verdadeiro enquanto uma ação da organização vai ao servidor (com o Supabase leva uns 2 segundos). */
+  protected ocupado = signal(false);
+  /** Quantas marcações da avaliação ainda estão indo ao servidor. */
+  private marcacoesPendentes = 0;
   protected dentro = signal(false);
   protected aviso = signal('');
   protected placar = signal<Placar[]>([]);
@@ -54,6 +58,76 @@ export class OrganizacaoPage {
     const estado = this.feira.estado();
     return estado ? perguntaDoCiclo(estado.etapa?.rodada || this.cicloAvaliado(), estado.pergunta) : null;
   });
+
+  /** O que a organização faz na etapa atual (o mesmo do roteiro do dia) e a seção do painel para isso. */
+  protected passo = computed<{ tarefas: string[]; ir?: { id: string; rotulo: string } } | null>(() => {
+    const etapa = this.feira.estado()?.etapa;
+    if (!etapa) return null;
+    const ciclo = etapa.rodada;
+    switch (etapa.tipo) {
+      case 'AULA':
+        return {
+          tarefas: [
+            `Aula de 5 minutos do ciclo ${ciclo}: a comparação, o desenho, a mágica e a pergunta (roteiro do dia).`,
+            ciclo > 1
+              ? 'Os papéis já giraram no telão. Lembre o novo piloto: git pull e depois .\\piloto.cmd.'
+              : 'Mostre a arrumação: o piloto no editor, o copiloto no manual, o repórter no painel.',
+            'Terminou a aula? Próxima etapa: o relógio de 30 minutos começa.',
+          ],
+        };
+      case 'MISSAO':
+        return {
+          tarefas: [
+            'Circule pelas mesas e atenda os copos vermelhos. Fiscalize as espiadas (2 de 30 segundos por ciclo).',
+            'Perto dos 15 minutos, sorteie uma carta de evento.',
+            'Avise aos 20 e aos 25 minutos: só pontua o que entrar no telão.',
+          ],
+          ir: { id: 'dinamicas', rotulo: 'Ir para as dinâmicas' },
+        };
+      case 'AVALIACAO':
+        return {
+          tarefas: [
+            'Mostre a pergunta relâmpago e dê +5 à equipe de quem responder primeiro.',
+            'Abra cada barraca e marque os itens cumpridos. A linha "o repórter deve ver" do manual diz o que conferir.',
+          ],
+          ir: { id: 'avaliacao', rotulo: 'Ir para a avaliação' },
+        };
+      case 'VOTACAO':
+        return {
+          tarefas: [
+            'Todos visitam as barracas das outras equipes e dão as 2 fichas.',
+            'Acompanhe as fichas gastas no placar. Quando acabarem, Próxima etapa.',
+          ],
+          ir: { id: 'placar', rotulo: 'Ir para o placar' },
+        };
+      default:
+        if (etapa.codigo === 'ABERTURA') {
+          return {
+            tarefas: [
+              'Monte as equipes (ou sorteie). A ordem dentro da equipe define o rodízio.',
+              'Peça para todos entrarem na feira com o e-mail: a página mostra o git switch da equipe de cada um.',
+              'Diga as regras e mostre a barraca modelo. Depois, Próxima etapa.',
+            ],
+            ir: { id: 'equipes', rotulo: 'Ir para as equipes' },
+          };
+        }
+        if (etapa.codigo === 'PREMIACAO') {
+          return {
+            tarefas: [
+              'Cada pessoa diz uma frase com o que aprendeu hoje.',
+              'Entregue os prêmios da organização: ideia mais criativa e melhor trabalho em equipe.',
+              'Clique em Revelar no telão.',
+            ],
+            ir: { id: 'placar', rotulo: 'Ir para o placar' },
+          };
+        }
+        return { tarefas: ['Intervalo de 10 minutos: bom momento para destravar quem ficou para trás.'] };
+    }
+  });
+
+  protected irPara(id: string) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   constructor() {
     // O estado chega a cada três segundos. A distribuição também pode mudar
@@ -134,16 +208,22 @@ export class OrganizacaoPage {
   }
 
   private chamar(metodo: 'POST' | 'PUT', caminho: string, corpo: unknown = {}) {
+    if (this.ocupado()) return;
+    this.ocupado.set(true);
     this.http
       .request<EstadoDaFeira>(metodo, `/api/organizacao/${caminho}`, { body: corpo, headers: this.cabecalho() })
       .subscribe({
         next: (estado) => {
+          this.ocupado.set(false);
           this.feira.estado.set(estado);
           this.feira.atualizar();
           this.aviso.set('');
           this.carregarPlacar();
         },
-        error: (erro) => this.aviso.set(mensagemDeErro(erro)),
+        error: (erro) => {
+          this.ocupado.set(false);
+          this.aviso.set(mensagemDeErro(erro));
+        },
       });
   }
 
@@ -164,6 +244,7 @@ export class OrganizacaoPage {
         ? [...this.aprovados(), { equipe, ciclo, item: item.id, pontos: item.pontos }]
         : this.aprovados().filter((a) => !(a.equipe === equipe && a.item === item.id)),
     );
+    this.marcacoesPendentes++;
     this.http
       .put<EstadoDaFeira>(
         '/api/organizacao/avaliacoes',
@@ -173,10 +254,15 @@ export class OrganizacaoPage {
       .subscribe({
         next: (estado) => {
           this.feira.estado.set(estado);
-          this.carregarAvaliacoes(ciclo);
-          this.carregarPlacar();
+          // Com várias marcações seguidas, só confere com o servidor depois da última:
+          // assim as caixinhas não piscam enquanto as outras ainda estão a caminho.
+          if (--this.marcacoesPendentes === 0) {
+            this.carregarAvaliacoes(ciclo);
+            this.carregarPlacar();
+          }
         },
         error: (erro) => {
+          this.marcacoesPendentes--;
           this.aviso.set(mensagemDeErro(erro));
           this.carregarAvaliacoes(ciclo);
         },
@@ -189,7 +275,7 @@ export class OrganizacaoPage {
       .get<ItemAprovado[]>('/api/organizacao/avaliacoes', { params: { ciclo }, headers: this.cabecalho() })
       .subscribe({
         next: (lista) => {
-          if (this.cicloAvaliado() === ciclo) this.aprovados.set(lista);
+          if (this.cicloAvaliado() === ciclo && this.marcacoesPendentes === 0) this.aprovados.set(lista);
         },
         error: () => undefined,
       });

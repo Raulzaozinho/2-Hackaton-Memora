@@ -41,6 +41,7 @@ public class FeiraService {
     private final Repositorios.Entregas entregas;
     private final Repositorios.Avaliacoes avaliacoes;
     private final Repositorios.Ajustes ajustes;
+    private final Repositorios.RegistrosDoBanco registros;
     private final int fichasPorCiclo;
     private final int pontosPorFicha;
     private final String enderecoConfigurado;
@@ -52,6 +53,7 @@ public class FeiraService {
             Repositorios.Fichas fichas, Repositorios.Entregas entregas,
             Repositorios.Avaliacoes avaliacoes,
             Repositorios.Ajustes ajustes,
+            Repositorios.RegistrosDoBanco registros,
             @Value("${feira.fichas-por-ciclo:2}") int fichasPorCiclo,
             @Value("${feira.pontos-por-ficha:5}") int pontosPorFicha,
             @Value("${feira.endereco:}") String enderecoConfigurado,
@@ -66,6 +68,7 @@ public class FeiraService {
         this.entregas = entregas;
         this.avaliacoes = avaliacoes;
         this.ajustes = ajustes;
+        this.registros = registros;
         this.fichasPorCiclo = fichasPorCiclo;
         this.pontosPorFicha = pontosPorFicha;
         this.enderecoConfigurado = enderecoConfigurado;
@@ -240,7 +243,10 @@ public class FeiraService {
         evento().setResultadoRevelado(revelado);
     }
 
-    /** Volta o dia para o começo: abertura, relógio parado, nenhuma ficha e nenhuma avaliação. */
+    /**
+     * Volta o dia para o começo: abertura, relógio parado, sem fichas, avaliações, extras, entregas
+     * nem recados. Assim um ensaio na manhã do evento não deixa rastro. Equipes e crachás ficam.
+     */
     @Transactional
     public void recomecar() {
         Evento evento = evento();
@@ -250,6 +256,8 @@ public class FeiraService {
         fichas.deleteAll();
         avaliacoes.deleteAll();
         ajustes.deleteAll();
+        entregas.deleteAll();
+        registros.deleteAll();
         evento.setCarta(null);
         evento.setCartaTerminaEm(null);
         evento.setPergunta(null);

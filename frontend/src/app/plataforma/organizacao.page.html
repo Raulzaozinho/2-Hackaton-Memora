@@ -17,6 +17,11 @@
       <button class="botao" type="submit">Entrar</button>
     </form>
   } @else if (feira.estado(); as estado) {
+    @if (ocupado()) {
+      <p class="salvando" aria-live="polite">⏳ Salvando…</p>
+    }
+    <!-- Enquanto uma ação vai ao servidor, os botões ficam travados: nada de bônus em dobro por clique duplo. -->
+    <fieldset class="painel" [disabled]="ocupado()">
     <section class="bloco">
       <h2>Etapa e relógio</h2>
       <p class="agora">
@@ -33,9 +38,22 @@
         </button>
       </div>
       <p class="dica">Mudar de etapa já inicia o relógio dela. O telão acompanha em até 3 segundos.</p>
+      @if (passo(); as p) {
+        <div class="passo">
+          <p class="passo-titulo">👉 O que fazer agora</p>
+          <ul>
+            @for (tarefa of p.tarefas; track tarefa) {
+              <li>{{ tarefa }}</li>
+            }
+          </ul>
+          @if (p.ir; as ir) {
+            <button type="button" class="botao claro pequeno" (click)="irPara(ir.id)">{{ ir.rotulo }} ↓</button>
+          }
+        </div>
+      }
     </section>
 
-    <section class="bloco dinamicas">
+    <section class="bloco dinamicas" id="dinamicas">
       <h2>🎲 Dinâmicas</h2>
 
       <div class="dinamica">
@@ -64,7 +82,7 @@
         <div class="colunas">
           @for (barraca of barracas; track barraca.id) {
             <div class="coluna" [style.--cor]="barraca.cor">
-              <h4>{{ barraca.emoji }} {{ barraca.id }}</h4>
+              <h4>{{ barraca.emoji }} {{ barraca.nome }}</h4>
               <button class="botao claro" (click)="ajustar(barraca.id, -5, '👀 Espiada comprada')">👀 Espiada comprada −5</button>
               <button class="botao claro" (click)="ajustar(barraca.id, 10, '⚡ Bônus relâmpago')">⚡ Bônus relâmpago +10</button>
               <button class="botao claro" (click)="ajustar(barraca.id, 5, '❓ Pergunta relâmpago')">❓ Pergunta relâmpago +5</button>
@@ -75,7 +93,7 @@
           <ul class="ajustes">
             @for (ajuste of ajustes().slice(0, 8); track ajuste.id) {
               <li>
-                <span>{{ ajuste.equipe }} · {{ ajuste.motivo }}</span>
+                <span>{{ nomeDaBarraca(ajuste.equipe) }} · {{ ajuste.motivo }}</span>
                 <strong [class.negativo]="ajuste.pontos < 0">{{ ajuste.pontos > 0 ? '+' : '' }}{{ ajuste.pontos }}</strong>
                 <button class="botao claro pequeno" (click)="desfazer(ajuste)">Desfazer</button>
               </li>
@@ -103,7 +121,7 @@
       </div>
     </section>
 
-    <section class="bloco avaliacao" [class.destaque]="estado.etapa.tipo === 'AVALIACAO'">
+    <section class="bloco avaliacao" id="avaliacao" [class.destaque]="estado.etapa.tipo === 'AVALIACAO'">
       <h2>⭐ Avaliação do manual</h2>
       <p class="dica">
         Na etapa de avaliação, abra cada barraca na feira e marque os itens do manual que a equipe cumpriu.
@@ -140,7 +158,7 @@
       </div>
     </section>
 
-    <section class="bloco">
+    <section class="bloco" id="equipes">
       <h2>Equipes</h2>
       <p class="dica">
         A ordem dentro da equipe define o rodízio: quem aparece primeiro no telão é piloto no ciclo 1, e a cada ciclo os papéis giram.
@@ -176,7 +194,7 @@
       </div>
     </section>
 
-    <section class="bloco">
+    <section class="bloco" id="placar">
       <h2>Placar</h2>
       <p class="dica">
         Só esta tela vê as fichas antes da revelação. Cada ficha vale 5 pontos.
@@ -201,10 +219,10 @@
 
     <section class="bloco">
       <h2>Recomeçar</h2>
-      <p class="dica">Para ensaios: volta para a abertura e apaga as fichas e as avaliações. Não mexe nas equipes nem nas barracas.</p>
+      <p class="dica">Para ensaios: volta para a abertura e apaga fichas, avaliações, pontos extras, entregas e recados. Não mexe nas equipes nem no código das barracas.</p>
       <div class="botoes">
         @if (confirmando() === 'recomecar') {
-          <span class="confirmacao">Volta para a abertura e apaga fichas e avaliações.</span>
+          <span class="confirmacao">Volta para a abertura e apaga fichas, avaliações, extras, entregas e recados.</span>
           <button class="botao" (click)="recomecar()">Sim, recomeçar</button>
           <button class="botao claro" (click)="cancelarConfirmacao()">Cancelar</button>
         } @else {
@@ -212,5 +230,6 @@
         }
       </div>
     </section>
+    </fieldset>
   }
 </main>
