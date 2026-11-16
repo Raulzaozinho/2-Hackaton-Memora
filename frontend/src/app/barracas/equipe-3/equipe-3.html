@@ -11,9 +11,19 @@
 
 </section>
 
-
+<section>
+  <h3> O que temos hoje</h3>
+  <ul>
+    @for (item of itens(); track item.nome){
+      <li>
+        {{item.emoji}} <strong>{{item.nome}}</strong> - {{item.descricao}}</li>
+    }
+  </ul>
+</section>
 <!-- CICLO 1 — o botão de curtir e o destaque do dia entram aqui. -->
 
 <!-- CICLO 2 — a lista de itens entra aqui. -->
+
+
 
 <!-- CICLO 3 — o recado do visitante e a pescaria entram aqui. -->
