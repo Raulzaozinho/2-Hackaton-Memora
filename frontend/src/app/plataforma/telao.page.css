@@ -513,3 +513,28 @@
   width: fit-content;
   max-width: 100%;
 }
+
+/* A carta "Caça ao bug" mostra um trecho de código com um erro para os repórteres acharem. */
+.bug {
+  text-align: left;
+  display: grid;
+  gap: 0.3em;
+}
+
+.bug-arquivo {
+  font-weight: 800;
+  font-size: 0.9em;
+  color: var(--tinta-suave);
+}
+
+.bug pre {
+  margin: 0;
+  padding: 0.8em 1em;
+  border-radius: 0.6em;
+  background: #2b2118;
+  color: #fff;
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 1.15em;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}

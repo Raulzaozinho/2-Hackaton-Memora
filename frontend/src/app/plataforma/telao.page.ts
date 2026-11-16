@@ -4,6 +4,7 @@ import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
 import { Membro } from './tipos';
 import { REVELACAO, classificarResultado, duracaoDaRevelacao, momentoDaPosicao } from './resultado';
 import { LETRAS, perguntaDoCiclo } from './perguntas';
+import { bugDaCarta } from './bugs';
 
 /** Nos 3 ciclos vale o modo cego: cada papel enxerga só uma parte (docs/papeis.md). */
 const PAPEIS: Record<string, string> = {
@@ -39,6 +40,7 @@ export class TelaoPage {
   });
 
   protected letras = LETRAS;
+  protected bugDaCarta = bugDaCarta;
 
   protected pergunta = computed(() => {
     const estado = this.feira.estado();

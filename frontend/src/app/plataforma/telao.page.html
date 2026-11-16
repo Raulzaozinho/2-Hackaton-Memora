@@ -164,6 +164,12 @@
           <div class="carta-emoji" aria-hidden="true">{{ carta.emoji }}</div>
           <h2>{{ carta.titulo }}</h2>
           <p class="carta-texto">{{ carta.texto }}</p>
+          @if (carta.codigo === 'CACA_BUG' && bugDaCarta(carta.terminaEm); as bug) {
+            <div class="bug">
+              <p class="bug-arquivo">📄 {{ bug.arquivo }}</p>
+              <pre><code>{{ bug.codigo }}</code></pre>
+            </div>
+          }
           <p class="carta-relogio">⏱ {{ relogioDaCarta() }}</p>
         </div>
       </div>

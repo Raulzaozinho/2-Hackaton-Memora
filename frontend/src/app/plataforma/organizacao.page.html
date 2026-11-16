@@ -61,6 +61,9 @@
         <p class="dica">No meio da missão, sorteie uma carta: o telão mostra a carta com um relógio próprio.</p>
         @if (estado.carta; as carta) {
           <p class="agora-carta">No telão agora: <strong>{{ carta.emoji }} {{ carta.titulo }}</strong> — {{ carta.texto }}</p>
+          @if (carta.codigo === 'CACA_BUG' && bugDaCarta(carta.terminaEm); as bug) {
+            <p class="agora-carta">🐞 O bug no telão ({{ bug.arquivo }}): <code>{{ bug.codigo }}</code><br /><strong>Resposta:</strong> {{ bug.resposta }}</p>
+          }
         }
         <div class="botoes">
           <button class="botao" (click)="mostrarCarta(null)">🃏 Sortear carta</button>
