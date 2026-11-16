@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * O back-end da barraca da EQUIPE 2. Este arquivo é de vocês: podem mexer em tudo.
@@ -20,7 +21,11 @@ public class Equipe2Controller {
      * CICLO 2 — a lista do que a barraca de vocês oferece.
      * Troquem o item de exemplo e acrescentem os de vocês, separados por vírgula.
      */
-    @GetMapping("/itens")
+    @GetMapping("/itens/{posicao}")
+    public Item consultarPorPosicao (@PathVariable int posicao) {
+        return itens().get(posicao);
+    }
+    
     public List<Item> itens() {
         return List.of(
                 new Item("🌭", "Cachorro Quente Tradicional ao Molho", "O MAIS PEDIDO"),
