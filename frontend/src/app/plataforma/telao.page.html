@@ -4,8 +4,8 @@
 
     <header class="cabecalho">
       <div>
-        <p class="marca">🎪 Feira Dev</p>
-        <h1>{{ estado.etapa.titulo }}</h1>
+        <p class="marca">🎪 {{ bug()?.tipo === 'marca' ? 'Fiera Dev' : 'Feira Dev' }}</p>
+        <h1>{{ bug()?.tipo === 'titulo' ? trocarLetras(estado.etapa.titulo) : estado.etapa.titulo }}</h1>
         <p class="entrega">{{ estado.etapa.entrega }}</p>
         @if (estado.etapa.quadro) {
           <p class="quadro">📝 No quadro: {{ estado.etapa.quadro }}</p>
@@ -63,13 +63,13 @@
       </section>
     } @else {
       <section class="equipes">
-        @for (equipe of equipes(); track equipe.barraca.id) {
-          <article [style.--cor]="equipe.barraca.cor" [style.--texto]="corDoTexto(equipe.barraca.cor)">
+        @for (equipe of equipes(); track equipe.barraca.id; let i = $index) {
+          <article [style.--cor]="corDaBarraca(i)" [style.--texto]="corDoTexto(corDaBarraca(i))">
             <header>
-              <span class="emoji" aria-hidden="true">{{ equipe.barraca.emoji }}</span>
+              <span class="emoji" [class.de-ponta-cabeca]="temBug('emoji', i)" aria-hidden="true">{{ equipe.barraca.emoji }}</span>
               <div>
-                <h2>{{ equipe.barraca.nome }}</h2>
-                <p>{{ equipe.barraca.slogan }}</p>
+                <h2>{{ temBug('nomeBarraca', i) ? trocarLetras(equipe.barraca.nome) : equipe.barraca.nome }}</h2>
+                <p [class.espelhado]="temBug('slogan', i)">{{ equipe.barraca.slogan }}</p>
               </div>
               <span class="pontos-equipe" title="Pontos do manual mais bônus, espiadas e combos">
                 ⭐ {{ equipe.pontos }}
@@ -85,9 +85,11 @@
             <ul class="membros">
               @for (membro of equipe.membros; track membro.slug) {
                 <li>
-                  <span class="pessoa">{{ membro.nome }}</span>
+                  <span class="pessoa">{{ temBug('pessoa', i) && $first ? trocarLetras(membro.nome) : membro.nome }}</span>
                   @if (membro.papel) {
-                    <span class="papel" [class.piloto]="membro.papel === 'piloto'">{{ papel(membro) }}</span>
+                    <span class="papel" [class.piloto]="membro.papel === 'piloto'">{{
+                      temBug('papel', i) && membro.papel === 'piloto' ? '⌨️ Piloto · só o manual' : papel(membro)
+                    }}</span>
                   }
                 </li>
               } @empty {
@@ -157,19 +159,18 @@
       </div>
     }
 
-    @if (estado.carta; as carta) {
+    @if (estado.carta?.codigo === 'CACA_BUG') {
+      <div class="faixa-bug" role="status">
+        🐞 <strong>Caça ao bug!</strong> Tem um erro escondido nesta tela. Achou? Levante a mão e mostre para a organização.
+        <span class="faixa-relogio">⏱ {{ relogioDaCarta() }}</span>
+      </div>
+    } @else if (estado.carta; as carta) {
       <div class="carta-fundo" role="alertdialog" aria-live="assertive" [attr.aria-label]="'Carta de evento: ' + carta.titulo">
         <div class="carta">
           <p class="carta-selo">Carta de evento</p>
           <div class="carta-emoji" aria-hidden="true">{{ carta.emoji }}</div>
           <h2>{{ carta.titulo }}</h2>
           <p class="carta-texto">{{ carta.texto }}</p>
-          @if (carta.codigo === 'CACA_BUG' && bugDaCarta(carta.terminaEm); as bug) {
-            <div class="bug">
-              <p class="bug-arquivo">📄 {{ bug.arquivo }}</p>
-              <pre><code>{{ bug.codigo }}</code></pre>
-            </div>
-          }
           <p class="carta-relogio">⏱ {{ relogioDaCarta() }}</p>
         </div>
       </div>

@@ -21,7 +21,7 @@ public enum Carta {
     VISUAL("🎨", "Visual relâmpago", "A primeira equipe que entregar uma mudança de visual (cor, borda ou letra) ganha +10 pontos.", 3),
     ELOGIO("💬", "Pausa para o elogio", "Todo mundo para por 1 minuto: cada pessoa faz um elogio sincero a alguém da própria equipe.", 1),
     // Cartas do repórter
-    CACA_BUG("🐞", "Caça ao bug", "Tem um bug no código abaixo! O primeiro repórter que disser qual é o erro e como corrigir ganha +10 para a equipe.", 3),
+    CACA_BUG("🐞", "Caça ao bug", "Tem um erro escondido no telão! Quem achar primeiro e mostrar para a organização ganha +10 para a equipe.", 3),
     PREVISAO("🔮", "Previsão do repórter", "Por 3 minutos, antes de o piloto salvar, o repórter diz em voz alta o que vai aparecer na tela. Acertou? A equipe comemora!", 3),
     OLHO_DE_AGUIA("🦅", "Olho de águia", "O repórter pode olhar a tela do piloto por 30 segundos. Não conta nas 2 espiadas do ciclo.", 1),
     COLETIVA("🎤", "Coletiva de imprensa", "Cada repórter faz uma pergunta ao repórter de outra equipe sobre a barraca dela, e ele responde em voz alta.", 2),

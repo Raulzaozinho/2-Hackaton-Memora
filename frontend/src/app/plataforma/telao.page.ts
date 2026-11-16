@@ -4,7 +4,7 @@ import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
 import { Membro } from './tipos';
 import { REVELACAO, classificarResultado, duracaoDaRevelacao, momentoDaPosicao } from './resultado';
 import { LETRAS, perguntaDoCiclo } from './perguntas';
-import { bugDaCarta } from './bugs';
+import { BugVisual, TipoDeBug, bugVisualDaCarta, trocarLetras } from './bugs';
 
 /** Nos 3 ciclos vale o modo cego: cada papel enxerga só uma parte (docs/papeis.md). */
 const PAPEIS: Record<string, string> = {
@@ -40,7 +40,25 @@ export class TelaoPage {
   });
 
   protected letras = LETRAS;
-  protected bugDaCarta = bugDaCarta;
+  // ---------------------------------------------------------------- a carta "Caça ao bug"
+  protected trocarLetras = trocarLetras;
+
+  /** O defeito escondido no telão enquanto a carta "Caça ao bug" está ativa. */
+  protected bug = computed<BugVisual | null>(() => {
+    const carta = this.feira.estado()?.carta;
+    return carta?.codigo === 'CACA_BUG' ? bugVisualDaCarta(carta.terminaEm) : null;
+  });
+
+  protected temBug(tipo: TipoDeBug, equipe: number): boolean {
+    const bug = this.bug();
+    return bug?.tipo === tipo && bug.equipe === equipe;
+  }
+
+  /** A cor da barraca, ou a da barraca vizinha quando o defeito é a cor. */
+  protected corDaBarraca(i: number): string {
+    const lista = this.equipes();
+    return lista[this.temBug('cor', i) ? (i + 1) % lista.length : i].barraca.cor;
+  }
 
   protected pergunta = computed(() => {
     const estado = this.feira.estado();

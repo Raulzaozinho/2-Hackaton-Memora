@@ -7,7 +7,7 @@ import { mensagemDeErro } from './barraca-api';
 import { FeiraService, formatarRelogio } from './feira.service';
 import { MANUAL, cicloDoManual, ItemDoManual } from './manual';
 import { LETRAS, perguntaDoCiclo } from './perguntas';
-import { bugDaCarta } from './bugs';
+import { bugVisualDaCarta, descreverBug } from './bugs';
 import { AjusteFeito, EstadoDaFeira, ItemAprovado, Placar } from './tipos';
 
 const CHAVE_PIN = 'feira.pin';
@@ -70,7 +70,17 @@ export class OrganizacaoPage {
   // Dinâmicas: cartas de evento, pontos fora do manual e a pergunta relâmpago.
   protected cartas = CARTAS;
   protected letras = LETRAS;
-  protected bugDaCarta = bugDaCarta;
+  /** Na carta "Caça ao bug": onde está o defeito escondido no telão. */
+  protected ondeEstaOBug = computed(() => {
+    const estado = this.feira.estado();
+    const carta = estado?.carta;
+    if (carta?.codigo !== 'CACA_BUG') return null;
+    const bug = bugVisualDaCarta(carta.terminaEm);
+    if (!bug) return null;
+    const barraca = BARRACAS[bug.equipe];
+    const pessoa = estado?.equipes.find((e) => e.id === barraca?.id)?.membros[0]?.nome ?? 'alguém';
+    return descreverBug(bug, barraca?.nome ?? 'barraca', pessoa, estado?.etapa.titulo ?? '');
+  });
   protected ajustes = signal<AjusteFeito[]>([]);
   protected perguntaAtual = computed(() => {
     const estado = this.feira.estado();

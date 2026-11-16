@@ -61,8 +61,8 @@
         <p class="dica">No meio da missão, sorteie uma carta: o telão mostra a carta com um relógio próprio.</p>
         @if (estado.carta; as carta) {
           <p class="agora-carta">No telão agora: <strong>{{ carta.emoji }} {{ carta.titulo }}</strong> — {{ carta.texto }}</p>
-          @if (carta.codigo === 'CACA_BUG' && bugDaCarta(carta.terminaEm); as bug) {
-            <p class="agora-carta">🐞 O bug no telão ({{ bug.arquivo }}): <code>{{ bug.codigo }}</code><br /><strong>Resposta:</strong> {{ bug.resposta }}</p>
+          @if (ondeEstaOBug(); as onde) {
+            <p class="agora-carta">🐞 <strong>Onde está o erro:</strong> {{ onde }} Quem acertar primeiro ganha +10 pelo botão ⚡ Bônus relâmpago da equipe.</p>
           }
         }
         <div class="botoes">

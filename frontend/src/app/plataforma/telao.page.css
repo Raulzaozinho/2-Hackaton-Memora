@@ -538,3 +538,36 @@
   line-height: 1.5;
   white-space: pre-wrap;
 }
+
+/* A carta "Caça ao bug": uma faixa no topo, para a tela (com o defeito) ficar à vista. */
+.faixa-bug {
+  position: fixed;
+  top: 0.6em;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: min(94vw, 60em);
+  padding: 0.6em 1.2em;
+  border-radius: 999px;
+  background: #2b2118;
+  color: #fff;
+  font-size: 1.15em;
+  text-align: center;
+  box-shadow: 0 0.6em 1.6em rgba(0, 0, 0, 0.3);
+}
+
+.faixa-relogio {
+  margin-left: 0.6em;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.de-ponta-cabeca {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
+.espelhado {
+  display: inline-block;
+  transform: scaleX(-1);
+}
