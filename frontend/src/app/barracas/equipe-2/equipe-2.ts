@@ -34,6 +34,8 @@ export class Equipe2 {
   recado = signal('');
   recados = signal<Registro[]>([]);
 
+  aviso = signal('');
+
   carregarRecados() {
     this.api.registros('equipe-2').subscribe((lista) => this.recados.set(lista));
   }
@@ -48,6 +50,7 @@ export class Equipe2 {
       this.api.salvar('equipe-2', novo).subscribe(() => {
           this.recado.set('');
           this.carregarRecados();
+          this.aviso.set('Recado cadastrado com sucesso!');
         });
     }
   }
