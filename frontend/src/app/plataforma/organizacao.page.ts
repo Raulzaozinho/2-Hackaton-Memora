@@ -28,6 +28,12 @@ const CARTAS = [
   { codigo: 'SORTE', nome: '🍀 Sorte de principiante' },
   { codigo: 'VISUAL', nome: '🎨 Visual relâmpago (+10)' },
   { codigo: 'ELOGIO', nome: '💬 Pausa para o elogio' },
+  { codigo: 'CACA_BUG', nome: '🐞 Caça ao bug (+10)' },
+  { codigo: 'PREVISAO', nome: '🔮 Previsão do repórter' },
+  { codigo: 'OLHO_DE_AGUIA', nome: '🦅 Olho de águia' },
+  { codigo: 'COLETIVA', nome: '🎤 Coletiva de imprensa' },
+  { codigo: 'CONTROLE', nome: '✅ Controle de qualidade' },
+  { codigo: 'RETRATO', nome: '🖼️ Retrato falado' },
 ];
 
 /** O painel de quem conduz o dia: etapas, relógio, equipes e a revelação do resultado. */

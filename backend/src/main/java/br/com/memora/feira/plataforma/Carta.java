@@ -19,7 +19,14 @@ public enum Carta {
     PLANTAO("📢", "Plantão de notícias", "Cada repórter tem 20 segundos para contar à sala o que a barraca dele já faz.", 2),
     SORTE("🍀", "Sorte de principiante", "A equipe com menos pontos no telão ganha uma espiada extra agora.", 1),
     VISUAL("🎨", "Visual relâmpago", "A primeira equipe que entregar uma mudança de visual (cor, borda ou letra) ganha +10 pontos.", 3),
-    ELOGIO("💬", "Pausa para o elogio", "Todo mundo para por 1 minuto: cada pessoa faz um elogio sincero a alguém da própria equipe.", 1);
+    ELOGIO("💬", "Pausa para o elogio", "Todo mundo para por 1 minuto: cada pessoa faz um elogio sincero a alguém da própria equipe.", 1),
+    // Cartas do repórter
+    CACA_BUG("🐞", "Caça ao bug", "O primeiro repórter que mostrar à organização um erro do painel e contar como a equipe resolveu ganha +10 para a equipe.", 3),
+    PREVISAO("🔮", "Previsão do repórter", "Por 3 minutos, antes de o piloto salvar, o repórter diz em voz alta o que vai aparecer na tela. Acertou? A equipe comemora!", 3),
+    OLHO_DE_AGUIA("🦅", "Olho de águia", "O repórter pode olhar a tela do piloto por 30 segundos. Não conta nas 2 espiadas do ciclo.", 1),
+    COLETIVA("🎤", "Coletiva de imprensa", "Cada repórter faz uma pergunta ao repórter de outra equipe sobre a barraca dela, e ele responde em voz alta.", 2),
+    CONTROLE("✅", "Controle de qualidade", "O copiloto mostra o manual ao repórter, que confere o \"O repórter deve ver\" dos itens já feitos. Achou algo faltando? Conserta e entrega!", 3),
+    RETRATO("🖼️", "Retrato falado", "Cada repórter descreve a barraca da própria equipe sem dizer o nome nem a comida. A sala tenta adivinhar qual é!", 2);
 
     public final String emoji;
     public final String titulo;
