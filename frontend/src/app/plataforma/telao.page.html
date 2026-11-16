@@ -71,15 +71,8 @@
                 <h2>{{ temBug('nomeBarraca', i) ? trocarLetras(equipe.barraca.nome) : equipe.barraca.nome }}</h2>
                 <p [class.espelhado]="temBug('slogan', i)">{{ equipe.barraca.slogan }}</p>
               </div>
-              <span class="pontos-equipe" title="Pontos do manual mais bônus, espiadas e combos">
-                ⭐ {{ equipe.pontos }}
-                @if (equipe.dobro) {
-                  <span class="combo" title="Tarefas valendo 1,25x">⚡x1,25</span>
-                }
-                @if (equipe.sequencia >= 1) {
-                  <span class="combo" title="Tarefas aprovadas: a cada 3, combo de +5">🔥{{ equipe.sequencia }}</span>
-                }
-              </span>
+              <!-- Os pontos ficam escondidos no telão até a revelação da premiação; só o painel da organização vê. -->
+              <span class="pontos-equipe" title="Os pontos aparecem na premiação">⭐ ???</span>
             </header>
 
             <ul class="membros">
@@ -118,7 +111,7 @@
 
     @if (estado.etapa.tipo === 'AVALIACAO') {
       <section class="feira-aberta">
-        <p>⭐ A organização está conferindo o manual de cada barraca. Os pontos aparecem aqui na hora.</p>
+        <p>⭐ A organização está conferindo o manual de cada barraca. Os pontos ficam em segredo até a premiação!</p>
       </section>
     }
 
