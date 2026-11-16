@@ -27,6 +27,7 @@ public class Equipe2Controller {
                 new Item("🌭", "Cachorro Quente na CHAPA", "Um dois mais gostosos"),
                 new Item("🌭", "Cachorro Quente Duplo", "Dupla salsicha para se deliciar"));
     }
+    //reporte olhou task 2 e rodou
 
     // CICLO 1 — o destaque do dia entra aqui.
     @GetMapping("/destaque")
