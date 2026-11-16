@@ -33,5 +33,11 @@
   <p>Conte o que achou da barraca</p>
   <input class="campo" [(ngModel)]="recado" placeholder="Aqui">
   <button class="botao" (click)="cadastrarRecado()" [disabled]="!recado()"> Enviar </button>
-
+  <ul>
+    @for (item of recados(); track item.id) {
+      <li>
+        <strong>{{item.autor}}</strong>:{{item.texto}}
+      </li>
+    }
+  </ul>
  </section>
