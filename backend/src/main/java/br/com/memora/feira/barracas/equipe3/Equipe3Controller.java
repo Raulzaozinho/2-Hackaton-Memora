@@ -23,9 +23,10 @@ public class Equipe3Controller {
     @GetMapping("/itens")
     public List<Item> itens() {
         return List.of(
-                new Item("❓", "Item de exemplo", "Troque por algo que a barraca de vocês oferece"));
+                new Item("🍓", "Merge de Morango", "sem conflitos, só sabor"),
+                new Item("🍫", "commit de chocolate", "dificil de desfazer "),
+                new Item("🍋", "branch de limão", "azedinho mas útil"));
     }
-
     // CICLO 1 — o destaque do dia entra aqui.
 
     // CICLO 2 — o endpoint de um item só entra aqui.
