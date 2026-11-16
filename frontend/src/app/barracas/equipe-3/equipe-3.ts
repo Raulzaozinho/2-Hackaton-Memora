@@ -35,6 +35,12 @@ carregarRecados(){
   this.api.registros('equipe-3').subscribe((lista) =>this.recados.set(lista))
 }
 
+cadastrarRecado(){
+  const novo = {autor:this.feira.meuNome(),texto:this.recado()};
+  this.api.salvar('equipe-3', novo).subscribe(()=>{this.recado.set('')})
+  this.carregarRecados();
+}
+
   constructor() {
     this.api.itens('equipe-3').subscribe((lista)=> this.itens.set(lista));
     // O que precisa ser buscado assim que a barraca abre entra aqui dentro
