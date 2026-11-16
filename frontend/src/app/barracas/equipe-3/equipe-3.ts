@@ -31,6 +31,8 @@ export class Equipe3 {
 recado = signal('');
 recados = signal<Registro[]>([]);
 
+aviso = signal('');
+
 carregarRecados(){
   this.api.registros('equipe-3').subscribe((lista) =>this.recados.set(lista))
 }
@@ -39,7 +41,9 @@ cadastrarRecado(){
   const novo = {autor:this.feira.meuNome(),texto:this.recado()};
   this.api.salvar('equipe-3', novo).subscribe(()=>{this.recado.set('')})
   this.carregarRecados();
+  this.aviso.set('Recado cadastrado com sucesso!');
 }
+
 
   constructor() {
     this.api.itens('equipe-3').subscribe((lista)=> this.itens.set(lista));
