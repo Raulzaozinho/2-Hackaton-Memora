@@ -133,7 +133,7 @@ public class OrganizacaoController {
         }
         var existente = avaliacoes.findByEquipeAndCicloAndItem(avaliado.equipe(), avaliado.ciclo(), avaliado.item());
         if (avaliado.feito()) {
-            // Com o dobro ligado para a equipe, a tarefa vale o dobro (vale para o que for marcado daqui em diante).
+            // Com o bônus ligado para a equipe, a tarefa vale 1,5x (vale para o que for marcado daqui em diante).
             int pontos = Math.max(0, feira.pontosDaTarefa(avaliado.equipe(), avaliado.pontos()));
             Avaliacao avaliacao = existente.orElseGet(() ->
                     new Avaliacao(avaliado.equipe(), avaliado.ciclo(), avaliado.item(), pontos));

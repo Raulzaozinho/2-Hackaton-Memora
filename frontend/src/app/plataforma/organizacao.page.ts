@@ -230,7 +230,12 @@ export class OrganizacaoPage {
     this.chamar('POST', 'recomecar');
   }
 
-  /** Pontos em dobro nas tarefas da equipe (para quem está atrás ter chance). */
+  /** Quanto vale a tarefa para a equipe: 1,5x (arredondado) com o bônus de recuperação ligado. */
+  protected pontosDaTarefa(equipe: string, pontos: number): number {
+    return this.emDobro(equipe) ? Math.round(pontos * 1.5) : pontos;
+  }
+
+  /** Bônus de recuperação nas tarefas da equipe (para quem está atrás ter chance). */
   protected emDobro(equipe: string): boolean {
     return this.feira.estado()?.pontosEmDobro?.includes(equipe) ?? false;
   }
@@ -278,7 +283,7 @@ export class OrganizacaoPage {
     // Mostra na hora; a resposta do servidor confirma.
     this.aprovados.set(
       feito
-        ? [...this.aprovados(), { equipe, ciclo, item: item.id, pontos: item.pontos * (this.emDobro(equipe) ? 2 : 1) }]
+        ? [...this.aprovados(), { equipe, ciclo, item: item.id, pontos: this.pontosDaTarefa(equipe, item.pontos) }]
         : this.aprovados().filter((a) => !(a.equipe === equipe && a.item === item.id)),
     );
     this.marcacoesPendentes++;

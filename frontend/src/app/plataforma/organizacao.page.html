@@ -90,7 +90,7 @@
               <button class="botao claro" (click)="ajustar(barraca.id, 10, '⚡ Bônus relâmpago')">⚡ Bônus relâmpago +10</button>
               <button class="botao claro" (click)="ajustar(barraca.id, 5, '❓ Pergunta relâmpago')">❓ Pergunta relâmpago +5</button>
               <button class="botao" [class.claro]="!emDobro(barraca.id)" (click)="alternarDobro(barraca.id)">
-                {{ emDobro(barraca.id) ? '⚡ Tarefas em dobro: LIGADO' : '⚡ Ligar tarefas em dobro' }}
+                {{ emDobro(barraca.id) ? '⚡ Tarefas valendo 1,5x: LIGADO' : '⚡ Ligar tarefas valendo 1,5x' }}
               </button>
             </div>
           }
@@ -152,14 +152,14 @@
             <h3>
               <a [routerLink]="['/barraca', barraca.id]" target="_blank">{{ barraca.emoji }} {{ barraca.nome }}</a>
             </h3>
-            <p class="soma">Ciclo {{ cicloAvaliado() }}: <strong>{{ pontosNoCiclo(barraca.id) }}</strong> pontos{{ emDobro(barraca.id) ? ' · ⚡ tarefas em dobro' : '' }}</p>
+            <p class="soma">Ciclo {{ cicloAvaliado() }}: <strong>{{ pontosNoCiclo(barraca.id) }}</strong> pontos{{ emDobro(barraca.id) ? ' · ⚡ tarefas valendo 1,5x' : '' }}</p>
             <ul class="checklist">
               @for (item of itensDoCiclo(); track item.id) {
                 <li>
                   <label [class.ok]="aprovado(barraca.id, item)">
                     <input type="checkbox" [checked]="aprovado(barraca.id, item)" (change)="alternarItem(barraca.id, item)" />
                     <span class="titulo-item">{{ item.titulo }}</span>
-                    <span class="pts">+{{ item.pontos * (emDobro(barraca.id) ? 2 : 1) }}</span>
+                    <span class="pts">+{{ pontosDaTarefa(barraca.id, item.pontos) }}</span>
                   </label>
                 </li>
               }
