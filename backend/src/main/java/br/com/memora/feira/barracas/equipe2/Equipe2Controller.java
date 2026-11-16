@@ -23,7 +23,9 @@ public class Equipe2Controller {
     @GetMapping("/itens")
     public List<Item> itens() {
         return List.of(
-                new Item("❓", "Item de exemplo", "Troque por algo que a barraca de vocês oferece"));
+                new Item("🌭", "Cachorro Quente Tradicional ao Molho", "O MAIS PEDIDO"),
+                new Item("🌭", "Cachorro Quente na CHAPA", "Um dois mais gostosos"),
+                new Item("🌭", "Cachorro Quente Duplo", "Dupla salsicha para se deliciar"));
     }
 
     // CICLO 1 — o destaque do dia entra aqui.
