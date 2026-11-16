@@ -93,7 +93,7 @@ Toda aula tem 5 minutos no relógio do telão. Você **não** precisa falar tudo
 
 ### Antes da aula
 
-Desenhe durante a votação do ciclo 1:
+Desenhe durante a avaliação do ciclo 1:
 
 ```
  COZINHA:  List.of(prato 0, prato 1, prato 2)
