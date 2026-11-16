@@ -125,6 +125,8 @@ export interface EstadoDaFeira {
   /** A pergunta relâmpago no telão (posição na lista do ciclo). */
   pergunta?: number | null;
   respostaVisivel?: boolean;
+  /** As equipes com pontos em dobro nas tarefas do manual. */
+  pontosEmDobro?: string[];
 }
 
 export interface MinhasFichas {

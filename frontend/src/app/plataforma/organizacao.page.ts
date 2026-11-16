@@ -218,6 +218,15 @@ export class OrganizacaoPage {
     this.chamar('POST', 'recomecar');
   }
 
+  /** Pontos em dobro nas tarefas da equipe (para quem está atrás ter chance). */
+  protected emDobro(equipe: string): boolean {
+    return this.feira.estado()?.pontosEmDobro?.includes(equipe) ?? false;
+  }
+
+  protected alternarDobro(equipe: string) {
+    this.chamar('POST', 'dinamicas/dobro', { equipe, ligado: !this.emDobro(equipe) });
+  }
+
   protected nomeDaBarraca(id: string): string {
     const barraca = BARRACAS.find((b) => b.id === id);
     return barraca ? `${barraca.emoji} ${barraca.nome}` : id;
@@ -257,7 +266,7 @@ export class OrganizacaoPage {
     // Mostra na hora; a resposta do servidor confirma.
     this.aprovados.set(
       feito
-        ? [...this.aprovados(), { equipe, ciclo, item: item.id, pontos: item.pontos }]
+        ? [...this.aprovados(), { equipe, ciclo, item: item.id, pontos: item.pontos * (this.emDobro(equipe) ? 2 : 1) }]
         : this.aprovados().filter((a) => !(a.equipe === equipe && a.item === item.id)),
     );
     this.marcacoesPendentes++;

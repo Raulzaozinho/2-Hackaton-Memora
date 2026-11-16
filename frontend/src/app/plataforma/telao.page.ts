@@ -57,6 +57,7 @@ export class TelaoPage {
         entregas: equipe?.entregas ?? 0,
         pontos: (equipe?.pontosDoManual ?? 0) + (equipe?.pontosExtras ?? 0),
         sequencia: equipe?.sequencia ?? 0,
+        dobro: estado?.pontosEmDobro?.includes(barraca.id) ?? false,
       };
     });
   });

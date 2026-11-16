@@ -382,6 +382,20 @@ class FeiraApplicationTests {
     }
 
     @Test
+    void comODobroLigadoAsTarefasDaEquipeValemODobro() {
+        assertThat(feira.pontosDaTarefa("equipe-1", 15)).isEqualTo(15);
+        dinamicas.pontosEmDobro("equipe-1", true);
+        dinamicas.pontosEmDobro("equipe-3", true);
+        assertThat(feira.estado().pontosEmDobro()).containsExactly("equipe-1", "equipe-3");
+        assertThat(feira.pontosDaTarefa("equipe-1", 15)).isEqualTo(30);
+        assertThat(feira.pontosDaTarefa("equipe-2", 15)).isEqualTo(15);
+        dinamicas.pontosEmDobro("equipe-1", false);
+        assertThat(feira.estado().pontosEmDobro()).containsExactly("equipe-3");
+        feira.recomecar();
+        assertThat(feira.estado().pontosEmDobro()).isEmpty();
+    }
+
+    @Test
     void umCalculoQueComecouAntesNaoSubstituiOMaisNovo() {
         // Uma tela começou a calcular antes da última marcação da organização e terminou depois:
         // o telão não pode voltar a mostrar os pontos antigos.

@@ -125,7 +125,8 @@ public class FeiraService {
                 cartaNoTelao(evento),
                 evento.getPergunta(),
                 evento.isRespostaVisivel(),
-                todos.stream().anyMatch(p -> p.getEmail() != null) || organizadores.existe());
+                todos.stream().anyMatch(p -> p.getEmail() != null) || organizadores.existe(),
+                evento.getEquipesEmDobro());
         cache.guardar(estado, comecou);
         return estado;
     }
@@ -223,6 +224,11 @@ public class FeiraService {
 
     // ---------------------------------------------------------------- etapas e relógio
 
+    /** Os pontos de uma tarefa do manual para a equipe: em dobro quando a organização ligou o dobro dela. */
+    public int pontosDaTarefa(String equipe, int pontos) {
+        return evento().getEquipesEmDobro().contains(equipe) ? pontos * 2 : pontos;
+    }
+
     public boolean temVotacao() {
         return votacao;
     }
@@ -298,6 +304,7 @@ public class FeiraService {
         evento.setCartaTerminaEm(null);
         evento.setPergunta(null);
         evento.setRespostaVisivel(false);
+        for (String equipe : EQUIPES) evento.setEmDobro(equipe, false);
     }
 
     // ---------------------------------------------------------------- equipes

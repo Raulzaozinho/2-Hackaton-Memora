@@ -80,6 +80,15 @@ public class DinamicaService {
 
     // O combo agora é calculado pelas tarefas aprovadas (FeiraService.pontosDeCombo), não pelas entregas.
 
+    /** Liga ou desliga os pontos em dobro nas tarefas do manual de uma equipe. */
+    @Transactional
+    public void pontosEmDobro(String equipe, boolean ligado) {
+        if (!FeiraService.EQUIPES.contains(equipe)) {
+            throw new RegraException("Equipe desconhecida: " + equipe);
+        }
+        feira.evento().setEmDobro(equipe, ligado);
+    }
+
     // ---------------------------------------------------------------- pergunta relâmpago
 
     /** "proxima" mostra a próxima pergunta do ciclo, "revelar" mostra a resposta e "esconder" tira do telão. */

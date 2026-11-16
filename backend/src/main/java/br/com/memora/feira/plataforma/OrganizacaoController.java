@@ -36,6 +36,8 @@ public class OrganizacaoController {
 
     public record NovoAjuste(String equipe, int pontos, String motivo) { }
 
+    public record NovoDobro(String equipe, boolean ligado) { }
+
     public record AjusteFeito(long id, String equipe, int pontos, String motivo, java.time.Instant criadoEm) { }
 
     private final FeiraService feira;
@@ -131,9 +133,11 @@ public class OrganizacaoController {
         }
         var existente = avaliacoes.findByEquipeAndCicloAndItem(avaliado.equipe(), avaliado.ciclo(), avaliado.item());
         if (avaliado.feito()) {
+            // Com o dobro ligado para a equipe, a tarefa vale o dobro (vale para o que for marcado daqui em diante).
+            int pontos = Math.max(0, feira.pontosDaTarefa(avaliado.equipe(), avaliado.pontos()));
             Avaliacao avaliacao = existente.orElseGet(() ->
-                    new Avaliacao(avaliado.equipe(), avaliado.ciclo(), avaliado.item(), avaliado.pontos()));
-            avaliacao.setPontos(Math.max(0, avaliado.pontos()));
+                    new Avaliacao(avaliado.equipe(), avaliado.ciclo(), avaliado.item(), pontos));
+            avaliacao.setPontos(pontos);
             avaliacoes.save(avaliacao);
         } else {
             existente.ifPresent(avaliacoes::delete);
@@ -142,6 +146,14 @@ public class OrganizacaoController {
     }
 
     // ------------------------------------------------------------ dinâmicas
+
+    /** Liga ou desliga os pontos em dobro nas tarefas de uma equipe (para quem está atrás ter chance). */
+    @PostMapping("/dinamicas/dobro")
+    public EstadoDaFeira dobro(@RequestHeader(value = "X-Pin", required = false) String pin, @RequestBody NovoDobro novo) {
+        exigirPin(pin);
+        dinamicas.pontosEmDobro(novo.equipe(), novo.ligado());
+        return feira.estado();
+    }
 
     /** Mostra uma carta de evento no telão. Sem código, sorteia. */
     @PostMapping("/dinamicas/carta")

@@ -25,13 +25,15 @@ public record EstadoDaFeira(
         Integer pergunta,
         boolean respostaVisivel,
         /** Verdadeiro quando há e-mails cadastrados: cada pessoa entra com o próprio e-mail em vez de escolher numa lista. */
-        boolean entrarComEmail) {
+        boolean entrarComEmail,
+        /** As equipes com pontos em dobro nas tarefas do manual. */
+        List<String> pontosEmDobro) {
 
     /** O mesmo estado com a hora atual, para o relógio das telas não atrasar quando a resposta vem da memória. */
     public EstadoDaFeira comAgora(Instant novoAgora) {
         return new EstadoDaFeira(etapa, etapas, terminaEm, novoAgora, feiraAberta, resultadoRevelado, equipes,
                 fichasGastas, fichasTotal, resultado, endereco, versaoDoFront, carta, pergunta, respostaVisivel,
-                entrarComEmail);
+                entrarComEmail, pontosEmDobro);
     }
 
     /** "rodada" é o número do ciclo (1 a 3); "tipo" é AULA, MISSAO, AVALIACAO, VOTACAO ou OUTRA. */
