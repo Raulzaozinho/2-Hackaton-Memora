@@ -35,4 +35,10 @@
 
   <input class="campo" [(ngModel)]="recado" placeholder="Escreva aqui" />
   <button class="botao" (click)="cadastrarRecado()" [disabled]="!recado()">Enviar</button>
-</section>
+
+  <ul>
+    @for (item of recados(); track item.id) {
+      <li><strong>{{item.autor}}</strong>: {{item.texto}}</li>
+    }
+  </ul>
+ </section>
