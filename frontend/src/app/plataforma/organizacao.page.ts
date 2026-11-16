@@ -19,6 +19,15 @@ const CARTAS = [
   { codigo: 'ECO', nome: '🦜 Modo papagaio' },
   { codigo: 'SIM_OU_NAO', nome: '🎯 Sim ou não' },
   { codigo: 'PRESENTE', nome: '🎁 Espiada de presente' },
+  { codigo: 'TELEFONE', nome: '📞 Telefone sem fio' },
+  { codigo: 'NARRADOR', nome: '🎙️ Narrador de futebol' },
+  { codigo: 'CAMERA_LENTA', nome: '🐢 Câmera lenta' },
+  { codigo: 'DETETIVE', nome: '🕵️ Detetive' },
+  { codigo: 'VIZINHO', nome: '🤝 Ajuda do vizinho' },
+  { codigo: 'PLANTAO', nome: '📢 Plantão de notícias' },
+  { codigo: 'SORTE', nome: '🍀 Sorte de principiante' },
+  { codigo: 'VISUAL', nome: '🎨 Visual relâmpago (+10)' },
+  { codigo: 'ELOGIO', nome: '💬 Pausa para o elogio' },
 ];
 
 /** O painel de quem conduz o dia: etapas, relógio, equipes e a revelação do resultado. */
