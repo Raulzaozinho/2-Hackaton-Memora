@@ -6,5 +6,5 @@ export const EQUIPE_1: ConfigDaBarraca = {
   nome: 'Barraca de Cachorro Quente',
   slogan: 'O melhor que existe melhor que o outro grupo.',
   emoji: '🌭',
-  cor: '#e4572e',
+  cor: '#c0392b',
 };
