@@ -65,7 +65,7 @@ Cada equipe tem **2 espiadas por ciclo**. Numa espiada, o copiloto ou o repórte
 Entreguem cedo e entreguem de novo a cada item feito: só pontua o que estiver no telão quando o relógio da missão zerar. O copiloto dita e o piloto digita, num terminal novo (o do `piloto.cmd` continua rodando). Primeiro entre na pasta do projeto:
 
 ```powershell
-cd $HOME\feira-dev
+cd $HOME\2-Hackaton-Memora
 git add .
 git commit -m "ciclo 1: nome e cores da barraca"
 git push

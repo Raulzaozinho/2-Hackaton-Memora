@@ -18,8 +18,8 @@ Abra o **PowerShell** e cole, uma linha de cada vez:
 
 ```powershell
 cd $HOME
-git clone -c core.longpaths=true https://github.com/Raulzaozinho/2-Hackaton-Memora.git feira-dev
-cd feira-dev
+git clone https://github.com/Raulzaozinho/2-Hackaton-Memora.git
+cd 2-Hackaton-Memora
 .\preparar.cmd
 ```
 
@@ -38,7 +38,7 @@ No fim aparece **"Tudo pronto!"** ou uma lista com o que falta e o que fazer. Se
 
 ## 3. Teste
 
-Ainda na pasta `feira-dev`:
+Ainda na pasta `2-Hackaton-Memora`:
 
 ```powershell
 .\piloto.cmd
@@ -54,7 +54,7 @@ Pronto, missão cumprida. 🎉
 
 - Traga o notebook **carregado** e o **carregador**.
 - Feche o que estiver usando as portas 8080, 4200 e 4201 (por exemplo, o SSM rodando).
-- Para voltar à pasta do projeto num terminal novo: `cd $HOME\feira-dev`.
+- Para voltar à pasta do projeto num terminal novo: `cd $HOME\2-Hackaton-Memora`.
 - Quem pilota não usa IA: se o seu editor tiver o GitHub Copilot ou outro assistente, deixe-o desligado.
 
 ## Se der problema
