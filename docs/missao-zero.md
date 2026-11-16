@@ -2,6 +2,10 @@
 
 No hackathon cada um vai programar **no próprio notebook**, com Angular e Spring Boot. Para não perder tempo no dia, deixe o computador pronto antes. Leva uns **15 minutos**, quase tudo esperando download.
 
+## 0. Tenha um editor
+
+VS Code (o instalador "User" não pede administrador) ou IntelliJ.
+
 ## 1. Mande o seu usuário do GitHub para o Raul
 
 É o que deixa você enviar código para o projeto. Não tem conta? Crie em <https://github.com/signup>.
@@ -40,16 +44,17 @@ Ainda na pasta `feira-dev`:
 .\piloto.cmd
 ```
 
-Espere uns 30 segundos e abra <http://localhost:4201/painel>. Você deve ver a feira de um lado e o quadro de erros do outro. Se o Windows perguntar se o Node pode usar a rede, clique em **Permitir**.
+Espere uns 30 segundos e abra <http://localhost:4201/painel>. Você deve ver a feira de um lado e o quadro de erros do outro. Se o Windows perguntar se o Node pode usar a rede, clique em **Permitir**. Se pedir senha de administrador, clique em **Cancelar** e avise o Raul: no dia, o repórter senta ao seu lado.
 
-Para fechar: **Ctrl+C** no PowerShell.
+Para fechar: **Ctrl+C** no PowerShell. Se perguntar "Deseja finalizar o arquivo em lotes (S/N)?", digite **S** e Enter.
 
 Pronto, missão cumprida. 🎉
 
 ## No dia
 
 - Traga o notebook **carregado** e o **carregador**.
-- Feche o que estiver usando a porta 8080 (por exemplo, o SSM rodando).
+- Feche o que estiver usando as portas 8080, 4200 e 4201 (por exemplo, o SSM rodando).
+- Para voltar à pasta do projeto num terminal novo: `cd $HOME\feira-dev`.
 - Quem pilota não usa IA: se o seu editor tiver o GitHub Copilot ou outro assistente, deixe-o desligado.
 
 ## Se der problema
@@ -58,6 +63,7 @@ Pronto, missão cumprida. 🎉
 |---|---|
 | `git` não é reconhecido | Instale o Git em <https://git-scm.com> e abra o PowerShell de novo |
 | "ainda sem permissão para enviar código" | Confira se o Raul recebeu o seu usuário e se você aceitou o convite. Depois rode `.\preparar.cmd` de novo |
+| "ainda sem permissão", mesmo depois de aceitar o convite | O Windows pode ter outra conta do GitHub salva (a da empresa). Abra o **Gerenciador de Credenciais** → **Credenciais do Windows**, remova `git:https://github.com` e rode o preparar de novo |
 | "a porta 8080 está ocupada" | Outro projeto está rodando. Feche-o antes de rodar o `piloto.cmd` |
 | O `npm ci` ou o Maven falharam | Quase sempre é a rede. Tente de novo; se continuar, mande um print para o Raul |
 | Usa Mac ou Linux | Instale o Node 24 e o Java 21, depois rode `node scripts/preparar.mjs` e, para testar, `node scripts/piloto.mjs` |

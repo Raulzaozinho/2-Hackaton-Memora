@@ -48,7 +48,7 @@ public final class Repositorios {
 
     public interface Entregas extends JpaRepository<Entrega, Long> {
         Optional<Entrega> findFirstByEquipeOrderByIdDesc(String equipe);
-        List<Entrega> findTop20ByEquipeOrderByIdDesc(String equipe);
+        List<Entrega> findByEquipeOrderByIdDesc(String equipe);
         long countByEquipeAndOkTrue(String equipe);
     }
 }

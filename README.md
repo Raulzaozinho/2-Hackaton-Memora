@@ -14,33 +14,24 @@ São menos de 3 horas, 3 equipes de 3 pessoas e 3 ciclos. Em cada ciclo, uma pes
 
 ## O que você precisa instalar
 
-- **Git**
-- **Node.js 24** (LTS)
-- **Java (JDK) 21** ou mais novo
-- Um editor: VS Code ou IntelliJ
+- **Git** e um editor (VS Code ou IntelliJ).
+- O resto o `preparar` resolve: ele baixa um Node 24 e um Java 21 numa pasta separada quando os do computador não servem.
 
 ## Como rodar na sua máquina
 
-São dois programas, cada um no seu terminal.
+Uma vez só, para preparar (veja a [Missão Zero](docs/missao-zero.md)):
 
-**Terminal 1, o back-end** (Java + Spring Boot, porta 8080):
-
-```bash
-cd backend
-./mvnw spring-boot:run
+```powershell
+.\preparar.cmd
 ```
 
-No PowerShell do Windows, use `.\mvnw.cmd spring-boot:run`. Está pronto quando aparecer `Started FeiraApplication`.
+Para ligar o back-end, o front-end e o painel do repórter de uma vez:
 
-**Terminal 2, o front-end** (Angular, porta 4200):
-
-```bash
-cd frontend
-npm install
-npm start
+```powershell
+.\piloto.cmd
 ```
 
-Abra <http://localhost:4200>. O `npm install` só é necessário na primeira vez.
+Abra <http://localhost:4201/painel>. No Mac ou Linux: `node scripts/preparar.mjs` e `node scripts/piloto.mjs`.
 
 Na sua máquina o banco de dados é um arquivo em `backend/dados`, criado sozinho. Você não precisa instalar nem configurar banco nenhum.
 

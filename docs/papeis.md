@@ -25,7 +25,7 @@ Todos entram na feira com o próprio e-mail. A página da feira diz o papel de c
 
 ```powershell
 git pull
-.piloto.cmd
+.\piloto.cmd
 ```
 
 (No Mac ou Linux: `node scripts/piloto.mjs`.)
@@ -62,9 +62,10 @@ Cada equipe tem **2 espiadas por ciclo**. Numa espiada, o copiloto ou o repórte
 
 ## Entregar
 
-Entreguem cedo e entreguem de novo a cada item feito: só pontua o que estiver no telão quando o relógio da missão zerar. O copiloto dita e o piloto digita, num terminal novo:
+Entreguem cedo e entreguem de novo a cada item feito: só pontua o que estiver no telão quando o relógio da missão zerar. O copiloto dita e o piloto digita, num terminal novo (o do `piloto.cmd` continua rodando). Primeiro entre na pasta do projeto:
 
-```bash
+```powershell
+cd $HOME\feira-dev
 git add .
 git commit -m "ciclo 1: nome e cores da barraca"
 git push

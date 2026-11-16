@@ -4,13 +4,13 @@ O que fazer antes do dia, na ordem. O dia em si está no [roteiro](roteiro-do-di
 
 ## Uma semana antes
 
-**1. Repositório.** O projeto está em <https://github.com/Raulzaozinho/2-Hackaton-Memora>, com o `main` e os ramos `equipe-1`, `equipe-2` e `equipe-3` já criados. Peça o usuário do GitHub de cada participante e adicione os nove como colaboradores em **Settings → Collaborators → Add people**. Sem o convite aceito, ninguém consegue enviar o crachá nem as entregas do dia.
+**1. Repositório.** O projeto está em <https://github.com/Raulzaozinho/2-Hackaton-Memora>, com o `main` e os ramos `equipe-1`, `equipe-2` e `equipe-3` já criados. Peça o usuário do GitHub de cada participante e adicione os nove como colaboradores em **Settings → Collaborators → Add people**. Sem o convite aceito, ninguém consegue enviar as entregas do dia.
 
 **2. Missão Zero.** Envie aos participantes o link de [docs/missao-zero.md](../missao-zero.md). Cada um clona o projeto e roda o `preparar.cmd`, que baixa um Node 24 e um Java 21 numa pasta separada quando os do computador não servem, baixa as dependências e confere o acesso ao GitHub. Os crachás já estão no projeto, só com o primeiro nome.
 
 Para incluir alguém novo, copie `backend/src/main/resources/crachas/_exemplo.json` para um arquivo com o primeiro nome da pessoa, em minúsculas e sem acentos. O repositório é público: use só o primeiro nome.
 
-Quem não conseguir abrir o PR sozinho é exatamente quem precisa de ajuda **antes** do dia: sente junto por 15 minutos.
+Quem não chegar ao "Tudo pronto!" sozinho é exatamente quem precisa de ajuda **antes** do dia: sente junto por 15 minutos.
 
 **3. Banco no Supabase.** Crie um projeto gratuito no Supabase. Em **Connect**, escolha **Session pooler** e anote host, usuário e senha. Na máquina do telão, copie `backend/.env.example` para `backend/.env` e preencha:
 
@@ -46,11 +46,11 @@ o ensaio deve ficar separado do banco oficial.
 
 Passe por todas as etapas com **Próxima etapa**. Numa avaliação, marque alguns itens do manual e veja os pontos no telão; numa votação, dê fichas por outro computador; na premiação, revele o resultado. No fim, clique em **Recomeçar o dia**, que apaga fichas e avaliações.
 
-**Teste a rede com dois computadores.** O telão mostra um endereço como `http://192.168.0.10:8080`: abra-o em outro computador no mesmo Wi-Fi. Depois, nesse outro computador, rode `.piloto.cmd` e abra o painel do repórter (porta 4201) a partir de um terceiro computador. Algumas redes de empresa bloqueiam um computador de falar com outro; se não abrir, o plano B é todos entrarem no roteador de um celular.
+**Teste a rede com dois computadores.** O telão mostra um endereço como `http://192.168.0.10:8080`: abra-o em outro computador no mesmo Wi-Fi. Depois, nesse outro computador, rode `.\piloto.cmd` e abra o painel do repórter (porta 4201) a partir de um terceiro computador. Algumas redes de empresa bloqueiam um computador de falar com outro; se não abrir, o plano B é todos entrarem no roteador de um celular.
 
 ## Na véspera
 
-**1. Ramos das equipes.** Os três ramos já existem, mas ficam para trás a cada crachá ajustado. Com todos os PRs de crachá no `main`, atualize-os:
+**1. Ramos das equipes.** Os três ramos já existem, mas ficam para trás a cada mudança no `main`. Depois do último ajuste, atualize-os:
 
 ```bash
 git switch main
@@ -63,7 +63,7 @@ git push origin main:equipe-1 main:equipe-2 main:equipe-3
 ```bash
 git clone https://github.com/Raulzaozinho/2-Hackaton-Memora.git feira-telao
 cd feira-telao/frontend
-npm install
+npm ci
 ```
 
 Copie para a pasta `backend` desse clone os dois arquivos que não vão para o Git: o `.env` (conexão com o Supabase) e o `emails.local.properties` (o e-mail de cada participante, para entrar na feira). O modelo do segundo está em `backend/emails.local.example.properties`: uma linha por pessoa, no formato `nome-do-arquivo-do-crachá=email`.

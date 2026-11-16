@@ -324,4 +324,31 @@ class FeiraApplicationTests {
         assertThat(registros.listar("equipe-1")).isEmpty();
         assertThat(participantes.findById(alguem.getSlug()).orElseThrow().getEquipe()).isEqualTo(equipeAntes).isNotNull();
     }
+
+    @Test
+    void guardarOEstadoNaoEsperaUmaTelaQueEstaCalculando() throws Exception {
+        // Uma tela está calculando o estado (e, no servidor de verdade, segura uma conexão do banco).
+        // Uma ação da organização que termina nesse momento precisa conseguir guardar o estado novo
+        // sem esperar: se esperasse, as duas podiam travar uma à outra.
+        cache.esquecer();
+        var calculando = new java.util.concurrent.CountDownLatch(1);
+        var liberar = new java.util.concurrent.CountDownLatch(1);
+        var tela = java.util.concurrent.CompletableFuture.supplyAsync(() -> cache.estado(() -> {
+            calculando.countDown();
+            try {
+                liberar.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return feira.estado();
+        }));
+        assertThat(calculando.await(5, java.util.concurrent.TimeUnit.SECONDS)).isTrue();
+
+        var acao = java.util.concurrent.CompletableFuture.runAsync(() -> cache.guardar(feira.estado()));
+        acao.get(5, java.util.concurrent.TimeUnit.SECONDS);
+
+        liberar.countDown();
+        assertThat(tela.get(5, java.util.concurrent.TimeUnit.SECONDS).etapa().codigo()).isEqualTo("ABERTURA");
+        cache.esquecer();
+    }
 }

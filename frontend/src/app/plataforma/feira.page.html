@@ -81,7 +81,7 @@
           <a class="botao" routerLink="/manual">📖 Abrir o manual</a>
         }
         @case ('piloto') {
-          <p><strong>⌨️ Neste ciclo você é o piloto.</strong> No terminal, na pasta <code>feira-dev</code>: <code class="comando">git switch {{ minhaEquipe()?.id }}</code> <code class="comando">git pull</code> <code class="comando">.piloto.cmd</code> Depois leia o endereço em voz alta e fique só no editor.</p>
+          <p><strong>⌨️ Neste ciclo você é o piloto.</strong> No terminal, na pasta <code>feira-dev</code>: <code class="comando">git switch {{ minhaEquipe()?.id }}</code> <code class="comando">git pull</code> <code class="comando">.\piloto.cmd</code> Depois leia o endereço em voz alta e fique só no editor.</p>
         }
         @case ('reporter') {
           <p><strong>📣 Neste ciclo você é o repórter.</strong> Abra no seu computador o endereço que o piloto ler em voz alta e conte o que aparece.</p>

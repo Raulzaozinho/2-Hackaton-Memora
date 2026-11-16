@@ -182,7 +182,7 @@ public class FeiraService {
 
     /** Quantas entregas aceitas seguidas a equipe tem, contando da mais recente até a última recusa. */
     public long sequenciaDeEntregas(String equipe) {
-        return sequencia(entregas.findTop20ByEquipeOrderByIdDesc(equipe));
+        return sequencia(entregas.findByEquipeOrderByIdDesc(equipe));
     }
 
     private CartaInfo cartaNoTelao(Evento evento) {
@@ -253,11 +253,12 @@ public class FeiraService {
         evento.setEtapa(Etapa.ABERTURA);
         evento.setTerminaEm(null);
         evento.setResultadoRevelado(false);
-        fichas.deleteAll();
-        avaliacoes.deleteAll();
-        ajustes.deleteAll();
-        entregas.deleteAll();
-        registros.deleteAll();
+        // deleteAllInBatch: um DELETE por tabela. O deleteAll() apagava linha por linha.
+        fichas.deleteAllInBatch();
+        avaliacoes.deleteAllInBatch();
+        ajustes.deleteAllInBatch();
+        entregas.deleteAllInBatch();
+        registros.deleteAllInBatch();
         evento.setCarta(null);
         evento.setCartaTerminaEm(null);
         evento.setPergunta(null);
@@ -275,10 +276,12 @@ public class FeiraService {
             todos.get(i).setEquipe(EQUIPES.get(i % EQUIPES.size()));
             todos.get(i).setOrdem(i / EQUIPES.size());
         }
+        cache.esquecerCrachas();
     }
 
     @Transactional
     public void definirEquipe(String slug, String equipe) {
+        cache.esquecerCrachas();
         Participante participante = participantes.findById(slug)
                 .orElseThrow(() -> new RegraException("Participante não encontrado: " + slug));
         if (equipe == null || equipe.isBlank()) {

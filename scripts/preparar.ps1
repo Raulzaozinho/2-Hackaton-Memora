@@ -114,11 +114,13 @@ if ($jdkDir) {
 
 # ------------------------------------------------------------------ caminhos para o piloto.cmd
 $caminhos = Join-Path $ferramentas 'caminhos.cmd'
-@(
+# UTF-8 sem BOM: uma pasta de usuario com acento continua certa (o piloto.cmd usa chcp 65001).
+$linhas = [string[]]@(
     '@rem Gerado pelo preparar.cmd da Feira Dev. O piloto.cmd le este arquivo.',
     "set `"JAVA_HOME=$jdkDir`"",
     "set `"PATH=$nodeDir;$jdkDir\bin;%PATH%`""
-) | Set-Content -Path $caminhos -Encoding ASCII
+)
+[IO.File]::WriteAllLines($caminhos, $linhas, (New-Object Text.UTF8Encoding $false))
 
 $env:JAVA_HOME = $jdkDir
 $env:PATH = "$nodeDir;$jdkDir\bin;$env:PATH"

@@ -51,7 +51,7 @@ Errou um clique? A lista de ajustes no painel tem **Desfazer**.
 | Fase | Você | Piloto | Copiloto | Repórter |
 |---|---|---|---|---|
 | **Aula** (5 min) | Ensina no quadro o assunto do ciclo e as palavras do manual | Assiste | Assiste | Assiste |
-| **Missão** (30 min) | Circula, atende copos vermelhos, fiscaliza as espiadas, avisa aos 20 e aos 25 minutos | `git pull`, `.piloto.cmd`, executa o que o copiloto pede, entrega com `git push` | Abre o manual, explica item por item, pesquisa quando travar, dita a entrega | Abre o painel do piloto, conta o que apareceu, lê e pesquisa os erros, confere no telão se a entrega entrou |
+| **Missão** (30 min) | Circula, atende copos vermelhos, fiscaliza as espiadas, avisa aos 20 e aos 25 minutos | `git pull`, `.\piloto.cmd`, executa o que o copiloto pede, entrega com `git push` | Abre o manual, explica item por item, pesquisa quando travar, dita a entrega | Abre o painel do piloto, conta o que apareceu, lê e pesquisa os erros, confere no telão se a entrega entrou |
 | **Avaliação** (5 min) | Abre cada barraca e marca no painel os itens cumpridos | Descansa | Confere no manual o que deveria ter saído | Acompanha no telão os pontos da equipe |
 | **Votação** (5 min) | Chama todos para visitar as barracas | Visita e dá 2 fichas | Visita e dá 2 fichas | Visita e dá 2 fichas |
 
@@ -62,7 +62,7 @@ Errou um clique? A lista de ajustes no painel tem **Desfazer**.
 - Telão na etapa **Abertura**. Mostre a feira com as três barracas "em montagem".
 - Monte as equipes no painel (ou **Sortear equipes**). A ordem define o rodízio.
 - Peça para todos entrarem na feira com o e-mail. Cada um vê o próprio papel do ciclo 1 na página da feira.
-- Diga as regras e mostre a arrumação: o piloto de frente para o notebook, o copiloto de costas com o manual, o repórter com o painel. Peça para **todos** rodarem `git switch equipe-N` (o número da própria equipe; a página da feira mostra o comando certo). Mostre o piloto rodando `.piloto.cmd` e o repórter abrindo o endereço que termina em `/painel`.
+- Diga as regras e mostre a arrumação: o piloto de frente para o notebook, o copiloto de costas com o manual, o repórter com o painel. Peça para **todos** rodarem `git fetch` e depois `git switch equipe-N` (o número da própria equipe; a página da feira mostra o comando certo). Mostre o piloto rodando `.\piloto.cmd` e o repórter abrindo o endereço que termina em `/painel`.
 - Abra a **barraca modelo** e faça um pedido nela: "no fim do dia a barraca de vocês faz coisas assim".
 
 ## Como dar a aula de 5 minutos
@@ -72,14 +72,15 @@ O telão marca os 5 minutos. Toda aula tem o mesmo formato:
 | Tempo | O quê |
 |---|---|
 | 0:00 | **A comparação** com a feira: uma imagem que todo mundo entende |
-| 1:00 | **O desenho** no quadro: no máximo três caixas e duas setas |
+| 1:00 | **O desenho** no quadro: você só aponta e conta |
 | 3:00 | **A mágica** no telão: a barraca modelo funcionando de verdade |
 | 4:00 | **A pergunta valendo aplauso** e a ponte com o SSM |
 
 Regras que deixam a aula curta:
 
+- **Desenhe antes.** O do ciclo 1, antes de todos chegarem; o do ciclo 2, durante a votação do ciclo 1; o do ciclo 3, no intervalo. Na aula você só aponta.
 - Explique só o que aparece nos itens **médios**. Os fáceis eles fazem lendo o manual, e o desafio é para quem quiser ir além.
-- Deixe o desenho pronto no quadro **antes** de a aula começar (na votação do ciclo anterior ou no intervalo). Na aula você só aponta e conta.
+- O dia inteiro usa **uma imagem só**: a barraca tem uma vitrine (Angular), uma cozinha (Spring Boot) e um garçom que leva e traz (a requisição HTTP, com o JSON no papel).
 - Termine sempre com: "Fáceis primeiro, entreguem cedo e entreguem de novo a cada item".
 
 As mágicas usam a barraca modelo no navegador do telão: `http://localhost:8080/#/barraca/modelo`.
@@ -94,17 +95,17 @@ As mágicas usam a barraca modelo no navegador do telão: `http://localhost:8080
  VITRINE (Angular)                            COZINHA (Spring Boot)
  equipe-N.html   o que aparece                EquipeNController.java
  equipe-N.ts     as caixinhas                 @GetMapping("/destaque")
-                                              devolve um Item
-          ◀────────  JSON  {"emoji": "⭐", "nome": "..."}  ────────
+ equipe-N.css    a roupa: cor, borda, letra   devolve um Item
+          ◀────────  garçom com o JSON  {"emoji": "⭐", "nome": "..."}  ────────
 
  curtidas = signal(0)          uma caixinha com um valor dentro
  {{ curtidas() }}              mostra na tela o que tem na caixinha
  (click)="..."                 faz alguma coisa quando clicam
 ```
 
-Aponte as três linhas de baixo: "Com essas três coisas vocês fazem o botão de curtir." Depois aponte a cozinha: "e o `@GetMapping` cria um endereço novo na cozinha: o destaque do dia".
+Aponte as três linhas de baixo: "Com essas três coisas vocês fazem o botão de curtir. Para ler a caixinha, sempre com parênteses: `curtidas()`." Depois aponte a cozinha: "e o `@GetMapping` cria um endereço novo na cozinha: o destaque do dia".
 
-**A mágica (1 min).** No telão, abra a barraca modelo e mostre os sabores. Abra uma aba nova em `http://localhost:8080/api/barracas/modelo/itens`: "Isto é o que a cozinha manda. Feio, né? A vitrine pega isso e deixa bonito." Volte para a barraca e aponte os mesmos sabores.
+**A mágica (1 min).** No telão, abra a barraca modelo e mostre os sabores. Abra uma aba nova em `http://localhost:8080/api/barracas/modelo/itens`: "Isto é o que a cozinha manda: só texto, sem cor, sem botão. A vitrine pega isso e deixa bonito." Volte para a barraca e aponte os mesmos sabores.
 
 **A pergunta (30 s).** "Quem prepara o destaque do dia: a vitrine ou a cozinha?" (A cozinha, o Spring Boot. A vitrine só mostra.)
 
@@ -114,28 +115,34 @@ Aponte as três linhas de baixo: "Com essas três coisas vocês fazem o botão d
 
 ## Ciclo 2 — Abastecer a barraca: a bandeja
 
-**A comparação (1 min).** "No ciclo 1 a cozinha mandou um prato só. Agora ela manda uma bandeja cheia: uma lista. E o garçom, que é o `@for`, leva um prato de cada vez até a mesa."
+**A comparação (1 min).** "No ciclo 1 o garçom trouxe um prato só. Agora ele traz uma bandeja cheia: uma lista. Na mesa, o `@for` tira um prato de cada vez e põe um `<li>` para cada um."
 
 **O desenho (2 min).**
 
 ```
- Java:   List.of(prato 0, prato 1, prato 2)
-   ↓
- JSON:   [ {...}, {...}, {...} ]                  colchetes = lista
-   ↓
- itens = signal<Item[]>([])                       a caixinha agora guarda uma lista
- @for (item of itens(); track item.nome) { <li>…</li> }     um <li> por prato
+ COZINHA:  List.of(prato 0, prato 1, prato 2)
+             ↓
+ GARÇOM:   [ {...}, {...}, {...} ]               colchetes = lista
+             ↓
+ VITRINE:  itens = signal<Item[]>([])            a caixinha agora guarda uma lista
+           .subscribe(lista => itens.set(lista)) "quando a bandeja chegar, guarde na caixinha"
+           @for (item of itens(); track item.nome) { <li>…</li> }     um <li> por prato
+           @if ($first) { ⭐ }                    só na primeira volta do @for
 
- /itens/0  →  o primeiro prato da bandeja         @PathVariable pega o número do endereço
+ @GetMapping("/itens/{posicao}")    /itens/0 = o primeiro prato     @PathVariable pega o número do endereço
+
+ Controller ──▶ Service             (para a ponte com o SSM)
 ```
 
 Aponte o `0`: "Na lista, quem chega primeiro é o zero, não o um".
 
-**A mágica (1 min).** Chame três voluntários para serem os pratos da bandeja. Diga "`@for`, cumprimente cada um" e aperte a mão de um por um. Aponte o primeiro: "este é o `$first`, o mais pedido". Pergunte quantos são: "três, isso é o `itens().length`". Se der tempo, abra de novo `http://localhost:8080/api/barracas/modelo/itens` e mostre os colchetes e as chaves.
+**A mágica (1 min).** Os três da primeira mesa são a bandeja, sem levantar. Diga "`@for`, cumprimente cada um" e acene para um de cada vez. "O primeiro é o `$first`. E quantos são? `itens().length`." No telão, abra a barraca modelo: "Quatro sabores no Java, quatro linhas na tela, e ninguém escreveu quatro `<li>`."
+
+(Não abra `/itens/0` na barraca modelo: ela não tem esse endpoint. Quem faz são as equipes.)
 
 **A pergunta (30 s).** "Se a bandeja tem 3 pratos, quantas vezes o `@for` repete o bloco?" (Três: uma vez por prato.)
 
-**Ponte com o SSM (30 s).** Desenhe `Controller → Service`. "No SSM o controller nunca trabalha sozinho: ele recebe o pedido e chama o service, que vem pelo construtor. É o desafio de hoje. E `consultarPorId(@PathVariable Long id)` é um dos endpoints mais comuns de lá; vocês fazem o mesmo com a posição."
+**Ponte com o SSM (30 s).** Aponte `Controller ──▶ Service`. "No SSM o controller nunca trabalha sozinho: ele recebe o pedido e chama o service, que vem pelo construtor. É o desafio de hoje. E `consultarPorId(@PathVariable Long id)` é um dos endpoints mais comuns de lá; vocês fazem o mesmo com a posição."
 
 **Lembrete:** os papéis giraram. O novo piloto começa com `git pull` e `.\piloto.cmd`.
 
@@ -147,24 +154,22 @@ Bom momento para destravar no particular quem ficou para trás. E para desenhar 
 
 ## Ciclo 3 — Atender o visitante: o correio
 
-**A comparação (1 min).** "O formulário é o correio da barraca. O visitante escreve a carta, o botão leva até a cozinha, a cozinha guarda no arquivo, que é o banco, e o mural mostra todas as cartas."
+**A comparação (1 min).** "Até agora o garçom só buscava coisas na cozinha: isso é um GET. Hoje ele leva a carta do visitante para a cozinha guardar no arquivo, que é o banco: isso é um POST. E o mural da barraca mostra todas as cartas."
 
 **O desenho (2 min).**
 
 ```
  1. a pessoa digita        →  o texto vai para a caixinha    [(ngModel)]="recado"
  2. a pessoa clica         →  roda cadastrarRecado()          (click)
- 3. o front manda um POST  →  o Spring Boot grava no banco
+ 3. o front manda um POST  →  o Spring Boot grava no banco    (o POST já está pronto na plataforma: vocês só chamam)
  4. o front busca de novo  →  o mural mostra a carta nova
 
  [disabled]="!recado()"    o botão fica apagado enquanto o campo está vazio
 ```
 
-Aponte o `[(ngModel)]`: "colchete e parêntese juntos é um fio de duas mãos: o que a pessoa digita vai para a caixinha, e o que está na caixinha aparece no campo".
+Aponte o `[(ngModel)]`: "colchete e parêntese juntos é um fio de duas mãos: o que a pessoa digita vai para a caixinha, e o que está na caixinha aparece no campo. Atenção: no `[(ngModel)]` vai a caixinha inteira, sem parênteses: `recado`. Para ler o valor, com parênteses: `!recado()`."
 
-**A mágica (1 min).** No telão, na barraca modelo, escolha um sabor e clique em **Pedir**. Aperte F5: o pedido continua na fila. "Está no banco, não na tela." Depois clique três vezes em **🎲 Sabor surpresa**: "o Java sorteia um sabor a cada clique. A pescaria de vocês faz a mesma coisa, com o `Random`."
-
-**A pergunta (30 s).** "Por que a gente busca a lista de novo depois de enviar?" (Para a carta nova aparecer no mural.)
+**A mágica e a pergunta (1 min e meio).** No telão, na barraca modelo, mostre o botão **Pedir** apagado: "Olhem o Pedir apagado." Escolha um sabor: "Acendeu. Isso é o `[disabled]`." Clique em **Pedir**. Agora a pergunta valendo aplauso, **antes** de apertar F5: "Se eu recarregar a página, o pedido some ou fica? Por quê?" Deixe responderem e aperte F5: o pedido continua na fila. "Fica: está no banco, não na tela." Para fechar, clique três vezes em **🎲 Sabor surpresa**: "o Java sorteia um sabor a cada clique. A pescaria de vocês faz a mesma coisa, com o `Random`."
 
 **Ponte com o SSM (30 s).** "No SSM quem cria um registro se chama `cadastrar`, é sempre um POST e termina com uma mensagem como 'Marca cadastrada com sucesso!'. Hoje vocês fazem o `cadastrarRecado` e a mensagem 'Recado cadastrado com sucesso!'."
 

@@ -39,7 +39,7 @@ Em até um minuto o telão responde:
 | Motivo no telão | O que significa | Como resolver |
 |---|---|---|
 | mexeu fora da pasta da equipe | Algum arquivo de outra pasta foi alterado | `git restore CAMINHO_DO_ARQUIVO`, depois commit e push |
-| não compilou | Tem erro no código | O telão diz o arquivo e a linha. O erro completo está no terminal do `npm start` ou do back-end |
+| não compilou | Tem erro no código | O telão diz o arquivo e a linha. O erro completo está no painel do repórter (ou na janela do `piloto.cmd`) |
 | compilou, mas não iniciou | O back-end não conseguiu subir | O mais comum: dois métodos com o mesmo endereço no `@GetMapping`. Troque o endereço de um deles |
 | não juntou com o resto | Conflito de merge | Chame o organizador |
 

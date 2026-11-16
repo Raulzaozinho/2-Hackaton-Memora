@@ -270,7 +270,7 @@ export const MANUAL: CicloDoManual[] = [
         arquivo: JAVA,
         passos: [
           'No topo do EquipeNController.java, junto dos outros import, acrescente a primeira linha abaixo.',
-          'Abaixo do comentário // CICLO 2, digite o método consultarPorPosicao.',
+          'Abaixo do comentário // CICLO 2 — o endpoint de um item só entra aqui. (o que começa com duas barras), digite o método consultarPorPosicao.',
           '{posicao} é um pedaço do endereço que muda; @PathVariable entrega esse pedaço ao método.',
           'As posições começam em zero: /itens/0 é o primeiro.',
         ],
@@ -304,10 +304,10 @@ export const MANUAL: CicloDoManual[] = [
         passos: [
           'Na pasta do EquipeNController.java, crie um arquivo novo chamado EquipeNService.java com o primeiro bloco abaixo.',
           'Coloque no listarTodos() os três itens que a equipe fez no controller.',
-          'No controller, receba o service pelo construtor e faça o itens() só chamar o service (segundo bloco).',
+          'No controller, logo abaixo da linha "public class EquipeNController {", digite o campo e o construtor. Depois APAGUE o método itens() inteiro (do @GetMapping("/itens") até a chave } que fecha) e digite no lugar o método do fim do bloco.',
           'O controller recebe o pedido; o service faz o trabalho. É assim em todas as APIs do SSM.',
         ],
-        codigo: `// EquipeNService.java (arquivo novo)\npackage br.com.memora.feira.barracas.equipeN;\n\nimport br.com.memora.feira.barracas.Item;\nimport java.util.List;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class EquipeNService {\n\n    public List<Item> listarTodos() {\n        return List.of(\n                new Item("🍫", "Doce de leite", "O mais pedido"),\n                new Item("🍓", "Morango", "Com pedaços de fruta"),\n                new Item("🥜", "Paçoca", "Só para os fortes"));\n    }\n}\n\n// EquipeNController.java, logo abaixo da linha "public class EquipeNController {"\nprivate final EquipeNService equipeNService;\n\npublic EquipeNController(EquipeNService equipeNService) {\n    this.equipeNService = equipeNService;\n}\n\n// e o método itens() passa a ser:\n@GetMapping("/itens")\npublic List<Item> itens() {\n    return equipeNService.listarTodos();\n}`,
+        codigo: `// EquipeNService.java (arquivo novo)\npackage br.com.memora.feira.barracas.equipeN;\n\nimport br.com.memora.feira.barracas.Item;\nimport java.util.List;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class EquipeNService {\n\n    public List<Item> listarTodos() {\n        return List.of(\n                new Item("🍫", "Doce de leite", "O mais pedido"),\n                new Item("🍓", "Morango", "Com pedaços de fruta"),\n                new Item("🥜", "Paçoca", "Só para os fortes"));\n    }\n}\n\n// EquipeNController.java, logo abaixo da linha "public class EquipeNController {"\nprivate final EquipeNService equipeNService;\n\npublic EquipeNController(EquipeNService equipeNService) {\n    this.equipeNService = equipeNService;\n}\n\n// apague o itens() antigo inteiro e digite no lugar:\n@GetMapping("/itens")\npublic List<Item> itens() {\n    return equipeNService.listarTodos();\n}`,
         confere: 'A lista continua igual na barraca e em /api/barracas/equipe-N/itens. A organização confere no código entregue que o EquipeNService existe.',
         pesquisa: 'spring boot service injeção pelo construtor',
         noSsm: 'No SSM é sempre XxxController → XxxService → XxxRepository, com o service recebido pelo construtor (private final).',
@@ -353,7 +353,7 @@ export const MANUAL: CicloDoManual[] = [
         tecnologia: 'Angular + Spring Boot',
         arquivo: `${FRONT}equipe-N.ts`,
         passos: [
-          'Logo abaixo do carregarRecados, digite a ação cadastrarRecado. No SSM, quem cria se chama cadastrar.',
+          'Depois da chave } que fecha o carregarRecados (fora dele), digite a ação cadastrarRecado. No SSM, quem cria se chama cadastrar.',
           'Ela manda o recado ao back-end (um POST, que grava no banco) e depois busca a lista de novo.',
         ],
         codigo: `cadastrarRecado() {\n  const novo = { autor: this.feira.meuNome(), texto: this.recado() };\n  this.api.salvar('equipe-N', novo).subscribe(() => {\n    this.recado.set('');\n    this.carregarRecados();\n  });\n}`,
@@ -428,8 +428,8 @@ export const MANUAL: CicloDoManual[] = [
         tecnologia: 'Angular + Spring Boot',
         arquivo: `${FRONT}equipe-N.ts e equipe-N.html`,
         passos: [
-          'No equipe-N.ts, abaixo do cadastrarRecado, crie a caixinha do prêmio e a ação pescar.',
-          'No equipe-N.html, no fim da section do recado, acrescente o botão e o resultado.',
+          'No equipe-N.ts, depois da chave } que fecha o cadastrarRecado (fora dele), crie a caixinha do prêmio e a ação pescar.',
+          'No equipe-N.html, logo antes do </section> que fecha a section do recado (o último do arquivo), acrescente o botão e o resultado.',
           '@if só mostra o prêmio depois que ele chegar.',
         ],
         codigo: `// equipe-N.ts\npremio = signal<Item | null>(null);\n\npescar() {\n  this.api.buscar<Item>('equipe-N', 'pescar').subscribe((item) => this.premio.set(item));\n}\n\n<!-- equipe-N.html -->\n<button class="botao" (click)="pescar()">🎣 Pescar</button>\n@if (premio(); as item) {\n  <p>{{ item.emoji }} Você pescou: <strong>{{ item.nome }}</strong>!</p>\n}`,
