@@ -6,5 +6,5 @@ export const EQUIPE_2: ConfigDaBarraca = {
   nome: 'Byte Dog',
   slogan: 'Cada bit, um novo sabor!',
   emoji: '🌭',
-  cor: '#c0392b',
+  cor: '#FFD700',
 };
