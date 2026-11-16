@@ -10,7 +10,7 @@ São menos de 3 horas, 3 equipes de 3 pessoas e 3 ciclos. Em cada ciclo, uma pes
 |---|---|
 | Participante, antes do dia | [Missão Zero](docs/missao-zero.md) |
 | Participante, no dia | [Os papéis](docs/papeis.md) · [Cola de Git](docs/cola-git.md) · o manual do copiloto abre na própria feira |
-| Organização | [Preparação](docs/organizacao/preparacao.md) · [Roteiro do dia](docs/organizacao/roteiro-do-dia.md) |
+| Organização | [Preparação](docs/organizacao/preparacao.md) · [Roteiro do dia](docs/organizacao/roteiro-do-dia.md) · [As aulas em detalhe](docs/organizacao/aulas.md) |
 
 ## O que você precisa instalar
 

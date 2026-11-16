@@ -67,6 +67,8 @@ Errou um clique? A lista de ajustes no painel tem **Desfazer**.
 
 ## Como dar a aula de 5 minutos
 
+A versão detalhada das três aulas (o que falar, como explicar cada conceito, perguntas e erros comuns) está em [aulas.md](aulas.md).
+
 O telão marca os 5 minutos. Toda aula tem o mesmo formato:
 
 | Tempo | O quê |
