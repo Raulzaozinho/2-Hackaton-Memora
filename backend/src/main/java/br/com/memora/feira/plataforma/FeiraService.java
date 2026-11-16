@@ -98,6 +98,7 @@ public class FeiraService {
      */
     @Transactional
     public EstadoDaFeira estado() {
+        long comecou = System.nanoTime();
         Evento evento = evento();
         Etapa etapa = evento.getEtapa();
         List<Participante> todos = participantes.findAll();
@@ -121,7 +122,7 @@ public class FeiraService {
                 evento.getPergunta(),
                 evento.isRespostaVisivel(),
                 todos.stream().anyMatch(p -> p.getEmail() != null) || organizadores.existe());
-        cache.guardar(estado);
+        cache.guardar(estado, comecou);
         return estado;
     }
 

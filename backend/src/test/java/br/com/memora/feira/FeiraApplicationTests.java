@@ -344,11 +344,26 @@ class FeiraApplicationTests {
         }));
         assertThat(calculando.await(5, java.util.concurrent.TimeUnit.SECONDS)).isTrue();
 
-        var acao = java.util.concurrent.CompletableFuture.runAsync(() -> cache.guardar(feira.estado()));
+        var acao = java.util.concurrent.CompletableFuture.runAsync(() -> feira.estado());
         acao.get(5, java.util.concurrent.TimeUnit.SECONDS);
 
         liberar.countDown();
         assertThat(tela.get(5, java.util.concurrent.TimeUnit.SECONDS).etapa().codigo()).isEqualTo("ABERTURA");
+        cache.esquecer();
+    }
+
+    @Test
+    void umCalculoQueComecouAntesNaoSubstituiOMaisNovo() {
+        // Uma tela começou a calcular antes da última marcação da organização e terminou depois:
+        // o telão não pode voltar a mostrar os pontos antigos.
+        cache.esquecer();
+        long telaComecou = System.nanoTime();
+        EstadoDaFeira antigo = feira.estado();
+        feira.proximaEtapa();
+        feira.estado();
+        cache.guardar(antigo, telaComecou);
+        assertThat(cache.estado(() -> { throw new AssertionError("devia vir da memória"); }).etapa().codigo())
+                .isEqualTo("AULA_1");
         cache.esquecer();
     }
 }
