@@ -41,4 +41,8 @@
       <li><strong>{{item.autor}}</strong>: {{item.texto}}</li>
     }
   </ul>
+
+  @if (aviso()) {
+    <p class="aviso">{{aviso()}}</p>
+  }
  </section>
