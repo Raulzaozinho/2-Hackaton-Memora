@@ -47,12 +47,15 @@ public class Crachas {
     private final boolean demo;
     private final String arquivoDeEmails;
     private final Organizadores organizadores;
+    private final RegrasAntigasDoBanco regrasAntigas;
     private final JsonMapper json = JsonMapper.builder().build();
 
     public Crachas(Repositorios.Participantes participantes, FeiraService feira,
             @Value("${feira.demo:false}") boolean demo,
             @Value("${feira.arquivo-de-emails:emails.local.properties}") String arquivoDeEmails,
-            Organizadores organizadores) {
+            Organizadores organizadores,
+            RegrasAntigasDoBanco regrasAntigas) {
+        this.regrasAntigas = regrasAntigas;
         this.participantes = participantes;
         this.feira = feira;
         this.demo = demo;
@@ -63,6 +66,7 @@ public class Crachas {
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void carregar() throws Exception {
+        regrasAntigas.remover();
         feira.inicializar();
         // O ensaio usa somente pessoas fictícias, mesmo quando já existem crachás no projeto.
         if (demo) {

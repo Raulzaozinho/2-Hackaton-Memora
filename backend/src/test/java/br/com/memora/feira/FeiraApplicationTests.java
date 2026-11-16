@@ -11,6 +11,7 @@ import br.com.memora.feira.plataforma.FeiraService;
 import br.com.memora.feira.plataforma.FichaService;
 import br.com.memora.feira.plataforma.Organizadores;
 import br.com.memora.feira.plataforma.Registros;
+import br.com.memora.feira.plataforma.RegrasAntigasDoBanco;
 import br.com.memora.feira.plataforma.Repositorios;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 /** Confere as regras da feira com os nove participantes de demonstração (três por equipe). */
@@ -32,6 +34,8 @@ class FeiraApplicationTests {
     @Autowired Repositorios.Participantes participantes;
     @Autowired Repositorios.Eventos eventos;
     @Autowired EstadoEmCache cache;
+    @Autowired RegrasAntigasDoBanco regrasAntigas;
+    @Autowired JdbcTemplate jdbc;
 
     @BeforeEach
     void recomecar() {
@@ -293,5 +297,17 @@ class FeiraApplicationTests {
     void oNomeDaOrganizacaoNaoDependeDeComoOEmailFoiDigitado() {
         assertThat(Organizadores.nomeDoEmail("MARIA.SILVA@EXEMPLO.COM")).isEqualTo("Maria");
         assertThat(Organizadores.nomeDoEmail("maria.silva@exemplo.com")).isEqualTo("Maria");
+    }
+
+    @Test
+    void umaListaAntigaDeEtapasNoBancoNaoTravaOProximaEtapa() {
+        // Como estava no Supabase: o banco só aceitava as etapas do formato anterior.
+        // (No H2 dos testes a lista fica no tipo da coluna; no Postgres, numa regra CHECK.)
+        jdbc.execute("alter table evento alter column etapa enum('ABERTURA', 'RODADA_1', 'FEIRA')");
+        assertThatThrownBy(() -> feira.proximaEtapa()).isNotNull();
+
+        regrasAntigas.remover();
+        feira.proximaEtapa();
+        assertThat(feira.estado().etapa().codigo()).isEqualTo("AULA_1");
     }
 }
