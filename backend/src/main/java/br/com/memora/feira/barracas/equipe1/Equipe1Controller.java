@@ -20,14 +20,16 @@ public class Equipe1Controller {
      * CICLO 2 — a lista do que a barraca de vocês oferece.
      * Troquem o item de exemplo e acrescentem os de vocês, separados por vírgula.
      */
+
     @GetMapping("/itens")
     public List<Item> itens() {
         return List.of(
                 new Item("🌭", "Dogão de uma Benga", "Completo com 1 benga"),
                 new Item("🌭🌭", "Dogão de  duas Benga", "Completo com 2 bengas"),
-                new Item("🌿", "Dogão Vegano (de Tchola)", "Completo de Tchola"));
+                new Item("🌿", "Dogão Vegano (de Tchola)", "Completo de Tchola")
+            );
     }
-
+    
     // CICLO 1 — o destaque do dia entra aqui.
 
     // CICLO 2 — o endpoint de um item só entra aqui.

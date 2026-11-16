@@ -24,10 +24,12 @@ export class Equipe1 {
   // CICLO 1 — as caixinhas do primeiro ciclo (curtidas e destaque) entram aqui.
 
   // CICLO 2 — a lista de itens que vem do back-end entra aqui.
-
+  itens = signal<Item[]>([])
+  
   // CICLO 3 — o recado do visitante e a pescaria entram aqui.
 
   constructor() {
     // O que precisa ser buscado assim que a barraca abre entra aqui dentro.
+    this.api.itens('equipe-1').subscribe((lista) => this.itens.set(lista));
   }
 }
