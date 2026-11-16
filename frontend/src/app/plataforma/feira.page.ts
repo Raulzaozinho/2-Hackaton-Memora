@@ -1,10 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { BARRACAS, BARRACA_MODELO } from '../barracas/registro';
 import { mensagemDeErro } from './barraca-api';
 import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
-import { classificarResultado } from './resultado';
+import { classificarResultado, duracaoDaRevelacao } from './resultado';
 
 /** A página inicial: o mapa da feira, com uma entrada para cada barraca. */
 @Component({
@@ -61,6 +61,33 @@ export class FeiraPage {
       barraca: BARRACAS.find((barraca) => barraca.id === linha.barraca),
     })),
   );
+
+  /**
+   * Enquanto o telão faz a revelação (3º, 2º, tambor, campeã), a feira de cada um não mostra o
+   * resultado: assim ninguém descobre a campeã pelo notebook antes do telão.
+   */
+  private reveladoEm = signal<number | null>(null);
+  private reveladoAntes: boolean | undefined;
+
+  private acompanharRevelacao = effect(() => {
+    const revelado = this.feira.estado()?.resultadoRevelado;
+    if (revelado === undefined) return;
+    if (this.reveladoAntes === undefined) {
+      this.reveladoEm.set(null);
+    } else if (revelado && !this.reveladoAntes) {
+      this.reveladoEm.set(this.feira.agora());
+    } else if (!revelado) {
+      this.reveladoEm.set(null);
+    }
+    this.reveladoAntes = revelado;
+  });
+
+  /** Verdadeiro durante a revelação no telão (mais 3 segundos, porque o telão consulta a cada 3). */
+  protected olhemParaOTelao = computed(() => {
+    const inicio = this.reveladoEm();
+    if (inicio === null) return false;
+    return (this.feira.agora() - inicio) / 1000 < duracaoDaRevelacao(this.resultado()) + 3;
+  });
 
   protected equipeDe(barracaId: string): string {
     const equipe = this.feira.estado()?.equipes.find((e) => e.id === barracaId);

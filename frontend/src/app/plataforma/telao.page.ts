@@ -1,8 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { BARRACAS } from '../barracas/registro';
 import { FeiraService, corDoTexto, formatarRelogio } from './feira.service';
 import { Membro } from './tipos';
-import { classificarResultado } from './resultado';
+import { REVELACAO, classificarResultado, duracaoDaRevelacao, momentoDaPosicao } from './resultado';
 import { perguntaDoCiclo } from './perguntas';
 
 /** Nos 3 ciclos vale o modo cego: cada papel enxerga só uma parte (docs/papeis.md). */
@@ -65,6 +65,61 @@ export class TelaoPage {
       barraca: BARRACAS.find((barraca) => barraca.id === linha.barraca),
     })),
   );
+
+  // ---------------------------------------------------------------- a revelação do vencedor
+  /**
+   * Quando a organização clica em "Revelar no telão", o telão mostra o 3º lugar, depois o 2º, um
+   * tambor com contagem e só então a campeã, com confete. Se a página abrir com o resultado já
+   * revelado (recarregou, por exemplo), mostra tudo de uma vez.
+   */
+  private reveladoEm = signal<number | null>(null);
+  private reveladoAntes: boolean | undefined;
+
+  private acompanharRevelacao = effect(() => {
+    const revelado = this.feira.estado()?.resultadoRevelado;
+    if (revelado === undefined) return;
+    if (this.reveladoAntes === undefined) {
+      this.reveladoEm.set(revelado ? 0 : null);
+    } else if (revelado && !this.reveladoAntes) {
+      this.reveladoEm.set(this.feira.agora());
+    } else if (!revelado) {
+      this.reveladoEm.set(null);
+    }
+    this.reveladoAntes = revelado;
+  });
+
+  /** Segundos desde o clique em "Revelar"; infinito quando a página abriu já revelada. */
+  private segundosDaRevelacao = computed(() => {
+    const inicio = this.reveladoEm();
+    if (inicio === null) return 0;
+    return inicio === 0 ? Number.POSITIVE_INFINITY : (this.feira.agora() - inicio) / 1000;
+  });
+
+  private duracao = computed(() => duracaoDaRevelacao(this.resultado()));
+
+  protected fase = computed<'intro' | 'subindo' | 'tambor' | 'final'>(() => {
+    const segundos = this.segundosDaRevelacao();
+    const duracao = this.duracao();
+    if (segundos >= duracao) return 'final';
+    if (segundos < REVELACAO.intro) return 'intro';
+    if (segundos >= duracao - REVELACAO.tambor) return 'tambor';
+    return 'subindo';
+  });
+
+  /** 3, 2, 1 no tambor antes da campeã. */
+  protected contagem = computed(() => Math.max(1, Math.ceil(this.duracao() - this.segundosDaRevelacao())));
+
+  protected visivel(linha: { posicao: number }): boolean {
+    return this.segundosDaRevelacao() >= momentoDaPosicao(linha.posicao, this.resultado());
+  }
+
+  /** Os pedacinhos de confete que caem quando a campeã aparece. */
+  protected confete = Array.from({ length: 48 }, (_, i) => ({
+    esquerda: (i * 37) % 100,
+    atraso: (i % 12) * 0.25,
+    duracao: 3 + (i % 5) * 0.6,
+    emoji: ['🎉', '🎊', '✨', '⭐', '🏆', '🎈'][i % 6],
+  }));
 
   protected porcentagemDeFichas = computed(() => {
     const estado = this.feira.estado();

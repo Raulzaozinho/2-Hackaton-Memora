@@ -1,4 +1,4 @@
-import { classificarResultado } from './resultado';
+import { classificarResultado, duracaoDaRevelacao, momentoDaPosicao } from './resultado';
 
 const linha = (barraca: string, total: number) => ({ barraca, pontosDoManual: total, fichas: 0, total });
 
@@ -21,5 +21,21 @@ describe('resultado final', () => {
       { barraca: 'equipe-2', pontosDoManual: 90, fichas: 6, total: 120 },
     ]);
     expect(resultado[0].barraca).toBe('equipe-2');
+  });
+});
+
+describe('a revelação no telão', () => {
+  it('mostra o 3º, depois o 2º e por último a campeã, depois do tambor', () => {
+    const linhas = classificarResultado([linha('equipe-1', 300), linha('equipe-2', 200), linha('equipe-3', 100)]);
+    expect(momentoDaPosicao(3, linhas)).toBe(3);
+    expect(momentoDaPosicao(2, linhas)).toBe(7);
+    expect(momentoDaPosicao(1, linhas)).toBe(14);
+    expect(duracaoDaRevelacao(linhas)).toBe(14);
+  });
+
+  it('com empate no topo, as duas campeãs aparecem juntas no fim', () => {
+    const linhas = classificarResultado([linha('equipe-1', 200), linha('equipe-2', 200), linha('equipe-3', 100)]);
+    expect(momentoDaPosicao(3, linhas)).toBe(3);
+    expect(momentoDaPosicao(1, linhas)).toBe(10);
   });
 });

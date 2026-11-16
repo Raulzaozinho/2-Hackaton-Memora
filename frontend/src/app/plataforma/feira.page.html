@@ -97,7 +97,9 @@
     </p>
   }
 
-  @if (resultado().length) {
+  @if (olhemParaOTelao()) {
+    <p class="aviso"><strong>🥁 O resultado está saindo no telão!</strong> Olhem para lá.</p>
+  } @else if (resultado().length) {
     <section class="resultado">
       <h2>🏆 Resultado</h2>
       <ol>

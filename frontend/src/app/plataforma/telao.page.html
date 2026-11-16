@@ -22,9 +22,17 @@
     @if (estado.etapa.codigo === 'PREMIACAO') {
       <section class="premiacao">
         @if (resultado().length) {
+          @if (fase() === 'intro') {
+            <p class="suspense">🥁 Chegou a hora do resultado…</p>
+          } @else if (fase() === 'tambor') {
+            <p class="suspense tambor">E a barraca campeã é… <span class="contagem">{{ contagem() }}</span></p>
+          } @else if (fase() === 'subindo') {
+            <p class="suspense">🥁 De baixo para cima…</p>
+          }
           <ol>
             @for (linha of resultado(); track linha.barraca?.id) {
               <li
+                [class.escondida]="!visivel(linha)"
                 [class.campea]="linha.posicao === 1 && linha.total > 0"
                 [class.empate]="linha.empate"
                 [style.--cor]="linha.barraca?.cor"
@@ -37,6 +45,18 @@
               </li>
             }
           </ol>
+          @if (fase() === 'final') {
+            <div class="confete" aria-hidden="true">
+              @for (pedaco of confete; track $index) {
+                <span
+                  [style.left.%]="pedaco.esquerda"
+                  [style.animation-delay.s]="pedaco.atraso"
+                  [style.animation-duration.s]="pedaco.duracao"
+                  >{{ pedaco.emoji }}</span
+                >
+              }
+            </div>
+          }
         } @else {
           <p class="trancado">🔒 Resultado trancado</p>
         }
