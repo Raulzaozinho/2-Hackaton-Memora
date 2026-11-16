@@ -387,9 +387,9 @@ class FeiraApplicationTests {
         dinamicas.pontosEmDobro("equipe-1", true);
         dinamicas.pontosEmDobro("equipe-3", true);
         assertThat(feira.estado().pontosEmDobro()).containsExactly("equipe-1", "equipe-3");
-        assertThat(feira.pontosDaTarefa("equipe-1", 15)).isEqualTo(23);
-        assertThat(feira.pontosDaTarefa("equipe-1", 10)).isEqualTo(15);
-        assertThat(feira.pontosDaTarefa("equipe-1", 20)).isEqualTo(30);
+        assertThat(feira.pontosDaTarefa("equipe-1", 15)).isEqualTo(19);
+        assertThat(feira.pontosDaTarefa("equipe-1", 10)).isEqualTo(13);
+        assertThat(feira.pontosDaTarefa("equipe-1", 20)).isEqualTo(25);
         assertThat(feira.pontosDaTarefa("equipe-2", 15)).isEqualTo(15);
         dinamicas.pontosEmDobro("equipe-1", false);
         assertThat(feira.estado().pontosEmDobro()).containsExactly("equipe-3");

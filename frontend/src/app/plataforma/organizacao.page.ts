@@ -230,9 +230,9 @@ export class OrganizacaoPage {
     this.chamar('POST', 'recomecar');
   }
 
-  /** Quanto vale a tarefa para a equipe: 1,5x (arredondado) com o bônus de recuperação ligado. */
+  /** Quanto vale a tarefa para a equipe: 1,25x (arredondado) com o bônus de recuperação ligado. */
   protected pontosDaTarefa(equipe: string, pontos: number): number {
-    return this.emDobro(equipe) ? Math.round(pontos * 1.5) : pontos;
+    return this.emDobro(equipe) ? Math.round(pontos * 1.25) : pontos;
   }
 
   /** Bônus de recuperação nas tarefas da equipe (para quem está atrás ter chance). */

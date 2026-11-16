@@ -224,10 +224,10 @@ public class FeiraService {
 
     // ---------------------------------------------------------------- etapas e relógio
 
-    /** Quanto vale uma tarefa para quem está com o bônus ligado (1,5x, arredondado). */
-    public static final double BONUS_DE_RECUPERACAO = 1.5;
+    /** Quanto vale uma tarefa para quem está com o bônus ligado (1,25x, arredondado para inteiro). */
+    public static final double BONUS_DE_RECUPERACAO = 1.25;
 
-    /** Os pontos de uma tarefa do manual para a equipe: 1,5x quando a organização ligou o bônus dela. */
+    /** Os pontos de uma tarefa do manual para a equipe: 1,25x quando a organização ligou o bônus dela. */
     public int pontosDaTarefa(String equipe, int pontos) {
         return evento().getEquipesEmDobro().contains(equipe) ? (int) Math.round(pontos * BONUS_DE_RECUPERACAO) : pontos;
     }
