@@ -32,4 +32,7 @@
 <section>
   <h3>Deixe seu recado</h3>
   <p>Conte o que achou da barraca</p>
+
+  <input class="campo" [(ngModel)]="recado" placeholder="Escreva aqui" />
+  <button class="botao" (click)="cadastrarRecado()" [disabled]="!recado()">Enviar</button>
 </section>
