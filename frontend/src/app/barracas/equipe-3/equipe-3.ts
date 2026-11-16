@@ -22,7 +22,6 @@ export class Equipe3 {
   private feira = inject(FeiraService); // sabe quem está usando a tela: this.feira.meuNome()
 
   // CICLO 1 — as caixinhas do primeiro ciclo (curtidas e destaque) entram aqui.
-  curtidas= signal(0);
 
   // CICLO 2 — a lista de itens que vem do back-end entra aqui.
 
